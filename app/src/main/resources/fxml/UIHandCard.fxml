@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Button?>
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="300.0" prefWidth="200.0"
+         maxHeight="300.0" maxWidth="200.0">
+
+    <Rectangle fx:id="base" width="200" height="300" fill="white" arcHeight="10" arcWidth="10" strokeWidth="5"
+               stroke="black"/>
+    <Rectangle fx:id="selectionMask" width="200" height="300" fill="orange" arcWidth="10" arcHeight="10" opacity="0"/>
+    <ImageView fx:id="overlayImage" preserveRatio="true" fitWidth="200">
+        <image>
+            <Image url="@../images/cards/cardback.png" />
+        </image>
+    </ImageView>
+    <Button fx:id="infoButton" maxWidth="25" maxHeight="25">
+        <text>"info"</text>
+    </Button>
+
+</fx:root>

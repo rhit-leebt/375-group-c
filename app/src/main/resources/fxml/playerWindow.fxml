@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import team5.explodingkittens.view.*?>
+<!--<?import team5.explodingkittens.view.UiOtherPlayer?>-->
+<!--<?import team5.explodingkittens.view.UiDiscard?>-->
+<!--<?import team5.explodingkittens.view.UiPlayerHand?>-->
+
+<?import javafx.geometry.Insets?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:id="horizontalAlign"
+      prefHeight="1000.0" prefWidth="1000.0"
+      alignment="CENTER">
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25"/>
+    </padding>
+    <children>
+        <VBox fx:id="verticalAlign" spacing="10">
+            <children>
+                <UiOtherPlayer fx:id="otherPlayers"/>
+                <HBox fx:id="decks" spacing="20">
+                    <children>
+                        <UiDeck fx:id="deck"/>
+                        <UiDiscard fx:id="discard"/>
+                    </children>
+                </HBox>
+                <UiPlayerHand fx:id="playerHand"/>
+            </children>
+        </VBox>
+    </children>
+</HBox>

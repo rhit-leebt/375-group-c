@@ -1,23 +1,46 @@
-# Compiled class file
+bin/
+build/
+.gradle
+.gradletasknamecache
+
+# Ignore Java-specific things
 *.class
 
-# Log file
-*.log
+# Ignore IntelliJ-specific things 
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
 
-# BlueJ files
-*.ctxt
+# Ignore eclipse specific things
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Ignore Gradle GUI config
+gradle-app.setting
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+# Ignore Gradle build output directory
+build
