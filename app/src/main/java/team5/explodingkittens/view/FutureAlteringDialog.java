@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FutureAlteringDialog extends Dialog {
-    private Card card0;
-    private Card card1;
-    private Card card2;
     private ArrayList<Card> cards;
     private Card secondCard;
     private Card thirdCard;
@@ -37,9 +34,6 @@ public class FutureAlteringDialog extends Dialog {
      */
     public FutureAlteringDialog(Card card0, Card card1, Card card2) {
         this.map = new HashMap<>();
-        this.card0 = card0;
-        this.card1 = card1;
-        this.card2 = card2;
         this.cards = new ArrayList<>();
         this.cards.add(card0);
         this.cards.add(card1);

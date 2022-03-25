@@ -22,9 +22,6 @@ import team5.explodingkittens.model.Card;
  * @author Maura Coriale
  */
 public class FutureSeeingDialog extends Dialog {
-    private Card card0;
-    private Card card1;
-    private Card card2;
     private static final String DIALOG_TITLE = "seeTheFutureTitle";
 
 
@@ -36,9 +33,6 @@ public class FutureSeeingDialog extends Dialog {
      * @param card2 the third card in the deck
      */
     public FutureSeeingDialog(Card card0, Card card1, Card card2) {
-        this.card0 = card0;
-        this.card1 = card1;
-        this.card2 = card2;
         this.setTitle(ResourceController.getString(DIALOG_TITLE));
         VBox verticalBox = new VBox();
         verticalBox.setAlignment(Pos.CENTER);
