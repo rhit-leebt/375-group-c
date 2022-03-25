@@ -21,7 +21,7 @@ import team5.explodingkittens.model.Card;
  *
  * @author Maura Coriale
  */
-public class FutureSeeingDialog extends Dialog {
+public class FutureSeeingDialog extends Dialog<Card> {
     private static final String DIALOG_TITLE = "seeTheFutureTitle";
 
 

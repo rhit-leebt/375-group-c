@@ -17,8 +17,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FutureAlteringDialog extends Dialog {
-    private ArrayList<Card> cards;
+public class FutureAlteringDialog extends Dialog<Card> {
+    private final ArrayList<Card> cards;
     private Card secondCard;
     private Card thirdCard;
     private static final String DIALOG_TITLE = "alterTheFutureTitle";
@@ -84,26 +84,26 @@ public class FutureAlteringDialog extends Dialog {
     public ArrayList<Card> chooseNewOrder(){
         ArrayList<Card> workingSet = (ArrayList<Card>) this.cards.clone();
         System.out.println(workingSet.size());
-        LanguageFriendlyChoiceDialog firstChoice = new LanguageFriendlyChoiceDialog(workingSet.get(0), workingSet);
+        LanguageFriendlyChoiceDialog<Card> firstChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
         firstChoice.setTitle(ResourceController.getString("chooseFirstCard"));
         firstChoice.addConfirmButton();
         firstChoice.showAndWaitDefault();
         workingSet.remove(firstChoice.getSelectedItem());
         getSecondChoice(workingSet);
-        Card firstCard = (Card) firstChoice.getSelectedItem();
+        Card firstCard = firstChoice.getSelectedItem();
         ArrayList<Card> returnCards = new ArrayList<>();
         returnCards.add(0, firstCard);
         returnCards.add(1, secondCard);
         returnCards.add(2, thirdCard);
-        System.out.println("New top three: " + returnCards.toString());
+        System.out.println("New top three: " + returnCards);
         return returnCards;
     }
 
     public void getSecondChoice(ArrayList<Card> workingSet){
-        LanguageFriendlyChoiceDialog secondChoice = new LanguageFriendlyChoiceDialog(workingSet.get(0), workingSet);
+        LanguageFriendlyChoiceDialog<Card> secondChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
         secondChoice.addConfirmButton();
         secondChoice.showAndWaitDefault();
-        Card secondCard = (Card) secondChoice.getSelectedItem();
+        Card secondCard = secondChoice.getSelectedItem();
         this.secondCard = secondCard;
         workingSet.remove(secondCard);
         this.thirdCard = workingSet.get(0);
