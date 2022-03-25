@@ -8,7 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import team5.explodingkittens.model.Card;
 
 /**
@@ -16,20 +18,22 @@ import team5.explodingkittens.model.Card;
  *
  * @author Duncan McKee, Andrew Orians
  */
-public class UiDiscard extends StackPane {
+public class UiDiscard extends VBox {
     private static final String FXML_FILE_PATH = "app"
             + File.separator + "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "fxml" + File.separator + "UIDiscard.fxml";
 
     @FXML
     protected UiCard cardBack;
+    @FXML
+    private Label discardLabel;
     private int cardsLeft;
 
     /**
      * Creates a UiDiscard element from the existing FXML file.
      */
     public UiDiscard() {
-        URL fxmlUrl = null;
+        URL fxmlUrl;
         try {
             fxmlUrl = new File(FXML_FILE_PATH).toURI().toURL();
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
@@ -41,6 +45,8 @@ public class UiDiscard extends StackPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        discardLabel.setText("Discard Pile");
     }
 
     /**
