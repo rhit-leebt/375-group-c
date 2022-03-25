@@ -1,8 +1,5 @@
 package team5.explodingkittens.model;
 
-import java.util.ArrayList;
-import team5.explodingkittens.controller.GameController;
-
 /**
  * TurnState keeps track of the current player, how
  * many times they need to draw, and how they will draw.

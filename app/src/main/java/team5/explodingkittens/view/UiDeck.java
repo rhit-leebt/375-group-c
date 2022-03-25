@@ -1,13 +1,9 @@
 package team5.explodingkittens.view;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import team5.explodingkittens.controller.ResourceController;
 

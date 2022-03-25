@@ -18,7 +18,7 @@ import team5.explodingkittens.view.AbstractUserView;
  * @author Duncan McKee, Andrew Orians, Maura Coriale
  */
 public class UserController implements Observer {
-    private GameController gameController;
+    private final GameController gameController;
     private final AbstractUserView view;
     private final int playerId;
     private final Player player;

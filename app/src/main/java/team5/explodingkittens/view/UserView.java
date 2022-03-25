@@ -12,11 +12,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -42,9 +37,6 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String NAME_DIALOG_TITLE = "nameDialogTitle";
     private static final String NAME_DIALOG_HEADER = "nameDialogHeader";
     private static final String NAME_DIALOG_CONTENT = "nameDialogContent";
-    private static final String FAVOR_PICK_DIALOG_TITLE = "favorPickDialogTitle";
-    private static final String FAVOR_PICK_DIALOG_HEADER = "favorPickDialogHeader";
-    private static final String FAVOR_PICK_DIALOG_CONTENT = "favorPickDialogContent";
     private static final String FAVOR_SELECT_DIALOG_TITLE = "favorSelectDialogTitle";
     private static final String FAVOR_SELECT_DIALOG_HEADER = "favorSelectDialogHeader";
     private static final String FAVOR_SELECT_DIALOG_CONTENT = "favorSelectDialogContent";
@@ -78,11 +70,11 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-    private TranslateAnimator drawAnimator;
-    private UiDeck deck;
-    private UiDiscard discard;
-    private List<UiPlayer> players;
-    private UiPlayerHand playerHand;
+    private final TranslateAnimator drawAnimator;
+    private final UiDeck deck;
+    private final UiDiscard discard;
+    private final List<UiPlayer> players;
+    private final UiPlayerHand playerHand;
     private UserController userController;
     private LanguageFriendlyEmptyDialog nopeDialog;
     private FutureSeeingDialog seeFutureDialog;

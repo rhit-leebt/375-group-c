@@ -1,15 +1,5 @@
 package team5.explodingkittens.view;
 
-import java.beans.EventHandler;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import team5.explodingkittens.model.Card;
 
 
@@ -20,7 +10,7 @@ import team5.explodingkittens.model.Card;
  */
 public class UiHandCard extends UiCard {
 
-    private Card card;
+    private final Card card;
 
     /**
      * Creates the UiHandCard and its underlying infoPopup.

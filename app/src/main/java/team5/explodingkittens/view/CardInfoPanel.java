@@ -15,7 +15,7 @@ import team5.explodingkittens.model.Card;
  * This is a part of the {@link UiPlayerHand} that displays the currently selected
  * card's information, and gives the player the ability to play the card.
  *
- * @Author Duncan McKee
+ * @author Duncan McKee
  */
 public class CardInfoPanel extends VBox {
     private static final double WIDTH = 200;
@@ -27,9 +27,9 @@ public class CardInfoPanel extends VBox {
     private static final double CARD_INFO_FONT_SIZE = 15;
     private static final String PLAY_BUTTON_PLAY_TEXT = "playButton";
 
-    private Button playButton;
-    private Label cardNameLabel;
-    private Text cardInfoLabel;
+    private final Button playButton;
+    private final Label cardNameLabel;
+    private final Text cardInfoLabel;
 
     /**
      * Creates a card info panel with the specified event handler.

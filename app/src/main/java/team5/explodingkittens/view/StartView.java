@@ -39,7 +39,7 @@ public class StartView extends Stage {
     private static final String PLAYERS_TEXT_KEY = "players";
 
 
-    private Button startButton;
+    private final Button startButton;
 
     /**
      * Creates an empty StartScreen, and finds the default screen size.
