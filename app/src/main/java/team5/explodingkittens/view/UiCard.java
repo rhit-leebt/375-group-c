@@ -3,11 +3,7 @@ package team5.explodingkittens.view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -43,18 +39,7 @@ public class UiCard extends StackPane {
      * Creates a UiCard object based upon the FXML setup at the file path.
      */
     public UiCard() {
-        URL fxmlUrl = null;
-        try {
-            fxmlUrl = new File(FXML_FILE_PATH).toURI().toURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
-            fxmlLoader.load();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
     }
 
     /**
