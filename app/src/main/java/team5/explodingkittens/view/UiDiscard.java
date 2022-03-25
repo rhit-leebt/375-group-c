@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.model.Card;
 
 /**
@@ -19,6 +20,7 @@ import team5.explodingkittens.model.Card;
  * @author Duncan McKee, Andrew Orians
  */
 public class UiDiscard extends VBox {
+    private static final String DISCARD_LABEL = "discardDescription";
     private static final String FXML_FILE_PATH = "app"
             + File.separator + "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "fxml" + File.separator + "UIDiscard.fxml";
@@ -46,7 +48,7 @@ public class UiDiscard extends VBox {
             e.printStackTrace();
         }
 
-        discardLabel.setText("Discard Pile");
+        discardLabel.setText(ResourceController.getString(DISCARD_LABEL));
     }
 
     /**
