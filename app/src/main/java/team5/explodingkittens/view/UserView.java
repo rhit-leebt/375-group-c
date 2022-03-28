@@ -9,11 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
@@ -28,12 +24,13 @@ import team5.explodingkittens.model.Player;
  * @author Duncan McKee, Maura Coriale, Andrew Orians
  */
 public class UserView extends Stage implements AbstractUserView {
+    private static final double DECK_DISCARD_SPACING = 20;
+    private static final double VERTICAL_SPACING = 10;
+    private static final double OUTSIDE_PADDING = 25;
     private static final double DEFAULT_SCREEN_WIDTH = 1000;
     private static final double DEFAULT_SCREEN_HEIGHT = 1000;
-    private static final double OUTSIDE_PADDING = 25;
-    private static final double VERTICAL_SPACING = 10;
-    private static final double DECK_DISCARD_SPACING = 20;
     private static final String PLAYER_WINDOW_TITLE = "gameTitle";
+
     private static final String NAME_DIALOG_TITLE = "nameDialogTitle";
     private static final String NAME_DIALOG_HEADER = "nameDialogHeader";
     private static final String NAME_DIALOG_CONTENT = "nameDialogContent";
@@ -78,6 +75,7 @@ public class UserView extends Stage implements AbstractUserView {
     private UiDiscard discardUi;
     private List<UiPlayer> playerUis;
     private UiPlayerHand playerHandUi;
+    private UserViewSceneHandler uiCollection = new UserViewSceneHandler();
     private UserController userController;
     private LanguageFriendlyEmptyDialog nopeDialog;
     private FutureSeeingDialog seeFutureDialog;
@@ -91,35 +89,44 @@ public class UserView extends Stage implements AbstractUserView {
     public UserView(int numPlayers, int playerId) {
         drawAnimator = new TranslateAnimator(1);
 
-        populatePlayerUiList(numPlayers, playerId);
-        buildScene(numPlayers, playerId);
+        UserViewSceneBuilder builder =
+                new UserViewSceneBuilder(e -> this.tryPlayCard(),
+                        e -> this.tryDrawCard());
+        UserViewSceneHandler sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
+        setScene(sceneHandler.scene);
+        show();
+
+        deckUi = sceneHandler.deckUi;
+        discardUi = sceneHandler.discardUi;
+        playerUis = sceneHandler.playerUis;
+        playerHandUi = sceneHandler.playerHandUi;
 
         generateNameInputDialog().show();
     }
 
-    private void populatePlayerUiList(int numPlayers, int playerId) {
-        playerUis = new ArrayList<>(numPlayers);
-        playerHandUi = new UiPlayerHand(e -> tryPlayCard());
-        for (int i = 0; i < numPlayers; i++) {
-            if (i == playerId) {
-                playerUis.add(playerHandUi);
-            } else {
-                UiOtherPlayer otherPlayerUi = new UiOtherPlayer(i);
-                playerUis.add(otherPlayerUi);
-            }
-        }
-    }
-
-    private void buildScene(int numPlayers, int playerId) {
-        HBox otherPlayerUiArea = new HBox();
-        HBox pileUiArea = new HBox();
-
-        buildOtherPlayerUiArea(otherPlayerUiArea, numPlayers, playerId);
-        buildPileUiArea(pileUiArea);
-
-        HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
-        generateSceneWith(alignedUiGroup);
-    }
+//    private void populatePlayerUiList(int numPlayers, int playerId) {
+//        playerUis = new ArrayList<>(numPlayers);
+//        playerHandUi = new UiPlayerHand(e -> tryPlayCard());
+//        for (int i = 0; i < numPlayers; i++) {
+//            if (i == playerId) {
+//                playerUis.add(playerHandUi);
+//            } else {
+//                UiOtherPlayer otherPlayerUi = new UiOtherPlayer(i);
+//                playerUis.add(otherPlayerUi);
+//            }
+//        }
+//    }
+//
+//    private Scene generateSceneFromPlayerInfo(int numPlayers, int playerId) {
+//        HBox otherPlayerUiArea = new HBox();
+//        HBox pileUiArea = new HBox();
+//
+//        buildOtherPlayerUiArea(otherPlayerUiArea, numPlayers, playerId);
+//        buildPileUiArea(pileUiArea);
+//
+//        HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
+//        return generateSceneFromUiArea(alignedUiGroup);
+//    }
 
     private LanguageFriendlyTextInputDialog generateNameInputDialog() {
         LanguageFriendlyTextInputDialog nameDialog = new LanguageFriendlyTextInputDialog();
@@ -139,44 +146,43 @@ public class UserView extends Stage implements AbstractUserView {
         return nameDialog;
     }
 
-    private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
-        otherPlayerUiArea.setAlignment(Pos.CENTER);
-        for (int i = 0; i < numPlayers; i++) {
-            if (i != playerId) {
-                UiOtherPlayer otherPlayerUi = (UiOtherPlayer) playerUis.get(i);
-                otherPlayerUiArea.getChildren().add(otherPlayerUi);
-            }
-        }
-    }
-
-    private void buildPileUiArea(HBox pileUiArea) {
-        pileUiArea.setSpacing(DECK_DISCARD_SPACING);
-        deckUi = new UiDeck();
-        deckUi.setOnMouseClicked(event -> this.tryDrawCard());
-        discardUi = new UiDiscard();
-        pileUiArea.getChildren().addAll(deckUi, discardUi);
-    }
-
-    private HBox getAlignedUiGroup(List<HBox> areas) {
-        VBox verticalAlign = new VBox();
-        verticalAlign.setSpacing(VERTICAL_SPACING);
-        verticalAlign.getChildren().addAll(areas);
-        verticalAlign.getChildren().add(playerHandUi);
-
-        HBox horizontalAlign = new HBox();
-        horizontalAlign.getChildren().add(verticalAlign);
-        horizontalAlign.setPadding(new Insets(OUTSIDE_PADDING));
-        horizontalAlign.setAlignment(Pos.CENTER);
-
-        return horizontalAlign;
-    }
-
-    private void generateSceneWith(HBox uiArea) {
-        Scene scene = new Scene(uiArea, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-        setTitle(ResourceController.getString(PLAYER_WINDOW_TITLE));
-        setScene(scene);
-        show();
-    }
+//    private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
+//        otherPlayerUiArea.setAlignment(Pos.CENTER);
+//        for (int i = 0; i < numPlayers; i++) {
+//            if (i != playerId) {
+//                UiOtherPlayer otherPlayerUi = (UiOtherPlayer) playerUis.get(i);
+//                otherPlayerUiArea.getChildren().add(otherPlayerUi);
+//            }
+//        }
+//    }
+//
+//    private void buildPileUiArea(HBox pileUiArea) {
+//        pileUiArea.setSpacing(DECK_DISCARD_SPACING);
+//        deckUi = new UiDeck();
+//        deckUi.setOnMouseClicked(event -> this.tryDrawCard());
+//        discardUi = new UiDiscard();
+//        pileUiArea.getChildren().addAll(deckUi, discardUi);
+//    }
+//
+//    private HBox getAlignedUiGroup(List<HBox> areas) {
+//        VBox verticalAlign = new VBox();
+//        verticalAlign.setSpacing(VERTICAL_SPACING);
+//        verticalAlign.getChildren().addAll(areas);
+//        verticalAlign.getChildren().add(playerHandUi);
+//
+//        HBox horizontalAlign = new HBox();
+//        horizontalAlign.getChildren().add(verticalAlign);
+//        horizontalAlign.setPadding(new Insets(OUTSIDE_PADDING));
+//        horizontalAlign.setAlignment(Pos.CENTER);
+//
+//        return horizontalAlign;
+//    }
+//
+//    private Scene generateSceneFromUiArea(HBox uiArea) {
+//        Scene scene = new Scene(uiArea, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+//        setTitle(ResourceController.getString(PLAYER_WINDOW_TITLE));
+//        return scene;
+//    }
 
     @Override
     public void setName(int playerId, String name) {
