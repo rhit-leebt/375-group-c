@@ -8,28 +8,42 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserViewSceneBuilder {
 
+    private static final double DEFAULT_SCREEN_WIDTH = 1000;
+    private static final double DEFAULT_SCREEN_HEIGHT = 1000;
     private static final double DECK_DISCARD_SPACING = 20;
     private static final double VERTICAL_SPACING = 10;
     private static final double OUTSIDE_PADDING = 25;
-    private static final double DEFAULT_SCREEN_WIDTH = 1000;
-    private static final double DEFAULT_SCREEN_HEIGHT = 1000;
+
     private UiPlayerHand playerHandUi;
     private List<UiPlayer> playerUis;
-    private EventHandler<ActionEvent> playHandler;
-    private EventHandler<MouseEvent> drawHandler;
-    private UserViewSceneHandler sceneHandler;
-
+    private final EventHandler<ActionEvent> playHandler;
+    private final EventHandler<MouseEvent> drawHandler;
+    private final UserViewSceneHandler sceneHandler;
 
     public UserViewSceneBuilder(EventHandler<ActionEvent> playHandler, EventHandler<MouseEvent> drawHandler) {
         this.playHandler = playHandler;
         this.drawHandler = drawHandler;
         this.sceneHandler = new UserViewSceneHandler();
+    }
+
+    public UserViewSceneHandler generateSceneFromPlayerInfo(int numPlayers, int playerId) {
+        populatePlayerUiList(numPlayers, playerId);
+
+        HBox otherPlayerUiArea = new HBox();
+        HBox pileUiArea = new HBox();
+
+        buildOtherPlayerUiArea(otherPlayerUiArea, numPlayers, playerId);
+        buildPileUiArea(pileUiArea);
+
+        HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
+        Scene scene = generateSceneFromUiArea(alignedUiGroup);
+        sceneHandler.replaceScene(scene);
+        return sceneHandler;
     }
 
     private void populatePlayerUiList(int numPlayers, int playerId) {
@@ -46,21 +60,6 @@ public class UserViewSceneBuilder {
 
         sceneHandler.setPlayerUiList(playerUis);
         sceneHandler.setUiPlayerHand(playerHandUi);
-    }
-
-    public UserViewSceneHandler generateSceneFromPlayerInfo(int numPlayers, int playerId) {
-        populatePlayerUiList(numPlayers, playerId);
-
-        HBox otherPlayerUiArea = new HBox();
-        HBox pileUiArea = new HBox();
-
-        buildOtherPlayerUiArea(otherPlayerUiArea, numPlayers, playerId);
-        buildPileUiArea(pileUiArea);
-
-        HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
-        Scene scene = generateSceneFromUiArea(alignedUiGroup);
-        sceneHandler.setScene(scene);
-        return sceneHandler;
     }
 
     private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
@@ -99,8 +98,7 @@ public class UserViewSceneBuilder {
     }
 
     private Scene generateSceneFromUiArea(HBox uiArea) {
-        Scene scene = new Scene(uiArea, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-        return scene;
+        return new Scene(uiArea, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
     }
 
 

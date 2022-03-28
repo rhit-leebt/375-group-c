@@ -27,7 +27,7 @@ public class UserViewSceneHandler {
         this.playerHandUi = playerHandUi;
     }
 
-    public void setScene(Scene scene) {
+    public void replaceScene(Scene scene) {
         this.scene = scene;
     }
 }
