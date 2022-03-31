@@ -83,6 +83,14 @@ public class UserView extends Stage implements AbstractUserView {
         generateNameInputDialog().show();
     }
 
+    public void changeUiOnTurnChange(boolean currentTurnIsNow) {
+        if (currentTurnIsNow) {
+            setTitle("MY TURN IS NOW");
+        } else {
+            setTitle("Not my turn...");
+        }
+    }
+
     private LanguageFriendlyTextInputDialog generateNameInputDialog() {
         LanguageFriendlyTextInputDialog nameDialog = new LanguageFriendlyTextInputDialog();
         nameDialog.setTitle(ResourceController.getString(NAME_DIALOG_TITLE));

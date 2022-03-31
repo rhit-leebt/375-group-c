@@ -176,7 +176,9 @@ public class GameController extends Subject {
             } else {
                 notifyObservers(new DrawNotification(playerId, card));
             }
-            state.drawCard();
+            if (state.drawCard() == true) {
+                notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
+            }
         }
     }
 
@@ -263,5 +265,9 @@ public class GameController extends Subject {
         for(Card card : cards){
             deck.insertCard(card, cards.indexOf(card));
         }
+    }
+
+    public boolean checkIfCurrentTurnBelongsToPlayer(int playerId) {
+        return state.getTurnPlayerId() == playerId;
     }
 }

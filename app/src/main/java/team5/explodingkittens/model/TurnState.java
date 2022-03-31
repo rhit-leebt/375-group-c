@@ -58,13 +58,15 @@ public class TurnState {
     /**
      * Applies the action of drawing a card at the end of a turn to the current state.
      */
-    public void drawCard() {
+    public boolean drawCard() {
         drawCount--;
         drawType = DrawType.DRAW_FROM_TOP;
         if (drawCount == 0) {
             incrementTurn();
             drawCount = 1;
+            return true;
         }
+        return false;
     }
 
     /**

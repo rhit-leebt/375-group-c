@@ -30,4 +30,8 @@ public class UserViewSceneHandler {
     public void replaceScene(Scene scene) {
         this.scene = scene;
     }
+
+    public void changeTitle(String title) {
+
+    }
 }
