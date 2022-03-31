@@ -365,6 +365,8 @@ public class GameControllerTests {
 
         state.skipAction();
 
+        EasyMock.expect(state.lastActionResultedInTurnChange()).andReturn(true);
+        EasyMock.expect(state.getTurnPlayerId()).andReturn(0);
         EasyMock.replay(discardPile);
         EasyMock.replay(state);
 
@@ -382,6 +384,8 @@ public class GameControllerTests {
 
         state.attackAction();
 
+        EasyMock.expect(state.lastActionResultedInTurnChange()).andReturn(true);
+        EasyMock.expect(state.getTurnPlayerId()).andReturn(0);
         EasyMock.replay(discardPile);
         EasyMock.replay(state);
 
