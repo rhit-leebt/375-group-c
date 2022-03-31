@@ -31,7 +31,7 @@ public class UserViewSceneHandler {
         this.scene = scene;
     }
 
-    public void changeTitle(String title) {
-
+    public void setNameOfPlayerUi(int playerId, String name) {
+        playerUis.get(playerId).setName(name);
     }
 }

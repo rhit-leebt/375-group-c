@@ -85,9 +85,9 @@ public class UserView extends Stage implements AbstractUserView {
 
     public void changeUiOnTurnChange(boolean currentTurnIsNow) {
         if (currentTurnIsNow) {
-            setTitle("MY TURN IS NOW");
+            setTitle("It is your turn!");
         } else {
-            setTitle("Not my turn...");
+            setTitle("Waiting for your turn...");
         }
     }
 
@@ -111,7 +111,7 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public void setName(int playerId, String name) {
-        sceneHandler.playerUis.get(playerId).setName(name);
+        sceneHandler.setNameOfPlayerUi(playerId, name);
     }
 
     @Override

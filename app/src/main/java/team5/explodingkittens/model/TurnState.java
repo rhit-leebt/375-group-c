@@ -1,8 +1,5 @@
 package team5.explodingkittens.model;
 
-import java.util.ArrayList;
-import team5.explodingkittens.controller.GameController;
-
 /**
  * TurnState keeps track of the current player, how
  * many times they need to draw, and how they will draw.
@@ -17,6 +14,7 @@ public class TurnState {
     private boolean[] validPlayers;
     private int validCount;
     private int drawCount;
+    private boolean lastActionResultedInTurnChange;
     public DrawType drawType = DrawType.DRAW_FROM_TOP;
 
     /**
@@ -58,15 +56,15 @@ public class TurnState {
     /**
      * Applies the action of drawing a card at the end of a turn to the current state.
      */
-    public boolean drawCard() {
+    public void drawCard() {
         drawCount--;
         drawType = DrawType.DRAW_FROM_TOP;
         if (drawCount == 0) {
             incrementTurn();
             drawCount = 1;
-            return true;
+        } else {
+            lastActionResultedInTurnChange = false;
         }
-        return false;
     }
 
     /**
@@ -90,6 +88,8 @@ public class TurnState {
         if (drawCount == 0) {
             incrementTurn();
             drawCount = 1;
+        } else {
+            lastActionResultedInTurnChange = false;
         }
     }
 
@@ -106,6 +106,7 @@ public class TurnState {
         while (!validPlayers[turnPlayerId]) {
             turnPlayerId = (turnPlayerId + 1) % numPlayers;
         }
+        lastActionResultedInTurnChange = true;
     }
 
     /**
@@ -138,5 +139,9 @@ public class TurnState {
             }
         }
         return -1;
+    }
+
+    public boolean lastActionResultedInTurnChange() {
+        return lastActionResultedInTurnChange;
     }
 }

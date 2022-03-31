@@ -90,6 +90,7 @@ public class GameController extends Subject {
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);
         this.discardPile = new DiscardPile();
+        notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
     }
 
     /**
@@ -176,9 +177,8 @@ public class GameController extends Subject {
             } else {
                 notifyObservers(new DrawNotification(playerId, card));
             }
-            if (state.drawCard() == true) {
-                notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
-            }
+            state.drawCard();
+            notifyIfLastActionResultedInTurnChange();
         }
     }
 
@@ -192,10 +192,12 @@ public class GameController extends Subject {
 
     public void skipAction() {
         state.skipAction();
+        notifyIfLastActionResultedInTurnChange();
     }
 
     public void attackAction() {
         state.attackAction();
+        notifyIfLastActionResultedInTurnChange();
     }
 
     public void startFavor() {
@@ -267,7 +269,9 @@ public class GameController extends Subject {
         }
     }
 
-    public boolean checkIfCurrentTurnBelongsToPlayer(int playerId) {
-        return state.getTurnPlayerId() == playerId;
+    private void notifyIfLastActionResultedInTurnChange() {
+        if (state.lastActionResultedInTurnChange()) {
+            notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
+        }
     }
 }

@@ -261,11 +261,7 @@ public class UserController implements Observer {
     }
 
     public void changeUiOnTurnChange(int currentPlayerId) {
-        if (currentPlayerId == playerId) {
-            view.changeUiOnTurnChange(true);
-        } else {
-            view.changeUiOnTurnChange(false);
-        }
+        view.changeUiOnTurnChange(currentPlayerId == playerId);
     }
 
     /**
