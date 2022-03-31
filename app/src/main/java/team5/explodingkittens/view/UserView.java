@@ -59,7 +59,7 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-    private final TranslateAnimator drawAnimator;
+    private final TranslateAnimator animator;
     private UserController userController;
     private LanguageFriendlyEmptyDialog nopeDialog;
     private final UserViewSceneHandler sceneHandler;
@@ -71,7 +71,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @param playerId       The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
-        drawAnimator = new TranslateAnimator(1);
+        animator = new TranslateAnimator(1);
 
         UserViewSceneBuilder builder = new UserViewSceneBuilder(
                 e -> this.tryPlayCard(),
@@ -118,7 +118,7 @@ public class UserView extends Stage implements AbstractUserView {
     public void drawCard(int playerId, Card card) {
         UiCard uiCard = sceneHandler.playerUis.get(playerId).drawCard(card);
         EventHandler<ActionEvent> handler = sceneHandler.playerUis.get(playerId).getDrawAnimationHandler(uiCard);
-        drawAnimator.animate(uiCard, sceneHandler.deckUi, handler);
+        animator.animate(uiCard, sceneHandler.deckUi, handler);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class UserView extends Stage implements AbstractUserView {
         UiCard uiCard = sceneHandler.playerUis.get(toPlayerId).drawCard(card);
         sceneHandler.playerUis.get(fromPlayerId).discardCard(card);
         EventHandler<ActionEvent> handler = sceneHandler.playerUis.get(toPlayerId).getDrawAnimationHandler(uiCard);
-        drawAnimator.animate(uiCard, sceneHandler.playerUis.get(fromPlayerId).getNode(), handler);
+        animator.animate(uiCard, sceneHandler.playerUis.get(fromPlayerId).getNode(), handler);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class UserView extends Stage implements AbstractUserView {
         sceneHandler.playerUis.get(playerId).discardCard(card);
         UiCard uiCard = sceneHandler.discardUi.discardCard(card);
         EventHandler<ActionEvent> handler = sceneHandler.discardUi.getDiscardAnimationHandler(uiCard, card);
-        drawAnimator.animate(uiCard, sceneHandler.playerUis.get(playerId).getNode(), handler);
+        animator.animate(uiCard, sceneHandler.playerUis.get(playerId).getNode(), handler);
     }
 
     @Override
