@@ -7,14 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
@@ -23,7 +15,7 @@ import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
 
 /**
- * A PlayerWindow displays all information relavent to a
+ * A PlayerWindow displays all information relevant to a
  * specific player using JavaFX, via the {@link Stage}.
  *
  * @author Duncan McKee, Maura Coriale, Andrew Orians
@@ -55,68 +47,53 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-    private final TranslateAnimator drawAnimator;
     private final UiDeck deck;
     private final UiDiscard discard;
     private final List<UiPlayer> players;
     private final UiPlayerHand playerHand;
+    private final UserViewSceneHandler sceneHandler;
 
     private UserController userController;
     private LanguageFriendlyEmptyDialog nopeDialog;
-
-
 
     /**
      * Creates a PlayerWindow object with the provided details.
      *
      * @param numPlayers     The number of players who are playing the game.
-     * @param playerId       The ID of the player who's window this is.
+     * @param playerId       The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
-        players = new ArrayList<>(numPlayers);
-
-        drawAnimator = new TranslateAnimator(1);
-
-        HBox otherPlayers = new HBox();
-        otherPlayers.setAlignment(Pos.CENTER);
-
-        playerHand = new UiPlayerHand(e -> tryPlayCard());
-
-        for (int i = 0; i < numPlayers; i++) {
-            if (i == playerId) {
-                players.add(playerHand);
-            } else {
-                UiOtherPlayer otherPlayer = new UiOtherPlayer(i);
-                otherPlayers.getChildren().add(otherPlayer);
-                players.add(otherPlayer);
-            }
-        }
-
-        HBox decks = new HBox();
-        decks.setSpacing(DECK_DISCARD_SPACING);
-        deck = new UiDeck();
-        deck.setOnMouseClicked(event -> this.tryDrawCard());
-        discard = new UiDiscard();
-        decks.getChildren().addAll(deck, discard);
-
-        VBox verticalAlign = new VBox();
-        verticalAlign.setSpacing(VERTICAL_SPACING);
-        verticalAlign.getChildren().addAll(otherPlayers, decks, playerHand);
-
-        HBox horizontalAlign = new HBox();
-        horizontalAlign.getChildren().add(verticalAlign);
-        horizontalAlign.setPadding(new Insets(OUTSIDE_PADDING));
-        horizontalAlign.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(horizontalAlign, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-        setTitle(ResourceController.getString(PLAYER_WINDOW_TITLE));
-        setScene(scene);
+        UserViewSceneBuilder builder = new UserViewSceneBuilder(
+                e -> this.tryPlayCard(),
+                e -> this.tryDrawCard());
+        sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
+        setScene(sceneHandler.getScene());
         show();
+
+        generateNameInputDialog().show();
+    }
+
+    // Testing constructor for dependency injection
+    public UserView(int numPlayers, int playerId, UserViewSceneBuilder builder) {
+        sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
+        setScene(sceneHandler.getScene());
+        show();
+
+        generateNameInputDialog().show();
+    }
+
+    public void changeUiOnTurnChange(boolean currentTurnIsNow) {
+        if (currentTurnIsNow) {
+            setTitle("It is your turn!");
+        } else {
+            setTitle("Waiting for your turn...");
+        }
+    }
+
+    private LanguageFriendlyTextInputDialog generateNameInputDialog() {
         LanguageFriendlyTextInputDialog nameDialog = new LanguageFriendlyTextInputDialog();
         setCommonDialogFields(nameDialog, NAME_DIALOG);
         nameDialog.addConfirmButton();
-
-        nameDialog.show();
         nameDialog.setOnCloseRequest(event -> {
             if (nameDialog.getResult() == null || nameDialog.getResult().isEmpty()) {
                 userController.trySetName(ResourceController.getString(PLAYER_NO_NAME));
@@ -124,18 +101,18 @@ public class UserView extends Stage implements AbstractUserView {
                 userController.trySetName(nameDialog.getResult());
             }
         });
+
+        return nameDialog;
     }
 
     @Override
     public void setName(int playerId, String name) {
-        players.get(playerId).setName(name);
+        sceneHandler.setNameOfPlayerUi(playerId, name);
     }
 
     @Override
     public void drawCard(int playerId, Card card) {
-        UiCard uiCard = players.get(playerId).drawCard(card);
-        EventHandler<ActionEvent> handler = players.get(playerId).getDrawAnimationHandler(uiCard);
-        drawAnimator.animate(uiCard, deck, handler);
+        sceneHandler.drawCardAndAnimateAction(playerId, card);
     }
 
     @Override
@@ -160,23 +137,17 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public void giveCard(int toPlayerId, int fromPlayerId, Card card) {
-        UiCard uiCard = players.get(toPlayerId).drawCard(card);
-        players.get(fromPlayerId).discardCard(card);
-        EventHandler<ActionEvent> handler = players.get(toPlayerId).getDrawAnimationHandler(uiCard);
-        drawAnimator.animate(uiCard, players.get(fromPlayerId).getNode(), handler);
+        sceneHandler.giveCardAndAnimateAction(toPlayerId, fromPlayerId, card);
     }
 
     @Override
     public void discardCard(int playerId, Card card) {
-        players.get(playerId).discardCard(card);
-        UiCard uiCard = discard.discardCard(card);
-        EventHandler<ActionEvent> handler = discard.getDiscardAnimationHandler(uiCard, card);
-        drawAnimator.animate(uiCard, players.get(playerId).getNode(), handler);
+        sceneHandler.discardCardAndAnimateAction(playerId, card);
     }
 
     @Override
     public void discardAllCards(int playerId) {
-        players.get(playerId).discardAllCards();
+        sceneHandler.playerUis.get(playerId).discardAllCards();
     }
 
     /**
@@ -185,7 +156,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @return The card that was selected.
      */
     public Card getSelectedCard() {
-        Card cardToPlay = playerHand.getSelectedCard();
+        Card cardToPlay = sceneHandler.playerHandUi.getSelectedCard();
         if (cardToPlay == null) {
             throw new IllegalArgumentException(
                     "Must choose a card to play or choose to only draw card");
@@ -237,7 +208,7 @@ public class UserView extends Stage implements AbstractUserView {
         dialog.setTitle(ResourceController.getString(WIN_DIALOG + TITLE_SUFFIX));
         dialog.setHeaderText(ResourceController.getString(WIN_DIALOG + HEADER_SUFFIX));
         dialog.setContentText(ResourceController.getFormatString(
-                WIN_DIALOG + CONTENT_SUFFIX, playerHand.getName()));
+                WIN_DIALOG + CONTENT_SUFFIX, sceneHandler.playerHandUi.getName()));
         dialog.addConfirmButton();
         dialog.showAndWait();
         userController.tryCloseGame();
@@ -255,11 +226,11 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public CardType showPickPair(Set<CardType> types) {
-        Iterator<CardType> iter = types.iterator();
+        Iterator<CardType> typeIterator = types.iterator();
         List<String> cardTypes = new ArrayList<>();
         List<CardType> typesList = new ArrayList<>();
-        while (iter.hasNext()) {
-            CardType type = iter.next();
+        while (typeIterator.hasNext()) {
+            CardType type = typeIterator.next();
             cardTypes.add(ResourceController.getCardName(type));
             typesList.add(type);
         }
@@ -277,9 +248,9 @@ public class UserView extends Stage implements AbstractUserView {
     public int showPickOtherPlayer() {
         Map<String, Integer> namesToId = new HashMap<>();
         List<String> playerNames = new ArrayList<>();
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i) != playerHand) {
-                String name = players.get(i).getName();
+        for (int i = 0; i < sceneHandler.playerUis.size(); i++) {
+            if (sceneHandler.playerUis.get(i) != sceneHandler.playerHandUi) {
+                String name = sceneHandler.playerUis.get(i).getName();
                 playerNames.add(name);
                 namesToId.put(name, i);
             }
@@ -324,7 +295,7 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public void seeTheFuture(Card card0, Card card1, Card card2) {
-        seeFutureDialog = new FutureSeeingDialog(card0, card1, card2);
+        FutureSeeingDialog seeFutureDialog = new FutureSeeingDialog(card0, card1, card2);
         seeFutureDialog.setTitle(SEE_THE_FUTURE_DIALOG_TITLE);
         seeFutureDialog.show();
     }

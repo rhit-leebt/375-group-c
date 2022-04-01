@@ -28,6 +28,11 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
+
+    testImplementation "org.testfx:testfx-core:4.0.16-alpha"
+
+    testImplementation "junit:junit:4.13-beta-3"
+    testImplementation "org.testfx:testfx-junit:4.0.16-alpha"
 }
 
 javafx {

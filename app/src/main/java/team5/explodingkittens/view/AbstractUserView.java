@@ -50,4 +50,6 @@ public interface AbstractUserView {
     void seeTheFuture(Card card0, Card card1, Card card2);
 
     ArrayList<Card> alterTheFuture(Card card0, Card card1, Card card2);
+
+    void changeUiOnTurnChange(boolean currentTurnIsNow);
 }

@@ -94,6 +94,7 @@ public class GameController {
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);
         this.discardPile = new DiscardPile();
+        notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
     }
 
     /**
@@ -181,6 +182,7 @@ public class GameController {
                 notifyObservers(new DrawNotification(playerId, card));
             }
             state.drawCard();
+            notifyIfLastActionResultedInTurnChange();
         }
     }
 
@@ -194,10 +196,12 @@ public class GameController {
 
     public void skipAction() {
         state.skipAction();
+        notifyIfLastActionResultedInTurnChange();
     }
 
     public void attackAction() {
         state.attackAction();
+        notifyIfLastActionResultedInTurnChange();
     }
 
     public void startFavor() {
@@ -269,6 +273,13 @@ public class GameController {
         }
     }
 
+
+    private void notifyIfLastActionResultedInTurnChange() {
+        if (state.lastActionResultedInTurnChange()) {
+            notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
+        }
+    }
+  
     /**
      * Registers an observer to this subject.
      *

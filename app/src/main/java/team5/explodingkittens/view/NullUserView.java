@@ -107,4 +107,9 @@ public class NullUserView implements AbstractUserView {
     public ArrayList<Card> alterTheFuture(Card card0, Card card1, Card card2) {
         return null;
     }
+
+    @Override
+    public void changeUiOnTurnChange(boolean currentTurnIsNow) {
+
+    }
 }

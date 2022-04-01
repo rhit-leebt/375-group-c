@@ -232,6 +232,10 @@ public class UserController implements Observer {
         this.gameController.drawCard(playerId);
     }
 
+    public void changeUiOnTurnChange(int currentPlayerId) {
+        view.changeUiOnTurnChange(currentPlayerId == playerId);
+    }
+
     /**
      * Requests the game controller to send a random card from one player to another.
      *
