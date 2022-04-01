@@ -22,35 +22,6 @@ public class TranslateAnimator {
     }
 
     /**
-     * Starts an animation of the provided node from the provided location
-     * to the other provided location. Triggers the provided EventHandler
-     * when the animation is done.
-     *
-     * @param node The node to move
-     * @param fromX The starting location's X
-     * @param fromY The starting location's Y
-     * @param toX The ending location's X
-     * @param toY The ending location's Y
-     * @param handler The event handler to trigger when the animation finishes
-     */
-    private void animate(Node node, double fromX, double fromY,
-                         double toX, double toY, EventHandler<ActionEvent> handler) {
-        TranslateTransition transition = new TranslateTransition();
-        double distance = Math.sqrt((toX - fromX) * (toX - fromX)
-                                + (toY - fromY) * (toY - fromY));
-        transition.setDuration(Duration.millis(distance / speed));
-        transition.setNode(node);
-        transition.setFromX(fromX - toX);
-        transition.setFromY(fromY - toY);
-        transition.setToX(0);
-        transition.setToY(0);
-        transition.setCycleCount(1);
-        transition.setAutoReverse(false);
-        transition.play();
-        transition.setOnFinished(handler);
-    }
-
-    /**
      * Starts an animation of the provided node from the from node
      * to the resting location (0 for both translate offsets). Triggers
      * the provided EventHandler when the animation is done.
@@ -60,11 +31,41 @@ public class TranslateAnimator {
      * @param handler The event handler to trigger when the animation finishes
      */
     public void animate(Node node, Node from, EventHandler<ActionEvent> handler) {
-        Bounds fromLocalBounds = from.getBoundsInLocal();
-        Bounds fromSceneBounds = from.localToScene(fromLocalBounds);
-        Bounds nodeLocalBounds = node.getBoundsInLocal();
-        Bounds nodeSceneBounds = node.localToScene(nodeLocalBounds);
-        animate(node, fromSceneBounds.getCenterX(), fromSceneBounds.getCenterY(),
-                nodeSceneBounds.getCenterX(), nodeSceneBounds.getCenterY(), handler);
+        double deltaX = getNodePositionDeltaX(from, node);
+        double deltaY = getNodePositionDeltaY(from, node);
+
+        TranslateTransition transition = new TranslateTransition();
+
+        transition.setDuration(Duration.millis(getDistance(deltaX, deltaY) / speed));
+        transition.setNode(node);
+        transition.setFromX(deltaX);
+        transition.setFromY(deltaY);
+
+        setAndPlay(transition, handler);
+    }
+
+    private double getNodePositionDeltaX(Node from, Node to) {
+        return getBoundFromNode(from).getCenterX() - getBoundFromNode(to).getCenterX();
+    }
+
+    private double getNodePositionDeltaY(Node from, Node to) {
+        return getBoundFromNode(from).getCenterY() - getBoundFromNode(to).getCenterY();
+    }
+
+    private Bounds getBoundFromNode(Node node) {
+        return node.localToScene(node.getBoundsInLocal());
+    }
+
+    private double getDistance(double deltaX, double deltaY) {
+        return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+    }
+
+    private void setAndPlay(TranslateTransition transition, EventHandler<ActionEvent> handler) {
+        transition.setToX(0);
+        transition.setToY(0);
+        transition.setCycleCount(1);
+        transition.setAutoReverse(false);
+        transition.play();
+        transition.setOnFinished(handler);
     }
 }

@@ -63,6 +63,10 @@ spotbugsMain {
     }
 }
 
+spotbugs {
+    excludeFilter = file("config/spotbugs/excludeFilter.xml")
+}
+
 pitest {
     targetClasses = ['team5.explodingkittens.*']  //by default "${project.group}.*"
     threads = 4

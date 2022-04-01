@@ -187,7 +187,7 @@ public class UserControllerTests {
 
     @Test
     public void testNotifyUser() {
-        Subject subject = new Subject() {
+        GameController subject = new GameController() {
         };
         Card card1 = new Card(CardType.TACOCAT);
         Card card2 = new Card(CardType.BEARD_CAT);

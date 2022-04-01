@@ -16,9 +16,7 @@ import team5.explodingkittens.model.Card;
  */
 public class UiDiscard extends VBox {
     private static final String DISCARD_LABEL = "discardDescription";
-    private static final String FXML_FILE_PATH = "app"
-            + File.separator + "src" + File.separator + "main" + File.separator
-            + "resources" + File.separator + "fxml" + File.separator + "UIDiscard.fxml";
+    private static final String FXML_FILE_NAME = "UIDiscard.fxml";
 
     @FXML
     protected UiCard cardBack;
@@ -30,7 +28,7 @@ public class UiDiscard extends VBox {
      * Creates a UiDiscard element from the existing FXML file.
      */
     public UiDiscard() {
-        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
 
         discardLabel.setText(ResourceController.getString(DISCARD_LABEL));
     }
