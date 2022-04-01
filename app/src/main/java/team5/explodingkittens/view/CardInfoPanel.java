@@ -18,11 +18,9 @@ import team5.explodingkittens.model.Card;
  * @author Duncan McKee
  */
 public class CardInfoPanel extends VBox {
-    private static final double WIDTH = 200;
-    private static final double HEIGHT = 300;
+    private static final WrapperClasses.SizeObject SIZE = new WrapperClasses.SizeObject(200, 300);
     private static final double BUTTON_HEIGHT = 50;
-    private static final double INFO_PANE_HEIGHT = 220;
-    private static final double INFO_TEXT_WIDTH = 180;
+    private static final WrapperClasses.SizeObject INFO_SIZE = new WrapperClasses.SizeObject(180, 220);
     private static final double CARD_NAME_FONT_SIZE = 20;
     private static final double CARD_INFO_FONT_SIZE = 15;
     private static final String PLAY_BUTTON_PLAY_TEXT = "playButton";
@@ -38,7 +36,7 @@ public class CardInfoPanel extends VBox {
      */
     public CardInfoPanel(EventHandler<ActionEvent> playEvent) {
         playButton = new Button(ResourceController.getString(PLAY_BUTTON_PLAY_TEXT));
-        playButton.setPrefSize(WIDTH, BUTTON_HEIGHT);
+        playButton.setPrefSize(SIZE.width, BUTTON_HEIGHT);
         playButton.setOnAction(playEvent);
         playButton.setDisable(true);
         cardNameLabel = new Label();
@@ -47,15 +45,15 @@ public class CardInfoPanel extends VBox {
         ScrollPane infoPane = new ScrollPane();
         infoPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         infoPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        infoPane.setPrefHeight(INFO_PANE_HEIGHT);
+        infoPane.setPrefHeight(INFO_SIZE.height);
         cardInfoLabel = new Text();
         cardInfoLabel.setFont(new Font(ResourceController.getFontName(), CARD_INFO_FONT_SIZE));
-        cardInfoLabel.setWrappingWidth(INFO_TEXT_WIDTH);
+        cardInfoLabel.setWrappingWidth(INFO_SIZE.width);
         infoPane.setContent(cardInfoLabel);
         getChildren().addAll(playButton, cardNameLabel, infoPane);
-        setMinSize(WIDTH, HEIGHT);
-        setMaxSize(WIDTH, HEIGHT);
-        setPrefSize(WIDTH, HEIGHT);
+        setMinSize(SIZE.width, SIZE.height);
+        setMaxSize(SIZE.width, SIZE.height);
+        setPrefSize(SIZE.width, SIZE.height);
     }
 
     /**
