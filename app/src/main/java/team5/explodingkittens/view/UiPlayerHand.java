@@ -3,6 +3,7 @@ package team5.explodingkittens.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -32,7 +33,7 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
      * @param playHandler The EventHandler that will be triggered when a card is played.
      */
     public UiPlayerHand(EventHandler<ActionEvent> playHandler) {
-        setPrefSize(UiCard.CARD_WIDTH, UiCard.CARD_HEIGHT);
+        setPrefSize(UiCard.CARD_SIZE.width, UiCard.CARD_SIZE.height);
         cards = new ArrayList<>();
         setOnMouseExited(e -> resetHover());
         infoPanel = new CardInfoPanel(playHandler);

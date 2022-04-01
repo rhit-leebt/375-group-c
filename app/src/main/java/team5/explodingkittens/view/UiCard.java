@@ -17,8 +17,7 @@ import team5.explodingkittens.model.Card;
  * @author Duncan McKee, Andrew Orians
  */
 public class UiCard extends StackPane {
-    public static final double CARD_WIDTH = 200;
-    public static final double CARD_HEIGHT = 300;
+    public static final WrapperClasses.SizeObject CARD_SIZE = new WrapperClasses.SizeObject(200, 300);
 
     private static final String FXML_FILE_NAME = "UICard.fxml";
     private static final String CARD_BACK_PATH = "app" + File.separator

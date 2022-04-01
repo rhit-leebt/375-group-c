@@ -46,19 +46,28 @@ public class FutureAlteringDialog extends Dialog<Card> {
         this.setTitle(ResourceController.getString(DIALOG_TITLE));
         VBox verticalBox = new VBox();
         verticalBox.setAlignment(Pos.CENTER);
+        createHBox(card0, card1, card2, verticalBox);
+        getDialogPane().getButtonTypes().add(ButtonType.OK);
+        Button confirmButton = createConfirmButton();
+        verticalBox.getChildren().add(confirmButton);
+        this.getDialogPane().setContent(verticalBox);
+    }
+
+    private void createHBox(Card card0, Card card1, Card card2, VBox verticalBox) {
         HBox horizontalBox = new HBox();
         horizontalBox.getChildren().add(renderCard(card0));
         horizontalBox.getChildren().add(renderCard(card1));
         horizontalBox.getChildren().add(renderCard(card2));
         verticalBox.getChildren().add(horizontalBox);
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
+    }
+
+    private Button createConfirmButton() {
         Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
         confirmButton.setText(ResourceController.getString("confirm"));
 /*        confirmButton.setOnAction(e -> {
             this.chooseNewOrder();
         });*/
-        verticalBox.getChildren().add(confirmButton);
-        this.getDialogPane().setContent(verticalBox);
+        return confirmButton;
     }
 
     /**
