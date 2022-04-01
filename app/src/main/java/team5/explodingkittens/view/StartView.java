@@ -12,15 +12,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
+import team5.explodingkittens.model.Card;
 
 /**
  * A UI object that contains all UI elements related to Starting the game.
@@ -45,6 +41,17 @@ public class StartView extends Stage {
      */
     public StartView() {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        HBox horizontalLayout = createHBox(screenBounds);
+        startButton = createStartButton();
+        horizontalLayout.getChildren().add(startButton);
+        setTitle(ResourceController.getString(START_SCREEN_TITLE));
+        Scene scene = new Scene(horizontalLayout,
+                screenBounds.getWidth(), screenBounds.getHeight());
+        setScene(scene);
+        show();
+    }
+
+    private HBox createHBox(Rectangle2D screenBounds) {
         HBox horizontalLayout = new HBox();
         horizontalLayout.setBackground(new Background(new BackgroundImage(new Image(
                 START_SCREEN_BACKGROUND_FILE, screenBounds.getWidth(),
@@ -54,15 +61,14 @@ public class StartView extends Stage {
         horizontalLayout.setAlignment(Pos.BOTTOM_CENTER);
         horizontalLayout.setSpacing(100);
         horizontalLayout.setPadding(new Insets(100, 100, 100, 100));
-        startButton = new Button(ResourceController.getString(START_BUTTON_KEY));
+        return horizontalLayout;
+    }
+
+    private Button createStartButton() {
+        Button startButton = new Button(ResourceController.getString(START_BUTTON_KEY));
         startButton.setPrefHeight(75);
         startButton.setPrefWidth(215);
-        horizontalLayout.getChildren().add(startButton);
-        setTitle(ResourceController.getString(START_SCREEN_TITLE));
-        Scene scene = new Scene(horizontalLayout,
-                screenBounds.getWidth(), screenBounds.getHeight());
-        setScene(scene);
-        show();
+        return startButton;
     }
 
     /**
