@@ -1,14 +1,12 @@
 package team5.explodingkittens.view;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.model.Card;
 
 /**
@@ -16,31 +14,23 @@ import team5.explodingkittens.model.Card;
  *
  * @author Duncan McKee, Andrew Orians
  */
-public class UiDiscard extends StackPane {
-    private static final String FXML_FILE_PATH = "app"
-            + File.separator + "src" + File.separator + "main" + File.separator
-            + "resources" + File.separator + "fxml" + File.separator + "UIDiscard.fxml";
+public class UiDiscard extends VBox {
+    private static final String DISCARD_LABEL = "discardDescription";
+    private static final String FXML_FILE_NAME = "UIDiscard.fxml";
 
     @FXML
     protected UiCard cardBack;
+    @FXML
+    private Label discardLabel;
     private int cardsLeft;
 
     /**
      * Creates a UiDiscard element from the existing FXML file.
      */
     public UiDiscard() {
-        URL fxmlUrl = null;
-        try {
-            fxmlUrl = new File(FXML_FILE_PATH).toURI().toURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
-            fxmlLoader.load();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
+
+        discardLabel.setText(ResourceController.getString(DISCARD_LABEL));
     }
 
     /**

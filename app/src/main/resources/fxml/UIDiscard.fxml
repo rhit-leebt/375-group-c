@@ -3,9 +3,12 @@
 <?import javafx.scene.layout.*?>
 <?import team5.explodingkittens.view.*?>
 
-<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.control.Label?>
+<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         alignment="CENTER">
 
+    <Label fx:id="discardLabel"/>
     <UiCard fx:id="cardBack"/>
 
 </fx:root>

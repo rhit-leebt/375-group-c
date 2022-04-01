@@ -1,7 +1,9 @@
 package team5.explodingkittens.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -21,9 +23,9 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
     private static final String PLAYER_NO_NAME = "noNameEntered";
 
     private String name = null;
-    private List<UiHandCard> cards;
+    private final List<UiHandCard> cards;
     private UiHandCard selectedCard;
-    private CardInfoPanel infoPanel;
+    private final CardInfoPanel infoPanel;
 
     /**
      * Creates a UiPlayerHand with a provided player card popup.
@@ -31,8 +33,8 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
      * @param playHandler The EventHandler that will be triggered when a card is played.
      */
     public UiPlayerHand(EventHandler<ActionEvent> playHandler) {
-        setPrefSize(UiCard.CARD_WIDTH, UiCard.CARD_HEIGHT);
-        cards = new ArrayList<UiHandCard>();
+        setPrefSize(UiCard.CARD_SIZE.width, UiCard.CARD_SIZE.height);
+        cards = new ArrayList<>();
         setOnMouseExited(e -> resetHover());
         infoPanel = new CardInfoPanel(playHandler);
         getChildren().add(infoPanel);
@@ -49,6 +51,7 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
      * and aligns them horizontally.
      */
     public void alignCards() {
+        this.resort();
         double centerIndex = ((double) cards.size()) / 2.0 + 1.5;
         for (int i = 0; i < cards.size(); i++) {
             cards.get(i).setTranslateX((i - centerIndex) * CARD_OVERLAP_WIDTH);
@@ -57,6 +60,7 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
     }
 
     private void hoverCard(int index) {
+        this.resort();
         for (int i = 0; i < index; i++) {
             cards.get(i).toFront();
         }
@@ -124,12 +128,10 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
                 }
                 getChildren().remove(cards.get(i));
                 cards.remove(i);
+                break;
             }
         }
-        for (int i = 0; i < cards.size(); i++) {
-            int index = i;
-            cards.get(index).setOnMouseEntered(e -> hoverCard(index));
-        }
+        updateHoverIndices();
         alignCards();
     }
 
@@ -142,5 +144,17 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
 
     public Card getSelectedCard() {
         return selectedCard.getCard();
+    }
+
+    private void resort() {
+        Collections.sort(cards);
+        updateHoverIndices();
+    }
+
+    private void updateHoverIndices() {
+        for (int i = 0; i < cards.size(); i++) {
+            int index = i;
+            cards.get(i).setOnMouseEntered(e -> hoverCard(index));
+        }
     }
 }

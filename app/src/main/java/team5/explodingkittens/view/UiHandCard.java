@@ -1,15 +1,5 @@
 package team5.explodingkittens.view;
 
-import java.beans.EventHandler;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import team5.explodingkittens.model.Card;
 
 
@@ -18,9 +8,9 @@ import team5.explodingkittens.model.Card;
  *
  * @author Duncan McKee, Maura Coriale
  */
-public class UiHandCard extends UiCard {
+public class UiHandCard extends UiCard implements Comparable<UiHandCard>{
 
-    private Card card;
+    private final Card card;
 
     /**
      * Creates the UiHandCard and its underlying infoPopup.
@@ -39,6 +29,11 @@ public class UiHandCard extends UiCard {
     @Override
     public void deselect() {
         super.deselect();
+    }
+
+    @Override
+    public int compareTo(UiHandCard o) {
+        return this.card.compareTo(o.getCard());
     }
 }
 

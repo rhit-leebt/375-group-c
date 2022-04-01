@@ -1,14 +1,11 @@
 package team5.explodingkittens.controller;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Set;
-import team5.explodingkittens.controller.notification.ExplodeNotification;
 import team5.explodingkittens.controller.notification.Notification;
 import team5.explodingkittens.model.Card;
-import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.view.AbstractUserView;
+
+import java.util.Random;
 
 /**
  * The main class that manages a singular player. It
@@ -18,10 +15,14 @@ import team5.explodingkittens.view.AbstractUserView;
  * @author Duncan McKee, Andrew Orians, Maura Coriale
  */
 public class UserController implements Observer {
-    private GameController gameController;
+    private final GameController gameController;
     private final AbstractUserView view;
     private final int playerId;
     private final Player player;
+    private ExplodeActionController explodeActionController;
+    private CatActionController catActionController;
+    private FavorActionController favorActionController;
+    private FutureActionController futureActionController;
 
     /**
      * Creates a UserController object with the provided details.
@@ -38,6 +39,14 @@ public class UserController implements Observer {
         this.view = view;
         this.playerId = playerId;
         this.player = player;
+        this.initControllers();
+    }
+
+    private void initControllers() {
+        this.explodeActionController = new ExplodeActionController(this.gameController, this.view, this.playerId, this.player);
+        this.catActionController = new CatActionController(this.gameController, this.view, this.playerId, this.player);
+        this.favorActionController = new FavorActionController(this.gameController, this.view, this.playerId, this.player);
+        this.futureActionController = new FutureActionController(this.gameController, this.view, this.playerId, this.player);
     }
 
     public void setName(int playerId, String name) {
@@ -108,41 +117,18 @@ public class UserController implements Observer {
      * @param playerId the player who exploded
      */
     public void explodePlayer(int playerId) {
-        if (playerId == this.playerId) {
-            player.removeAllCards();
-            this.gameController.removeUser(playerId);
-        }
-        view.discardAllCards(playerId);
+        this.explodeActionController.explodePlayer(playerId);
     }
 
     /**
-     * Attepts to explode a player.
-     * The player is prompted whether or not to play their defuse card if they have one.
+     * Attempts to explode a player.
+     * The player is prompted whether to play their defuse card if they have one.
      * They explode if one is not played
      *
      * @param playerId the player to try and explode
      */
     public void tryExplode(int playerId, Card explodingKitten) {
-        if (playerId == this.playerId) {
-            if (player.hasDefuse()) {
-                if (view.showExplodeDialog()) {
-                    int depth = view.showPutExplodingKittenBackDialog();
-                    this.gameController.addCard(explodingKitten, depth);
-                    tryPlayDefuseCard();
-                } else {
-                    this.gameController.notifyObservers(
-                            new ExplodeNotification(playerId));
-                }
-            } else {
-                view.showCantDefuseDialog();
-                this.gameController.notifyObservers(
-                        new ExplodeNotification(playerId));
-            }
-        }
-    }
-
-    public void tryPlayDefuseCard() {
-        gameController.discardCard(player.getDefuse());
+        this.explodeActionController.tryExplode(playerId, explodingKitten);
     }
 
     /**
@@ -152,10 +138,7 @@ public class UserController implements Observer {
      * @param playerId The player who played the favor card
      */
     public void favorPickPlayer(int playerId) {
-        if (playerId == this.playerId) {
-            int fromPlayerId = view.showPickOtherPlayer();
-            this.gameController.favorSelect(this.playerId, fromPlayerId);
-        }
+        this.favorActionController.favorPickPlayer(playerId);
     }
 
     /**
@@ -166,12 +149,7 @@ public class UserController implements Observer {
      * @param fromPlayerId The player who is giving a card
      */
     public void favorSelectCard(int toPlayerId, int fromPlayerId) {
-        if (fromPlayerId == this.playerId) {
-            Card cardToGive = view.showFavorDialog(toPlayerId, player);
-            if (cardToGive != null) {
-                gameController.giveCard(toPlayerId, fromPlayerId, cardToGive);
-            }
-        }
+        this.favorActionController.favorSelectCard(toPlayerId, fromPlayerId);
     }
 
     /**
@@ -199,10 +177,7 @@ public class UserController implements Observer {
      * @param card The card to match
      */
     public void catPickPair(Card card) {
-        Set<CardType> types = player.findMatchingTypes(card.type);
-        CardType pickedType = view.showPickPair(types);
-        Card pickedCard = player.findCardOfTypeExcluding(pickedType, card);
-        gameController.discardCard(pickedCard);
+        this.catActionController.catPickPair(card);
     }
 
     /**
@@ -212,10 +187,7 @@ public class UserController implements Observer {
      * @param playerId The player who is stealing
      */
     public void catStealCard(int playerId) {
-        if (playerId == this.playerId) {
-            int targetPlayerId = view.showPickOtherPlayer();
-            gameController.stealCardFrom(this.playerId, targetPlayerId);
-        }
+        this.catActionController.catStealCard(playerId);
     }
 
     /**
@@ -288,21 +260,10 @@ public class UserController implements Observer {
      * @param playerId the player who's allowed to see ahead
      */
     public void seeTheFuture(int playerId) {
-        if (playerId == this.playerId) {
-            Card card0 = gameController.deck.getCard(0);
-            Card card1 = gameController.deck.getCard(1);
-            Card card2 = gameController.deck.getCard(2);
-            view.seeTheFuture(card0, card1, card2);
-        }
+        this.futureActionController.seeTheFuture(playerId);
     }
 
     public void alterTheFuture(int playerId) {
-        if(playerId == this.playerId){
-            Card card0 = gameController.deck.getCard(0);
-            Card card1 = gameController.deck.getCard(1);
-            Card card2 = gameController.deck.getCard(2);
-            ArrayList<Card> cards = view.alterTheFuture(card0, card1, card2);
-            gameController.rearrangeTopThree(cards);
-        }
+        this.futureActionController.alterTheFuture(playerId);
     }
 }

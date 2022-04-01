@@ -11,7 +11,7 @@ import javafx.util.Duration;
  * An animation manager that can move nodes in a straight line,
  * from a provided node to their resting position.
  *
- * @Author Duncan McKee
+ * @author Duncan McKee
  */
 public class TranslateAnimator {
 

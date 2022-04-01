@@ -60,9 +60,9 @@ public class UserView extends Stage implements AbstractUserView {
     private final UiDiscard discard;
     private final List<UiPlayer> players;
     private final UiPlayerHand playerHand;
-    private FutureSeeingDialog seeFutureDialog;
-    private LanguageFriendlyEmptyDialog nopeDialog;
+
     private UserController userController;
+    private LanguageFriendlyEmptyDialog nopeDialog;
 
 
 

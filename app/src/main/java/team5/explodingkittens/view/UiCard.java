@@ -3,11 +3,7 @@ package team5.explodingkittens.view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -21,12 +17,9 @@ import team5.explodingkittens.model.Card;
  * @author Duncan McKee, Andrew Orians
  */
 public class UiCard extends StackPane {
-    public static final double CARD_WIDTH = 200;
-    public static final double CARD_HEIGHT = 300;
+    public static final WrapperClasses.SizeObject CARD_SIZE = new WrapperClasses.SizeObject(200, 300);
 
-    private static final String FXML_FILE_PATH = "app" + File.separator
-            + "src" + File.separator + "main" + File.separator + "resources"
-            + File.separator + "fxml" + File.separator + "UICard.fxml";
+    private static final String FXML_FILE_NAME = "UICard.fxml";
     private static final String CARD_BACK_PATH = "app" + File.separator
             + "src" + File.separator + "main" + File.separator + "resources"
             + File.separator + "images" + File.separator + "cards"
@@ -43,18 +36,7 @@ public class UiCard extends StackPane {
      * Creates a UiCard object based upon the FXML setup at the file path.
      */
     public UiCard() {
-        URL fxmlUrl = null;
-        try {
-            fxmlUrl = new File(FXML_FILE_PATH).toURI().toURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
-            fxmlLoader.load();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
     }
 
     /**

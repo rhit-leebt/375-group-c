@@ -11,8 +11,6 @@ import team5.explodingkittens.controller.ResourceController;
  * @author Maura Coriale, Duncan McKee
  */
 public class LanguageFriendlyTextInputDialog extends TextInputDialog {
-    private Button cancelButton;
-    private Button confirmButton;
 
     /**
      * Creates the specialized custom version of a TextInputDialog.

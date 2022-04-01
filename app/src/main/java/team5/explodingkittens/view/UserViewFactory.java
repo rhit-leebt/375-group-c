@@ -6,7 +6,7 @@ package team5.explodingkittens.view;
  * @author Duncan McKee
  */
 public class UserViewFactory {
-    private boolean applicationMode;
+    private final boolean applicationMode;
 
     public UserViewFactory(boolean applicationMode) {
         this.applicationMode = applicationMode;
