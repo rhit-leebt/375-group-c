@@ -72,7 +72,16 @@ public class UserView extends Stage implements AbstractUserView {
                 e -> this.tryPlayCard(),
                 e -> this.tryDrawCard());
         sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
-        setScene(sceneHandler.scene);
+        setScene(sceneHandler.getScene());
+        show();
+
+        generateNameInputDialog().show();
+    }
+
+    // Testing constructor for dependency injection
+    public UserView(int numPlayers, int playerId, UserViewSceneBuilder builder) {
+        sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
+        setScene(sceneHandler.getScene());
         show();
 
         generateNameInputDialog().show();

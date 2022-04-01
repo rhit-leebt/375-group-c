@@ -13,7 +13,7 @@ public class UserViewSceneHandler {
     public UiDiscard discardUi;
     public List<UiPlayer> playerUis;
     public UiPlayerHand playerHandUi;
-    public Scene scene;
+    private Scene scene;
     private final TranslateAnimator animator;
 
     public UserViewSceneHandler() {
@@ -62,5 +62,9 @@ public class UserViewSceneHandler {
         playerUis.get(fromPlayerId).discardCard(card);
         EventHandler<ActionEvent> handler = playerUis.get(toPlayerId).getDrawAnimationHandler(uiCard);
         animator.animate(uiCard, playerUis.get(fromPlayerId).getNode(), handler);
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 }
