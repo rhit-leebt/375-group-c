@@ -12,11 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -39,53 +35,36 @@ public class UserView extends Stage implements AbstractUserView {
     private static final double VERTICAL_SPACING = 10;
     private static final double DECK_DISCARD_SPACING = 20;
     private static final String PLAYER_WINDOW_TITLE = "gameTitle";
-    private static final String NAME_DIALOG_TITLE = "nameDialogTitle";
-    private static final String NAME_DIALOG_HEADER = "nameDialogHeader";
-    private static final String NAME_DIALOG_CONTENT = "nameDialogContent";
-    private static final String FAVOR_PICK_DIALOG_TITLE = "favorPickDialogTitle";
-    private static final String FAVOR_PICK_DIALOG_HEADER = "favorPickDialogHeader";
-    private static final String FAVOR_PICK_DIALOG_CONTENT = "favorPickDialogContent";
-    private static final String FAVOR_SELECT_DIALOG_TITLE = "favorSelectDialogTitle";
-    private static final String FAVOR_SELECT_DIALOG_HEADER = "favorSelectDialogHeader";
-    private static final String FAVOR_SELECT_DIALOG_CONTENT = "favorSelectDialogContent";
-    private static final String EXPLODE_DIALOG_TITLE = "explodeDialogTitle";
-    private static final String EXPLODE_DIALOG_HEADER = "explodeDialogHeader";
-    private static final String EXPLODE_DIALOG_CONTENT = "explodeDialogContent";
-    private static final String CANT_DEFUSE_DIALOG_TITLE = "cantDefuseDialogTitle";
-    private static final String CANT_DEFUSE_DIALOG_HEADER = "cantDefuseDialogHeader";
-    private static final String CANT_DEFUSE_DIALOG_CONTENT = "cantDefuseDialogContent";
-    private static final String RETURN_EXPLODING_KITTEN_DIALOG_TITLE
-            = "returnExplodingKittenDialogTitle";
-    private static final String RETURN_EXPLODING_KITTEN_DIALOG_HEADER
-            = "returnExplodingKittenDialogHeader";
-    private static final String RETURN_EXPLODING_KITTEN_DIALOG_CONTENT
-            = "returnExplodingKittenDialogContent";
-    private static final String WIN_DIALOG_TITLE = "winDialogTitle";
-    private static final String WIN_DIALOG_HEADER = "winDialogHeader";
-    private static final String WIN_DIALOG_CONTENT = "winDialogContent";
-    private static final String PICK_PAIR_DIALOG_TITLE = "pickPairDialogTitle";
-    private static final String PICK_PAIR_DIALOG_HEADER = "pickPairDialogHeader";
-    private static final String PICK_PAIR_DIALOG_CONTENT = "pickPairDialogContent";
-    private static final String PICK_PLAYER_DIALOG_TITLE = "pickPlayerDialogTitle";
-    private static final String PICK_PLAYER_DIALOG_HEADER = "pickPlayerDialogHeader";
-    private static final String PICK_PLAYER_DIALOG_CONTENT = "pickPlayerDialogContent";
-    private static final String CANT_CAT_DIALOG_TITLE = "cantCatDialogTitle";
-    private static final String CANT_CAT_DIALOG_HEADER = "cantCatDialogHeader";
-    private static final String CANT_CAT_DIALOG_CONTENT = "cantCatDialogContent";
-    private static final String NOPE_DIALOG_TITLE = "nopeDialogTitle";
-    private static final String NOPE_DIALOG_HEADER = "nopeDialogHeader";
-    private static final String NOPE_DIALOG_CONTENT = "nopeDialogContent";
+
+    private static final String NAME_DIALOG = "nameDialog";
+    private static final String FAVOR_SELECT_DIALOG = "favorSelectDialog";
+    private static final String EXPLODE_DIALOG = "explodeDialog";
+    private static final String CANT_DEFUSE_DIALOG = "cantDefuseDialog";
+    private static final String RETURN_EXPLODING_KITTEN_DIALOG
+            = "returnExplodingKittenDialog";
+    private static final String PICK_PAIR_DIALOG = "pickPairDialog";
+    private static final String PICK_PLAYER_DIALOG = "pickPlayerDialog";
+    private static final String CANT_CAT_DIALOG = "cantCatDialog";
+    private static final String NOPE_DIALOG = "nopeDialog";
+    private static final String WIN_DIALOG = "winDialog";
+
+    private static final String TITLE_SUFFIX = "Title";
+    private static final String HEADER_SUFFIX = "Header";
+    private static final String CONTENT_SUFFIX = "Content";
+
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-    private TranslateAnimator drawAnimator;
-    private UiDeck deck;
-    private UiDiscard discard;
-    private List<UiPlayer> players;
-    private UiPlayerHand playerHand;
-    private UserController userController;
-    private LanguageFriendlyEmptyDialog nopeDialog;
+    private final TranslateAnimator drawAnimator;
+    private final UiDeck deck;
+    private final UiDiscard discard;
+    private final List<UiPlayer> players;
+    private final UiPlayerHand playerHand;
     private FutureSeeingDialog seeFutureDialog;
+    private LanguageFriendlyEmptyDialog nopeDialog;
+    private UserController userController;
+
+
 
     /**
      * Creates a PlayerWindow object with the provided details.
@@ -134,10 +113,9 @@ public class UserView extends Stage implements AbstractUserView {
         setScene(scene);
         show();
         LanguageFriendlyTextInputDialog nameDialog = new LanguageFriendlyTextInputDialog();
-        nameDialog.setTitle(ResourceController.getString(NAME_DIALOG_TITLE));
-        nameDialog.setHeaderText(ResourceController.getString(NAME_DIALOG_HEADER));
-        nameDialog.setContentText(ResourceController.getString(NAME_DIALOG_CONTENT));
+        setCommonDialogFields(nameDialog, NAME_DIALOG);
         nameDialog.addConfirmButton();
+
         nameDialog.show();
         nameDialog.setOnCloseRequest(event -> {
             if (nameDialog.getResult() == null || nameDialog.getResult().isEmpty()) {
@@ -174,9 +152,7 @@ public class UserView extends Stage implements AbstractUserView {
         LanguageFriendlyChoiceDialog<String> favorDialog =
                 new LanguageFriendlyChoiceDialog<>(
                         cardNames.get(0), cardNames);
-        favorDialog.setTitle(ResourceController.getString(FAVOR_SELECT_DIALOG_TITLE));
-        favorDialog.setHeaderText(ResourceController.getString(FAVOR_SELECT_DIALOG_HEADER));
-        favorDialog.setContentText(ResourceController.getString(FAVOR_SELECT_DIALOG_CONTENT));
+        setCommonDialogFields(favorDialog, FAVOR_SELECT_DIALOG);
         favorDialog.addConfirmButton();
         String response = favorDialog.showAndWaitDefault();
         return player.getCard(cardNames.indexOf(response));
@@ -229,9 +205,7 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public boolean showExplodeDialog() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
-        dialog.setTitle(ResourceController.getString(EXPLODE_DIALOG_TITLE));
-        dialog.setHeaderText(ResourceController.getString(EXPLODE_DIALOG_HEADER));
-        dialog.setContentText(ResourceController.getString(EXPLODE_DIALOG_CONTENT));
+        setCommonDialogFields(dialog, EXPLODE_DIALOG);
         dialog.addConfirmButton();
         dialog.addCancelButton();
         return dialog.showAndWaitDefault();
@@ -240,9 +214,7 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public void showCantDefuseDialog() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
-        dialog.setTitle(ResourceController.getString(CANT_DEFUSE_DIALOG_TITLE));
-        dialog.setHeaderText(ResourceController.getString(CANT_DEFUSE_DIALOG_HEADER));
-        dialog.setContentText(ResourceController.getString(CANT_DEFUSE_DIALOG_CONTENT));
+        setCommonDialogFields(dialog, CANT_DEFUSE_DIALOG);
         dialog.addConfirmButton();
         dialog.showAndWait();
     }
@@ -250,9 +222,7 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public int showPutExplodingKittenBackDialog() {
         LanguageFriendlyTextInputDialog dialog = new LanguageFriendlyTextInputDialog();
-        dialog.setTitle(ResourceController.getString(RETURN_EXPLODING_KITTEN_DIALOG_TITLE));
-        dialog.setHeaderText(ResourceController.getString(RETURN_EXPLODING_KITTEN_DIALOG_HEADER));
-        dialog.setContentText(ResourceController.getString(RETURN_EXPLODING_KITTEN_DIALOG_CONTENT));
+        setCommonDialogFields(dialog, RETURN_EXPLODING_KITTEN_DIALOG);
         dialog.addConfirmButton();
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
@@ -264,10 +234,10 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public void winGame() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
-        dialog.setTitle(ResourceController.getString(WIN_DIALOG_TITLE));
-        dialog.setHeaderText(ResourceController.getString(WIN_DIALOG_HEADER));
+        dialog.setTitle(ResourceController.getString(WIN_DIALOG + TITLE_SUFFIX));
+        dialog.setHeaderText(ResourceController.getString(WIN_DIALOG + HEADER_SUFFIX));
         dialog.setContentText(ResourceController.getFormatString(
-                WIN_DIALOG_CONTENT, playerHand.getName()));
+                WIN_DIALOG + CONTENT_SUFFIX, playerHand.getName()));
         dialog.addConfirmButton();
         dialog.showAndWait();
         userController.tryCloseGame();
@@ -297,9 +267,7 @@ public class UserView extends Stage implements AbstractUserView {
         LanguageFriendlyChoiceDialog<String> pickPairDialog =
                 new LanguageFriendlyChoiceDialog<>(
                         cardTypes.get(0), cardTypes);
-        pickPairDialog.setTitle(ResourceController.getString(PICK_PAIR_DIALOG_TITLE));
-        pickPairDialog.setHeaderText(ResourceController.getString(PICK_PAIR_DIALOG_HEADER));
-        pickPairDialog.setContentText(ResourceController.getString(PICK_PAIR_DIALOG_CONTENT));
+        setCommonDialogFields(pickPairDialog, PICK_PAIR_DIALOG);
         pickPairDialog.addConfirmButton();
         String result = pickPairDialog.showAndWaitDefault();
         return typesList.get(cardTypes.indexOf(result));
@@ -320,9 +288,7 @@ public class UserView extends Stage implements AbstractUserView {
         LanguageFriendlyChoiceDialog<String> pickPlayerDialog =
                 new LanguageFriendlyChoiceDialog<>(
                         playerNames.get(0), playerNames);
-        pickPlayerDialog.setTitle(ResourceController.getString(PICK_PLAYER_DIALOG_TITLE));
-        pickPlayerDialog.setHeaderText(ResourceController.getString(PICK_PLAYER_DIALOG_HEADER));
-        pickPlayerDialog.setContentText(ResourceController.getString(PICK_PLAYER_DIALOG_CONTENT));
+        setCommonDialogFields(pickPlayerDialog, PICK_PLAYER_DIALOG);
         pickPlayerDialog.addConfirmButton();
         String result = pickPlayerDialog.showAndWaitDefault();
         return namesToId.get(result);
@@ -331,9 +297,7 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public void showCantPlayCat() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
-        dialog.setTitle(ResourceController.getString(CANT_CAT_DIALOG_TITLE));
-        dialog.setHeaderText(ResourceController.getString(CANT_CAT_DIALOG_HEADER));
-        dialog.setContentText(ResourceController.getString(CANT_CAT_DIALOG_CONTENT));
+        setCommonDialogFields(dialog, CANT_CAT_DIALOG);
         dialog.addConfirmButton();
         dialog.showAndWait();
     }
@@ -341,10 +305,10 @@ public class UserView extends Stage implements AbstractUserView {
     @Override
     public boolean showNopePlay(int playerId, Card card) {
         nopeDialog = new LanguageFriendlyEmptyDialog();
-        nopeDialog.setTitle(ResourceController.getString(NOPE_DIALOG_TITLE));
-        nopeDialog.setHeaderText(String.format(ResourceController.getString(NOPE_DIALOG_HEADER),
+        nopeDialog.setTitle(ResourceController.getString(NOPE_DIALOG + TITLE_SUFFIX));
+        nopeDialog.setHeaderText(String.format(ResourceController.getString(NOPE_DIALOG + HEADER_SUFFIX),
                 players.get(playerId).getName()));
-        nopeDialog.setContentText(String.format(ResourceController.getString(NOPE_DIALOG_CONTENT),
+        nopeDialog.setContentText(String.format(ResourceController.getString(NOPE_DIALOG + CONTENT_SUFFIX),
                 card.getName()));
         nopeDialog.addConfirmButton();
         nopeDialog.addCancelButton();
@@ -370,5 +334,11 @@ public class UserView extends Stage implements AbstractUserView {
        FutureAlteringDialog futureDialog = new FutureAlteringDialog(card0, card1, card2);
        futureDialog.showAndWait();
        return futureDialog.chooseNewOrder();
+    }
+
+    private void setCommonDialogFields(Dialog dialog, String dialogType) {
+        dialog.setTitle(ResourceController.getString(dialogType + TITLE_SUFFIX));
+        dialog.setHeaderText(ResourceController.getString(dialogType + HEADER_SUFFIX));
+        dialog.setContentText(ResourceController.getString(dialogType + CONTENT_SUFFIX));
     }
 }
