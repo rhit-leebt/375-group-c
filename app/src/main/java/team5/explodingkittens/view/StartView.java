@@ -3,6 +3,7 @@ package team5.explodingkittens.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,12 +31,10 @@ public class StartView extends Stage {
     private static final String START_SCREEN_TITLE = "gameTitle";
     private static final String START_BUTTON_KEY = "startGameButton";
     private static final String START_SCREEN_BACKGROUND_FILE = "start_screen_background.png";
-    private static final String LOCALE_SELECT_TITLE = "localeTitle";
-    private static final String LOCALE_SELECT_HEADER = "localeHeader";
-    private static final String LOCALE_SELECT_CONTENT = "localeContent";
-    private static final String PLAYER_SELECT_TITLE = "playerTitle";
-    private static final String PLAYER_SELECT_HEADER = "playerHeader";
-    private static final String PLAYER_SELECT_CONTENT = "playerContent";
+    private static final WrapperClasses.SelectInfo LOCALE_INFO =
+            new WrapperClasses.SelectInfo("localeTitle", "localeHeader", "localeContent");
+    private static final WrapperClasses.SelectInfo PLAYER_INFO =
+            new WrapperClasses.SelectInfo("playerTitle", "playerHeader", "playerContent");
     private static final String PLAYERS_TEXT_KEY = "players";
 
 
@@ -79,9 +78,9 @@ public class StartView extends Stage {
         }
         LanguageFriendlyChoiceDialog<String> localeDialog =
                 new LanguageFriendlyChoiceDialog<>(localeOptions.get(0), localeOptions);
-        localeDialog.setTitle(ResourceController.getString(LOCALE_SELECT_TITLE));
-        localeDialog.setHeaderText(ResourceController.getString(LOCALE_SELECT_HEADER));
-        localeDialog.setContentText(ResourceController.getString(LOCALE_SELECT_CONTENT));
+        localeDialog.setTitle(ResourceController.getString(LOCALE_INFO.title));
+        localeDialog.setHeaderText(ResourceController.getString(LOCALE_INFO.header));
+        localeDialog.setContentText(ResourceController.getString(LOCALE_INFO.content));
         localeDialog.addConfirmButton();
         String result = localeDialog.showAndWaitDefault();
         return ResourceController.getLocale(localeOptions.indexOf(result));
@@ -101,11 +100,11 @@ public class StartView extends Stage {
                 new LanguageFriendlyChoiceDialog<>(
                         numberPlayersOptions.get(0), numberPlayersOptions);
         numberPlayersDialog.setTitle(
-                ResourceController.getString(PLAYER_SELECT_TITLE));
+                ResourceController.getString(PLAYER_INFO.title));
         numberPlayersDialog.setHeaderText(
-                ResourceController.getString(PLAYER_SELECT_HEADER));
+                ResourceController.getString(PLAYER_INFO.header));
         numberPlayersDialog.setContentText(
-                ResourceController.getString(PLAYER_SELECT_CONTENT));
+                ResourceController.getString(PLAYER_INFO.content));
         numberPlayersDialog.addConfirmButton();
         String result = numberPlayersDialog.showAndWaitDefault();
         return numberPlayersOptions.indexOf(result) + 2;

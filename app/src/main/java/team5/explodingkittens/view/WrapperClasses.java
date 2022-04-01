@@ -10,4 +10,16 @@ public class WrapperClasses {
             this.height = height;
         }
     }
+
+    public static class SelectInfo {
+        public final String title;
+        public final String header;
+        public final String content;
+
+        public SelectInfo(String title, String header, String content) {
+            this.title = title;
+            this.header = header;
+            this.content = content;
+        }
+    }
 }
