@@ -1,5 +1,6 @@
 package team5.explodingkittens.view;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
+import javafx.scene.control.Dialog;
 
 /**
  * A PlayerWindow displays all information relevant to a
@@ -47,10 +49,10 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-    private final UiDeck deck;
-    private final UiDiscard discard;
-    private final List<UiPlayer> players;
-    private final UiPlayerHand playerHand;
+//    private final UiDeck deck;
+//    private final UiDiscard discard;
+//    private final List<UiPlayer> players;
+//    private final UiPlayerHand playerHand;
     private final UserViewSceneHandler sceneHandler;
 
     private UserController userController;
@@ -278,7 +280,7 @@ public class UserView extends Stage implements AbstractUserView {
         nopeDialog = new LanguageFriendlyEmptyDialog();
         nopeDialog.setTitle(ResourceController.getString(NOPE_DIALOG + TITLE_SUFFIX));
         nopeDialog.setHeaderText(String.format(ResourceController.getString(NOPE_DIALOG + HEADER_SUFFIX),
-                players.get(playerId).getName()));
+                sceneHandler.playerUis.get(playerId).getName()));
         nopeDialog.setContentText(String.format(ResourceController.getString(NOPE_DIALOG + CONTENT_SUFFIX),
                 card.getName()));
         nopeDialog.addConfirmButton();
@@ -306,6 +308,12 @@ public class UserView extends Stage implements AbstractUserView {
        futureDialog.showAndWait();
        return futureDialog.chooseNewOrder();
     }
+
+//    private void setCommonParamDialogFields(Dialog<Object> dialog, String dialogType) {
+//        dialog.setTitle(ResourceController.getString(dialogType + TITLE_SUFFIX));
+//        dialog.setHeaderText(ResourceController.getString(dialogType + HEADER_SUFFIX));
+//        dialog.setContentText(ResourceController.getString(dialogType + CONTENT_SUFFIX));
+//    }
 
     private void setCommonDialogFields(Dialog dialog, String dialogType) {
         dialog.setTitle(ResourceController.getString(dialogType + TITLE_SUFFIX));
