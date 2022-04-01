@@ -17,11 +17,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FutureAlteringDialog extends Dialog {
-    private Card card0;
-    private Card card1;
-    private Card card2;
-    private ArrayList<Card> cards;
+public class FutureAlteringDialog extends Dialog<Card> {
+    private final ArrayList<Card> cards;
     private Card secondCard;
     private Card thirdCard;
     private static final String DIALOG_TITLE = "alterTheFutureTitle";
@@ -37,9 +34,6 @@ public class FutureAlteringDialog extends Dialog {
      */
     public FutureAlteringDialog(Card card0, Card card1, Card card2) {
         this.map = new HashMap<>();
-        this.card0 = card0;
-        this.card1 = card1;
-        this.card2 = card2;
         this.cards = new ArrayList<>();
         this.cards.add(card0);
         this.cards.add(card1);
@@ -52,19 +46,28 @@ public class FutureAlteringDialog extends Dialog {
         this.setTitle(ResourceController.getString(DIALOG_TITLE));
         VBox verticalBox = new VBox();
         verticalBox.setAlignment(Pos.CENTER);
+        createHBox(card0, card1, card2, verticalBox);
+        getDialogPane().getButtonTypes().add(ButtonType.OK);
+        Button confirmButton = createConfirmButton();
+        verticalBox.getChildren().add(confirmButton);
+        this.getDialogPane().setContent(verticalBox);
+    }
+
+    private void createHBox(Card card0, Card card1, Card card2, VBox verticalBox) {
         HBox horizontalBox = new HBox();
         horizontalBox.getChildren().add(renderCard(card0));
         horizontalBox.getChildren().add(renderCard(card1));
         horizontalBox.getChildren().add(renderCard(card2));
         verticalBox.getChildren().add(horizontalBox);
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
+    }
+
+    private Button createConfirmButton() {
         Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
         confirmButton.setText(ResourceController.getString("confirm"));
 /*        confirmButton.setOnAction(e -> {
             this.chooseNewOrder();
         });*/
-        verticalBox.getChildren().add(confirmButton);
-        this.getDialogPane().setContent(verticalBox);
+        return confirmButton;
     }
 
     /**
@@ -90,26 +93,26 @@ public class FutureAlteringDialog extends Dialog {
     public ArrayList<Card> chooseNewOrder(){
         ArrayList<Card> workingSet = (ArrayList<Card>) this.cards.clone();
         System.out.println(workingSet.size());
-        LanguageFriendlyChoiceDialog firstChoice = new LanguageFriendlyChoiceDialog(workingSet.get(0), workingSet);
+        LanguageFriendlyChoiceDialog<Card> firstChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
         firstChoice.setTitle(ResourceController.getString("chooseFirstCard"));
         firstChoice.addConfirmButton();
         firstChoice.showAndWaitDefault();
         workingSet.remove(firstChoice.getSelectedItem());
         getSecondChoice(workingSet);
-        Card firstCard = (Card) firstChoice.getSelectedItem();
+        Card firstCard = firstChoice.getSelectedItem();
         ArrayList<Card> returnCards = new ArrayList<>();
         returnCards.add(0, firstCard);
         returnCards.add(1, secondCard);
         returnCards.add(2, thirdCard);
-        System.out.println("New top three: " + returnCards.toString());
+        System.out.println("New top three: " + returnCards);
         return returnCards;
     }
 
     public void getSecondChoice(ArrayList<Card> workingSet){
-        LanguageFriendlyChoiceDialog secondChoice = new LanguageFriendlyChoiceDialog(workingSet.get(0), workingSet);
+        LanguageFriendlyChoiceDialog<Card> secondChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
         secondChoice.addConfirmButton();
         secondChoice.showAndWaitDefault();
-        Card secondCard = (Card) secondChoice.getSelectedItem();
+        Card secondCard = secondChoice.getSelectedItem();
         this.secondCard = secondCard;
         workingSet.remove(secondCard);
         this.thirdCard = workingSet.get(0);

@@ -8,7 +8,7 @@ import team5.explodingkittens.controller.UserController;
  * @author Maura Coriale
  */
 public class SeeTheFutureNotification implements Notification {
-    private int playerId;
+    private final int playerId;
 
     /**
      * Creates a notification to handle SeeTheFuture cards.

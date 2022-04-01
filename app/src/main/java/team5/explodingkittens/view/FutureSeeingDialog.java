@@ -21,10 +21,7 @@ import team5.explodingkittens.model.Card;
  *
  * @author Maura Coriale
  */
-public class FutureSeeingDialog extends Dialog {
-    private Card card0;
-    private Card card1;
-    private Card card2;
+public class FutureSeeingDialog extends Dialog<Card> {
     private static final String DIALOG_TITLE = "seeTheFutureTitle";
 
 
@@ -36,22 +33,23 @@ public class FutureSeeingDialog extends Dialog {
      * @param card2 the third card in the deck
      */
     public FutureSeeingDialog(Card card0, Card card1, Card card2) {
-        this.card0 = card0;
-        this.card1 = card1;
-        this.card2 = card2;
         this.setTitle(ResourceController.getString(DIALOG_TITLE));
         VBox verticalBox = new VBox();
         verticalBox.setAlignment(Pos.CENTER);
-        HBox horizontalBox = new HBox();
-        horizontalBox.getChildren().add(renderCard(card0));
-        horizontalBox.getChildren().add(renderCard(card1));
-        horizontalBox.getChildren().add(renderCard(card2));
-        verticalBox.getChildren().add(horizontalBox);
+        createHBox(card0, card1, card2, verticalBox);
         getDialogPane().getButtonTypes().add(ButtonType.OK);
         Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
         confirmButton.setText(ResourceController.getString("confirm"));
         verticalBox.getChildren().add(confirmButton);
         this.getDialogPane().setContent(verticalBox);
+    }
+
+    private void createHBox(Card card0, Card card1, Card card2, VBox verticalBox) {
+        HBox horizontalBox = new HBox();
+        horizontalBox.getChildren().add(renderCard(card0));
+        horizontalBox.getChildren().add(renderCard(card1));
+        horizontalBox.getChildren().add(renderCard(card2));
+        verticalBox.getChildren().add(horizontalBox);
     }
 
     /**

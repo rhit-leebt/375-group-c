@@ -1,7 +1,6 @@
 package team5.explodingkittens.view;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.model.Card;

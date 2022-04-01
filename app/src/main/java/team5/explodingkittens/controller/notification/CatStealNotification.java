@@ -1,7 +1,6 @@
 package team5.explodingkittens.controller.notification;
 
 import team5.explodingkittens.controller.UserController;
-import team5.explodingkittens.model.CardType;
 
 /**
  * A notification to request a user to select the target to steal from.
