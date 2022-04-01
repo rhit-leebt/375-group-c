@@ -20,7 +20,7 @@ import team5.explodingkittens.view.UserViewFactory;
  *
  * @author Duncan McKee, Maura Coriale, Andrew Orians
  */
-public class GameController extends Subject {
+public class GameController {
 
     private TurnState state;
     protected Deck deck;
@@ -28,9 +28,10 @@ public class GameController extends Subject {
     private Card contestedCard;
     private boolean beenNoped;
     private int wantToPlayAcknowledged;
+    protected List<Observer> observers;
 
     public GameController() {
-
+        this.observers = new ArrayList<>();
     }
 
     /**
@@ -40,6 +41,7 @@ public class GameController extends Subject {
      * @param discardPile the DiscardPile object to use, usually mocked
      */
     public GameController(TurnState state, DiscardPile discardPile) {
+        this.observers = new ArrayList<>();
         this.state = state;
         this.discardPile = discardPile;
     }
@@ -52,6 +54,7 @@ public class GameController extends Subject {
      * @param deck        the Deck object to use, usually mocked
      */
     public GameController(TurnState state, DiscardPile discardPile, Deck deck) {
+        this.observers = new ArrayList<>();
         this.state = state;
         this.discardPile = discardPile;
         this.deck = deck;
@@ -63,6 +66,7 @@ public class GameController extends Subject {
      * @param deck the Deck object to use, usually mocked
      */
     public GameController(Deck deck) {
+        this.observers = new ArrayList<>();
         this.deck = deck;
     }
 
@@ -262,6 +266,44 @@ public class GameController extends Subject {
         }
         for(Card card : cards){
             deck.insertCard(card, cards.indexOf(card));
+        }
+    }
+
+    /**
+     * Registers an observer to this subject.
+     *
+     * @param observer The observer that is going to be registered.
+     */
+    public void registerObserver(Observer observer) {
+        if (observer == null) {
+            throw new IllegalArgumentException("Cannot pass a null observer");
+        }
+        observers.add(observer);
+    }
+
+    /**
+     * Removes an observer from being registered to this subject.
+     *
+     * @param observer The observer that is going to be removed.
+     */
+    public void removeObserver(Observer observer) {
+        if (observers.size() < 1) {
+            throw new IllegalStateException("Can't remove an observer when none are registered");
+        }
+        if (!observers.contains(observer)) {
+            throw new IllegalArgumentException("This observer is not registered with this subject");
+        }
+        observers.remove(observer);
+    }
+
+    /**
+     * Notifies every registered observer with a notification.
+     *
+     * @param notification The notification to distribute.
+     */
+    public void notifyObservers(Notification notification) {
+        for (Observer observer : this.observers) {
+            observer.update(notification);
         }
     }
 }
