@@ -1,13 +1,9 @@
 package team5.explodingkittens.view;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -42,18 +38,7 @@ public class UiOtherPlayer extends VBox implements UiPlayer {
      */
     public UiOtherPlayer(int playerId) {
         this.playerId = playerId;
-        URL fxmlUrl = null;
-        try {
-            fxmlUrl = new File(FXML_FILE_PATH).toURI().toURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
-            fxmlLoader.load();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
       
         cardsInHand = 8;
         nameLabel.setText(ResourceController.getString(NAME_LOADING_TEXT));

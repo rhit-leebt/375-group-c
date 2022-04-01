@@ -1,7 +1,6 @@
 package team5.explodingkittens.controller.notification;
 
 import team5.explodingkittens.controller.UserController;
-import team5.explodingkittens.model.cardaction.AlterTheFutureAction;
 
 /**
  * Notification when an Alter The Future card is played.
@@ -9,7 +8,7 @@ import team5.explodingkittens.model.cardaction.AlterTheFutureAction;
  * @author Maura Coriale
  */
 public class AlterTheFutureNotification implements Notification {
-    private int playerId;
+    private final int playerId;
 
     /**
      * Constructor for AlterTheFutureNotification.

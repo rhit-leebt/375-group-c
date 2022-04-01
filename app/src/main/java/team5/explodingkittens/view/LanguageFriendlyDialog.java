@@ -1,6 +1,5 @@
 package team5.explodingkittens.view;
 
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 /**
  * All-purpose dialog that is compatible with languages and locales.
