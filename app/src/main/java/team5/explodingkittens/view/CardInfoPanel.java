@@ -35,25 +35,45 @@ public class CardInfoPanel extends VBox {
      * @param playEvent The event that should be triggered when the play button is clicked.
      */
     public CardInfoPanel(EventHandler<ActionEvent> playEvent) {
-        playButton = new Button(ResourceController.getString(PLAY_BUTTON_PLAY_TEXT));
-        playButton.setPrefSize(SIZE.width, BUTTON_HEIGHT);
-        playButton.setOnAction(playEvent);
-        playButton.setDisable(true);
-        cardNameLabel = new Label();
-        cardNameLabel.setFont(new Font(ResourceController.getFontName(), CARD_NAME_FONT_SIZE));
-        cardNameLabel.setWrapText(true);
-        ScrollPane infoPane = new ScrollPane();
-        infoPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        infoPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        infoPane.setPrefHeight(INFO_SIZE.height);
-        cardInfoLabel = new Text();
-        cardInfoLabel.setFont(new Font(ResourceController.getFontName(), CARD_INFO_FONT_SIZE));
-        cardInfoLabel.setWrappingWidth(INFO_SIZE.width);
+        playButton = createPlayButton(playEvent);
+        cardNameLabel = createNameLabel();
+        ScrollPane infoPane = createScrollPane();
+        cardInfoLabel = createInfoLabel();
         infoPane.setContent(cardInfoLabel);
         getChildren().addAll(playButton, cardNameLabel, infoPane);
         setMinSize(SIZE.width, SIZE.height);
         setMaxSize(SIZE.width, SIZE.height);
         setPrefSize(SIZE.width, SIZE.height);
+    }
+
+    private Button createPlayButton(EventHandler<ActionEvent> playEvent) {
+        Button playButton = new Button(ResourceController.getString(PLAY_BUTTON_PLAY_TEXT));
+        playButton.setPrefSize(SIZE.width, BUTTON_HEIGHT);
+        playButton.setOnAction(playEvent);
+        playButton.setDisable(true);
+        return playButton;
+    }
+
+    private Label createNameLabel() {
+        Label cardNameLabel = new Label();
+        cardNameLabel.setFont(new Font(ResourceController.getFontName(), CARD_NAME_FONT_SIZE));
+        cardNameLabel.setWrapText(true);
+        return cardNameLabel;
+    }
+
+    private ScrollPane createScrollPane() {
+        ScrollPane infoPane = new ScrollPane();
+        infoPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        infoPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        infoPane.setPrefHeight(INFO_SIZE.height);
+        return infoPane;
+    }
+
+    private Text createInfoLabel() {
+        Text cardInfoLabel = new Text();
+        cardInfoLabel.setFont(new Font(ResourceController.getFontName(), CARD_INFO_FONT_SIZE));
+        cardInfoLabel.setWrappingWidth(INFO_SIZE.width);
+        return cardInfoLabel;
     }
 
     /**
