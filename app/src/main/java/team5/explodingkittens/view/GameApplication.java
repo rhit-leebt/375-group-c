@@ -3,12 +3,8 @@ package team5.explodingkittens.view;
 import java.util.Locale;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.C;
 import team5.explodingkittens.controller.GameController;
 import team5.explodingkittens.controller.ResourceController;
-import team5.explodingkittens.model.Card;
-import team5.explodingkittens.model.CardType;
-import team5.explodingkittens.model.cardaction.AttackCardAction;
 
 /**
  * This class launches the game, starting by opening a {@link StartView} window.

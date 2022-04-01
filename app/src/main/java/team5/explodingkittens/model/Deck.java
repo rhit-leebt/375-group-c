@@ -48,8 +48,8 @@ public class Deck {
      * @param users A list of uses who will be provided their starting hands.
      */
     public void dealCards(List<UserController> users) {
-        for (int i = 0; i < users.size(); i++) {
-            users.get(i).drawCard((new Card(CardType.DEFUSE)));
+        for (UserController userController : users) {
+            userController.drawCard((new Card(CardType.DEFUSE)));
         }
         for (int i = users.size(); i < CardType.DEFUSE.getCount(users.size()); i++) {
             drawPile.add(new Card(CardType.DEFUSE));

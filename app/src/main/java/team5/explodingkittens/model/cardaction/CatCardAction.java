@@ -1,7 +1,6 @@
 package team5.explodingkittens.model.cardaction;
 
 import team5.explodingkittens.controller.GameController;
-import team5.explodingkittens.model.CardType;
 
 /**
  * The abstract class that is the super class for each cat card type action.

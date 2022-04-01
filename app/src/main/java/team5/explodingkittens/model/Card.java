@@ -10,7 +10,7 @@ import team5.explodingkittens.controller.ResourceController;
  *
  * @author Duncan McKee, Andrew Orians
  */
-public class Card {
+public class Card implements Comparable<Card> {
     public final CardType type;
 
     /**
@@ -72,5 +72,10 @@ public class Card {
 
     public void playCard(GameController controller) {
         type.playCard(controller);
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        return this.type.getGenericName().compareTo(card.type.getGenericName());
     }
 }
