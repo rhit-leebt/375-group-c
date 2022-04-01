@@ -96,4 +96,8 @@ public enum CardType {
     public void playCard(GameController controller) {
         playAction.applyAction(controller);
     }
+
+    public String getGenericName() {
+        return this.genericName;
+    }
 }
