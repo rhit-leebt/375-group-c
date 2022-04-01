@@ -1,6 +1,10 @@
 package team5.explodingkittens.model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -191,5 +195,55 @@ public class CardTests {
         EasyMock.replay(controller);
         card.playCard(controller);
         EasyMock.verify(controller);
+    }
+
+    @Test
+    public void testSortCardsDupesAndReverse() {
+        List<Card> cards = new ArrayList<Card>();
+        Card attack1 = new Card(CardType.ATTACK);
+        Card attack2 = new Card(CardType.ATTACK);
+        Card cattermelon = new Card(CardType.CATTERMELON);
+        Card skip = new Card(CardType.SKIP);
+
+        cards.add(skip);
+        cards.add(cattermelon);
+        cards.add(attack2);
+        cards.add(attack1);
+
+        Collections.sort(cards);
+        Card oldCard = null;
+        for (int i = 0; i < cards.size(); i++) {
+            if (i != 0) {
+                Assert.assertTrue(cards.get(i).getName().compareTo(oldCard.getName()) >= 0);
+            }
+            oldCard = cards.get(i);
+        }
+    }
+
+    @Test
+    public void testSortCardsPresorted() {
+        List<Card> cards = new ArrayList<Card>();
+        Card attack = new Card(CardType.ATTACK);
+        Card cattermelon = new Card(CardType.CATTERMELON);
+        Card feral1 = new Card(CardType.FERAL_CAT);
+        Card feral2 = new Card(CardType.FERAL_CAT);
+        Card hairyPotatoCat = new Card(CardType.HAIRY_POTATO_CAT);
+        Card skip = new Card(CardType.SKIP);
+
+        cards.add(attack);
+        cards.add(cattermelon);
+        cards.add(feral1);
+        cards.add(feral2);
+        cards.add(hairyPotatoCat);
+        cards.add(skip);
+
+        Collections.sort(cards);
+        Card oldCard = null;
+        for (int i = 0; i < cards.size(); i++) {
+            if (i != 0) {
+                Assert.assertTrue(cards.get(i).getName().compareTo(oldCard.getName()) >= 0);
+            }
+            oldCard = cards.get(i);
+        }
     }
 }
