@@ -15,9 +15,7 @@ import team5.explodingkittens.controller.ResourceController;
  */
 public class UiDeck extends VBox {
     private static final String DECK_LABEL = "deckDescription";
-    private static final String FXML_FILE_PATH = "app"
-            + File.separator + "src" + File.separator + "main" + File.separator
-            + "resources" + File.separator + "fxml" + File.separator + "UIDeck.fxml";
+    private static final String FXML_FILE_NAME = "UIDeck.fxml";
 
     @FXML
     private Label deckLabel;
@@ -26,7 +24,7 @@ public class UiDeck extends VBox {
      * Creates a UiDeck object.
      */
     public UiDeck() {
-        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
 
         deckLabel.setText(ResourceController.getString(DECK_LABEL));
     }

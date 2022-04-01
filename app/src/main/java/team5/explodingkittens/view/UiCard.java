@@ -20,9 +20,7 @@ public class UiCard extends StackPane {
     public static final double CARD_WIDTH = 200;
     public static final double CARD_HEIGHT = 300;
 
-    private static final String FXML_FILE_PATH = "app" + File.separator
-            + "src" + File.separator + "main" + File.separator + "resources"
-            + File.separator + "fxml" + File.separator + "UICard.fxml";
+    private static final String FXML_FILE_NAME = "UICard.fxml";
     private static final String CARD_BACK_PATH = "app" + File.separator
             + "src" + File.separator + "main" + File.separator + "resources"
             + File.separator + "images" + File.separator + "cards"
@@ -39,7 +37,7 @@ public class UiCard extends StackPane {
      * Creates a UiCard object based upon the FXML setup at the file path.
      */
     public UiCard() {
-        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
     }
 
     /**

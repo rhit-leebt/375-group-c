@@ -18,9 +18,7 @@ import team5.explodingkittens.model.Card;
 public class UiOtherPlayer extends VBox implements UiPlayer {
     private static final String NAME_LOADING_TEXT = "nameLoading";
     private static final String CARDS_REMAINING_TEXT = "cardsRemaining";
-    private static final String FXML_FILE_PATH = "app"
-            + File.separator + "src" + File.separator + "main" + File.separator
-            + "resources" + File.separator + "fxml" + File.separator + "UIOtherPlayer.fxml";
+    private static final String FXML_FILE_NAME = "UIOtherPlayer.fxml";
 
     private final int playerId;
     private String name = null;
@@ -38,7 +36,7 @@ public class UiOtherPlayer extends VBox implements UiPlayer {
      */
     public UiOtherPlayer(int playerId) {
         this.playerId = playerId;
-        FXMLLoader.loadFXML(FXML_FILE_PATH, this);
+        FXMLLoader.loadFXML(FXML_FILE_NAME, this);
       
         cardsInHand = 8;
         nameLabel.setText(ResourceController.getString(NAME_LOADING_TEXT));
