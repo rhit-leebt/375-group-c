@@ -14,6 +14,7 @@ public class TurnState {
     private boolean[] validPlayers;
     private int validCount;
     private int drawCount;
+    private boolean lastActionResultedInTurnChange;
     public DrawType drawType = DrawType.DRAW_FROM_TOP;
 
     /**
@@ -61,6 +62,8 @@ public class TurnState {
         if (drawCount == 0) {
             incrementTurn();
             drawCount = 1;
+        } else {
+            lastActionResultedInTurnChange = false;
         }
     }
 
@@ -85,6 +88,8 @@ public class TurnState {
         if (drawCount == 0) {
             incrementTurn();
             drawCount = 1;
+        } else {
+            lastActionResultedInTurnChange = false;
         }
     }
 
@@ -101,6 +106,7 @@ public class TurnState {
         while (!validPlayers[turnPlayerId]) {
             turnPlayerId = (turnPlayerId + 1) % numPlayers;
         }
+        lastActionResultedInTurnChange = true;
     }
 
     /**
@@ -133,5 +139,9 @@ public class TurnState {
             }
         }
         return -1;
+    }
+
+    public boolean lastActionResultedInTurnChange() {
+        return lastActionResultedInTurnChange;
     }
 }

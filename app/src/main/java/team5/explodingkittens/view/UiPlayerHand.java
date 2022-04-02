@@ -1,6 +1,7 @@
 package team5.explodingkittens.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -50,6 +51,7 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
      * and aligns them horizontally.
      */
     public void alignCards() {
+        this.resort();
         double centerIndex = ((double) cards.size()) / 2.0 + 1.5;
         for (int i = 0; i < cards.size(); i++) {
             cards.get(i).setTranslateX((i - centerIndex) * CARD_OVERLAP_WIDTH);
@@ -58,6 +60,7 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
     }
 
     private void hoverCard(int index) {
+        this.resort();
         for (int i = 0; i < index; i++) {
             cards.get(i).toFront();
         }
@@ -125,12 +128,10 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
                 }
                 getChildren().remove(cards.get(i));
                 cards.remove(i);
+                break;
             }
         }
-        for (int i = 0; i < cards.size(); i++) {
-            int index = i;
-            cards.get(index).setOnMouseEntered(e -> hoverCard(index));
-        }
+        updateHoverIndices();
         alignCards();
     }
 
@@ -143,5 +144,17 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
 
     public Card getSelectedCard() {
         return selectedCard.getCard();
+    }
+
+    private void resort() {
+        Collections.sort(cards);
+        updateHoverIndices();
+    }
+
+    private void updateHoverIndices() {
+        for (int i = 0; i < cards.size(); i++) {
+            int index = i;
+            cards.get(i).setOnMouseEntered(e -> hoverCard(index));
+        }
     }
 }

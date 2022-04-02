@@ -8,13 +8,13 @@ import team5.explodingkittens.controller.notification.DrawNotification;
 import team5.explodingkittens.controller.notification.Notification;
 
 /**
- * A testing script created to test {@link Subject} and {@link Observer}.
+ * A testing script created to test {@link GameController} and {@link Observer}.
  *
  * @author Maura Coriale
  */
 public class SubjectTests {
 
-    private static class SubjectTestExtension extends Subject {
+    private static class SubjectTestExtension extends GameController {
         public SubjectTestExtension() {
             this.observers = new ArrayList<>();
         }
@@ -29,7 +29,7 @@ public class SubjectTests {
 
     @Test
     public void testRegisterNullObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         try {
             subject.registerObserver(null);
             Assert.fail();
@@ -41,7 +41,7 @@ public class SubjectTests {
 
     @Test
     public void testRegisterObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         ObserverTestImplementation observer = EasyMock.mock(ObserverTestImplementation.class);
         Assert.assertEquals(0, subject.observers.size());
         subject.registerObserver(observer);
@@ -50,7 +50,7 @@ public class SubjectTests {
 
     @Test
     public void testRemoveNonexistentObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         try {
             subject.removeObserver(EasyMock.mock(ObserverTestImplementation.class));
             Assert.fail();
@@ -62,7 +62,7 @@ public class SubjectTests {
 
     @Test
     public void testRemoveWrongObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         subject.registerObserver(EasyMock.mock(ObserverTestImplementation.class));
         try {
             subject.removeObserver(EasyMock.mock(ObserverTestImplementation.class));
@@ -76,7 +76,7 @@ public class SubjectTests {
 
     @Test
     public void testRemoveCorrectObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         Observer observer = EasyMock.mock(ObserverTestImplementation.class);
         subject.registerObserver(observer);
         Assert.assertEquals(1, subject.observers.size());
@@ -86,7 +86,7 @@ public class SubjectTests {
 
     @Test
     public void testNotifyObserver() {
-        Subject subject = new SubjectTestExtension();
+        GameController subject = new SubjectTestExtension();
         Observer observer = EasyMock.mock(ObserverTestImplementation.class);
         subject.registerObserver(observer);
         Assert.assertEquals(1, subject.observers.size());
