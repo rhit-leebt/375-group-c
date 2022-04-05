@@ -2,6 +2,9 @@ package team5.explodingkittens.view;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import team5.explodingkittens.model.Player;
+
+import java.util.List;
 
 public class SpectatorViewSceneBuilder {
 
@@ -13,7 +16,7 @@ public class SpectatorViewSceneBuilder {
         this.sceneHandler = new SpectatorViewSceneHandler();
     }
 
-    public SpectatorViewSceneHandler generateSceneFromPlayerInfo(int numPlayers) {
+    public SpectatorViewSceneHandler generateSceneFromPlayerInfo(List<Player> players) {
         Scene scene = new Scene(new HBox(), DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
         sceneHandler.replaceScene(scene);
         return sceneHandler;

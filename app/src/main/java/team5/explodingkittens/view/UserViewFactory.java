@@ -1,5 +1,9 @@
 package team5.explodingkittens.view;
 
+import team5.explodingkittens.model.Player;
+
+import java.util.List;
+
 /**
  * A factory for the UserView, such that it can be fully tested.
  *
@@ -27,7 +31,7 @@ public class UserViewFactory {
         }
     }
 
-    public SpectatorView createSpectatorView(int numPlayers) {
+    public SpectatorView createSpectatorView(List<Player> numPlayers) {
         return new SpectatorView(numPlayers);
     }
 }

@@ -86,14 +86,16 @@ public class GameController {
         }
         state = new TurnState(numPlayers);
         List<UserController> users = new ArrayList<>(numPlayers);
+        List<Player> players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
             AbstractUserView userView = userViewFactory.createUserView(numPlayers, i);
             Player player = new Player();
             users.add(new UserController(this, userView, player, i));
+            players.add(player);
             userView.setUserController(users.get(i));
         }
 
-        SpectatorView spectatorView = userViewFactory.createSpectatorView(numPlayers);
+        SpectatorView spectatorView = userViewFactory.createSpectatorView(players);
 
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);
