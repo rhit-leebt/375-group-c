@@ -11,6 +11,7 @@ import team5.explodingkittens.model.DiscardPile;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.model.TurnState;
 import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.SpectatorView;
 import team5.explodingkittens.view.UserViewFactory;
 
 /**
@@ -91,6 +92,9 @@ public class GameController {
             users.add(new UserController(this, userView, player, i));
             userView.setUserController(users.get(i));
         }
+
+        SpectatorView spectatorView = userViewFactory.createSpectatorView(numPlayers);
+
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);
         this.discardPile = new DiscardPile();

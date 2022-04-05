@@ -26,4 +26,8 @@ public class UserViewFactory {
             return new NullUserView();
         }
     }
+
+    public SpectatorView createSpectatorView(int numPlayers) {
+        return new SpectatorView(numPlayers);
+    }
 }
