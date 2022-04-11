@@ -49,6 +49,8 @@ public class UserController implements Observer {
         this.futureActionController = new FutureActionController(this.gameController, this.view, this.playerId, this.player);
     }
 
+    // This method seems to be ONLY used for dependency injection
+    // I believe "trySetName" is the method actually used in production
     public void setName(int playerId, String name) {
         view.setName(playerId, name);
     }
