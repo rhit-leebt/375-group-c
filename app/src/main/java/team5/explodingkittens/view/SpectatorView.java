@@ -10,8 +10,8 @@ public class SpectatorView extends Stage {
     private final SpectatorViewSceneHandler sceneHandler;
 
     public SpectatorView(List<Player> players) {
-        SpectatorViewSceneBuilder builder = new SpectatorViewSceneBuilder();
-        sceneHandler = builder.generateSceneFromPlayerInfo(players);
+        SpectatorViewSceneBuilder builder = new SpectatorViewSceneBuilder(players);
+        sceneHandler = builder.generateSceneFromPlayerInfo();
         setScene(sceneHandler.getScene());
         show();
     }
