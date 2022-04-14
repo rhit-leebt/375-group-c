@@ -1,6 +1,7 @@
 package team5.explodingkittens.view;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import team5.explodingkittens.model.Player;
@@ -22,14 +23,17 @@ public class SpectatorViewSceneBuilder {
     public SpectatorViewSceneHandler generateSceneFromPlayerInfo() {
         VBox vBox = new VBox();
         addPlayerNamesToVBox(vBox);
-        Scene scene = new Scene(new HBox(), DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+        Scene scene = new Scene(vBox, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
         sceneHandler.replaceScene(scene);
         return sceneHandler;
     }
 
     private void addPlayerNamesToVBox(VBox vBox) {
         for (Player player : players) {
-            // Add player name to UI
+            // As it turns out, at the time this view is built, names are not created yet
+            // (dialog box appears after game initialization) hence the placeholders
+            Label nameLabel = new Label("Currently choosing a name...");
+            vBox.getChildren().add(nameLabel);
         }
     }
 }

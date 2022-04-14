@@ -16,6 +16,7 @@ public class Player {
     public static final int HAND_SIZE = 8;
 
     ArrayList<Card> hand;
+    private String name;
 
     public Player() {
         this.hand = new ArrayList<>();
@@ -166,5 +167,13 @@ public class Player {
 
     public Card getRandomCard(Random random) {
         return hand.get(random.nextInt(hand.size()));
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

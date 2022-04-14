@@ -208,6 +208,7 @@ public class UserController implements Observer {
     }
 
     public void trySetName(String name) {
+        this.player.setName(name);
         this.gameController.setName(playerId, name);
     }
 
