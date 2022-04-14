@@ -1,6 +1,7 @@
 package team5.explodingkittens.view;
 
 import javafx.stage.Stage;
+import team5.explodingkittens.controller.Observer;
 import team5.explodingkittens.model.Player;
 
 import java.util.List;
@@ -14,5 +15,9 @@ public class SpectatorView extends Stage {
         sceneHandler = builder.generateSceneFromPlayerInfo();
         setScene(sceneHandler.getScene());
         show();
+    }
+
+    public Observer getObservableHandler() {
+        return (Observer) sceneHandler;
     }
 }

@@ -1,9 +1,10 @@
 package team5.explodingkittens.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import team5.explodingkittens.controller.Observer;
+import team5.explodingkittens.controller.notification.NameChangeNotification;
+import team5.explodingkittens.controller.notification.Notification;
+
+import java.util.*;
 
 /**
  * A structuring class between {@link Card} and
@@ -14,12 +15,14 @@ import java.util.Set;
  */
 public class Player {
     public static final int HAND_SIZE = 8;
+    protected List<Observer> observers;
 
     ArrayList<Card> hand;
     private String name;
 
     public Player() {
         this.hand = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
     public void addCard(Card card) {
@@ -171,9 +174,33 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+        notifyObservers(new NameChangeNotification());
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public void registerObserver(Observer observer) {
+        if (observer == null) {
+            throw new IllegalArgumentException("Cannot pass a null observer");
+        }
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        if (observers.size() < 1) {
+            throw new IllegalStateException("Can't remove an observer when none are registered");
+        }
+        if (!observers.contains(observer)) {
+            throw new IllegalArgumentException("This observer is not registered with this subject");
+        }
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(Notification notification) {
+        for (Observer observer : this.observers) {
+            observer.update(notification);
+        }
     }
 }

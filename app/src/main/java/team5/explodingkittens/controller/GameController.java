@@ -96,6 +96,9 @@ public class GameController {
         }
 
         SpectatorView spectatorView = userViewFactory.createSpectatorView(players);
+        for (Player player : players) {
+            player.registerObserver(spectatorView.getObservableHandler());
+        }
 
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);
