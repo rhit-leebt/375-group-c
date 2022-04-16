@@ -12,11 +12,11 @@ public class SpectatorViewSceneHandler implements Observer {
 
     private Scene scene;
     private List<Player> players;
-    private List<Label> nameLabels;
+    private List<SpectatorViewSinglePlayerUI> singlePlayerUIs;
 
-    public SpectatorViewSceneHandler(List<Player> players, List<Label> nameLabels) {
+    public SpectatorViewSceneHandler(List<Player> players, List<SpectatorViewSinglePlayerUI> singlePlayerUIs) {
         this.players = players;
-        this.nameLabels = nameLabels;
+        this.singlePlayerUIs = singlePlayerUIs;
     }
 
     public void replaceScene(Scene scene) {
@@ -35,7 +35,8 @@ public class SpectatorViewSceneHandler implements Observer {
     public void updateNames() {
         for (int i = 0; i < players.size(); i++) {
             String name = players.get(i).getName();
-            nameLabels.get(i).setText(name);
+            SpectatorViewSinglePlayerUI singlePlayerUI = singlePlayerUIs.get(i);
+            singlePlayerUI.nameLabel.setText(name);
         }
     }
 }
