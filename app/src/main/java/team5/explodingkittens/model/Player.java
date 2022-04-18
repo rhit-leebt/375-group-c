@@ -4,6 +4,7 @@ import team5.explodingkittens.controller.Observer;
 import team5.explodingkittens.controller.notification.NameChangeNotification;
 import team5.explodingkittens.controller.notification.Notification;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -202,5 +203,9 @@ public class Player {
         for (Observer observer : this.observers) {
             observer.update(notification);
         }
+    }
+
+    public List<Card> getHand() {
+        return this.hand;
     }
 }

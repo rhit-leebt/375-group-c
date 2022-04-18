@@ -11,11 +11,9 @@ import java.util.List;
 public class SpectatorViewSceneHandler implements Observer {
 
     private Scene scene;
-    private List<Player> players;
     private List<SpectatorViewSinglePlayerUI> singlePlayerUIs;
 
-    public SpectatorViewSceneHandler(List<Player> players, List<SpectatorViewSinglePlayerUI> singlePlayerUIs) {
-        this.players = players;
+    public SpectatorViewSceneHandler(List<SpectatorViewSinglePlayerUI> singlePlayerUIs) {
         this.singlePlayerUIs = singlePlayerUIs;
     }
 
@@ -33,10 +31,15 @@ public class SpectatorViewSceneHandler implements Observer {
     }
 
     public void updateNames() {
-        for (int i = 0; i < players.size(); i++) {
-            String name = players.get(i).getName();
-            SpectatorViewSinglePlayerUI singlePlayerUI = singlePlayerUIs.get(i);
-            singlePlayerUI.updateName(name);
+        for (SpectatorViewSinglePlayerUI singlePlayerUI : singlePlayerUIs) {
+            singlePlayerUI.updateName();
+        }
+    }
+
+    public void updateHands() {
+        System.out.println("called to update hands");
+        for (SpectatorViewSinglePlayerUI singlePlayerUI : singlePlayerUIs) {
+            singlePlayerUI.updateHand();
         }
     }
 }

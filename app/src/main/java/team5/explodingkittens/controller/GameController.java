@@ -99,6 +99,7 @@ public class GameController {
         for (Player player : players) {
             player.registerObserver(spectatorView.getObservableHandler());
         }
+        registerObserver(spectatorView.getObservableHandler());
 
         this.deck = new Deck(numPlayers);
         deck.dealCards(users);

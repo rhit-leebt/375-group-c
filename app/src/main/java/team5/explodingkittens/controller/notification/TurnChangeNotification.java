@@ -17,6 +17,6 @@ public class TurnChangeNotification implements Notification {
 
     @Override
     public void applyNotification(SpectatorViewSceneHandler sceneHandler) {
-        // TODO: behavior?
+        sceneHandler.updateHands();
     }
 }
