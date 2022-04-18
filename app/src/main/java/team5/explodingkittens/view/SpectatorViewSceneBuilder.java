@@ -22,7 +22,7 @@ public class SpectatorViewSceneBuilder {
 
     public SpectatorViewSceneHandler generateSceneFromPlayerInfo() {
         GridPane playerInfoGrid = generatePlayerInfoUIGrid();
-        
+
         SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(players, playerInfoUIs);
         Scene scene = new Scene(playerInfoGrid, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
         sceneHandler.replaceScene(scene);
@@ -35,7 +35,7 @@ public class SpectatorViewSceneBuilder {
         int rowIndex = 0;
         int colIndex = 0;
         for (Player player : players) {
-            SpectatorViewSinglePlayerUI playerInfoGui = generatePlayerInfoGui(player);
+            SpectatorViewSinglePlayerUI playerInfoGui = new SpectatorViewSinglePlayerUI();
             playerInfoUIs.add(playerInfoGui);
             playerInfoGrid.add(playerInfoGui.getMainPane(), colIndex, rowIndex);
             colIndex++;
@@ -47,13 +47,4 @@ public class SpectatorViewSceneBuilder {
         return playerInfoGrid;
     }
 
-    private SpectatorViewSinglePlayerUI generatePlayerInfoGui(Player player) {
-        BorderPane mainPane = new BorderPane();
-        Label nameLabel = new Label();
-        mainPane.setCenter(nameLabel);
-
-        SpectatorViewSinglePlayerUI playerInfoGui = new SpectatorViewSinglePlayerUI(mainPane);
-        playerInfoGui.nameLabel = nameLabel;
-        return playerInfoGui;
-    }
 }

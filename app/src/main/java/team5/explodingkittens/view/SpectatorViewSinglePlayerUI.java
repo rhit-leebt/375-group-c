@@ -7,11 +7,17 @@ public class SpectatorViewSinglePlayerUI {
     public Label nameLabel;
     private BorderPane mainPane;
 
-    public SpectatorViewSinglePlayerUI(BorderPane mainPane) {
-        this.mainPane = mainPane;
+    public SpectatorViewSinglePlayerUI() {
+        mainPane = new BorderPane();
+        nameLabel = new Label();
+        mainPane.setCenter(nameLabel);
     }
 
     public BorderPane getMainPane() {
         return this.mainPane;
+    }
+
+    public void updateName(String name) {
+        nameLabel.setText(name);
     }
 }

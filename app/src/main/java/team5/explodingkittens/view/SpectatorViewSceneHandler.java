@@ -36,7 +36,7 @@ public class SpectatorViewSceneHandler implements Observer {
         for (int i = 0; i < players.size(); i++) {
             String name = players.get(i).getName();
             SpectatorViewSinglePlayerUI singlePlayerUI = singlePlayerUIs.get(i);
-            singlePlayerUI.nameLabel.setText(name);
+            singlePlayerUI.updateName(name);
         }
     }
 }
