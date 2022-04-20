@@ -743,7 +743,6 @@ public class GameControllerTests {
                 EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(userViews[i]);
             }
 
-
             EasyMock.replay(factoryMock);
 
             GameController gameController = new GameController();

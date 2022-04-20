@@ -3,7 +3,9 @@ package team5.explodingkittens.view;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import team5.explodingkittens.model.Player;
 
 import java.util.ArrayList;
@@ -32,6 +34,20 @@ public class SpectatorViewSceneBuilder {
     private GridPane generatePlayerInfoUIGrid() {
         GridPane playerInfoGrid = new GridPane();
         playerInfoGrid.setGridLinesVisible(true);
+
+        RowConstraints rc = new RowConstraints();
+        rc.setPercentHeight(100d / 3);
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(100d / 4);
+
+        for (int i = 0; i < 3; i++) {
+            playerInfoGrid.getRowConstraints().add(rc);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            playerInfoGrid.getColumnConstraints().add(cc);
+        }
+
         int rowIndex = 0;
         int colIndex = 0;
         for (Player player : players) {
@@ -44,6 +60,10 @@ public class SpectatorViewSceneBuilder {
                 colIndex = 0;
             }
         }
+
+        playerInfoGrid.setHgap(20);
+        playerInfoGrid.setVgap(10);
+
         return playerInfoGrid;
     }
 
