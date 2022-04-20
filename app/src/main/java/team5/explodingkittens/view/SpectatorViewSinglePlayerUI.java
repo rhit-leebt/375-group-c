@@ -17,6 +17,7 @@ public class SpectatorViewSinglePlayerUI {
 
         mainPane = new BorderPane();
         nameLabel = new Label();
+        nameLabel.setStyle("-fx-font-weight: bold;");
 
         playerHandArea = new VBox();
         updateHand();

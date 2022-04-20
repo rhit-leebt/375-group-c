@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import team5.explodingkittens.model.Player;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class SpectatorViewSceneBuilder {
 
     public SpectatorViewSceneHandler generateSceneFromPlayerInfo() {
         GridPane playerInfoGrid = generatePlayerInfoUIGrid();
-
         SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(playerInfoUIs);
         Scene scene = new Scene(playerInfoGrid, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
         sceneHandler.replaceScene(scene);
@@ -33,17 +33,15 @@ public class SpectatorViewSceneBuilder {
 
     private GridPane generatePlayerInfoUIGrid() {
         GridPane playerInfoGrid = new GridPane();
-        playerInfoGrid.setGridLinesVisible(true);
 
         RowConstraints rc = new RowConstraints();
         rc.setPercentHeight(100d / 3);
-        ColumnConstraints cc = new ColumnConstraints();
-        cc.setPercentWidth(100d / 4);
-
         for (int i = 0; i < 3; i++) {
             playerInfoGrid.getRowConstraints().add(rc);
         }
 
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(100d / 4);
         for (int i = 0; i < 4; i++) {
             playerInfoGrid.getColumnConstraints().add(cc);
         }
