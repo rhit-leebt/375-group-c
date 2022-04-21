@@ -1,8 +1,10 @@
 package team5.explodingkittens.controller;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.A;
 import team5.explodingkittens.controller.notification.*;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
@@ -80,26 +82,16 @@ public class GameController {
     public void startGame(int numPlayers, UserViewFactory userViewFactory) {
         validatePlayerCount(numPlayers);
 
-        // INIT USERCONTROLLERS
-        List<UserController> users = new ArrayList<>(numPlayers);
-        // INIT PLAYERS (MODEL)
         List<Player> players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player();
             players.add(player);
         }
-        // FOR ALL PLAYERS...
-        for (int i = 0; i < players.size(); i++) {
-            AbstractUserView userView = userViewFactory.createUserView(numPlayers, i);
-            UserController userController = new UserController(this, userView, players.get(i), i);
-            users.add(userController);
-            userView.setUserController(userController);
-        }
+        List<UserController> users = createUsersWithViewsFromPlayers(players, userViewFactory);
 
         setUpSpectatorView(players, userViewFactory);
         setUpPiles(users);
 
-        // MAKE TURN STATE
         state = new TurnState(numPlayers);
         notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
     }
@@ -111,6 +103,17 @@ public class GameController {
         if (numPlayers > 10) {
             throw new IllegalArgumentException("Must have less than ten players to start game");
         }
+    }
+
+    private List<UserController> createUsersWithViewsFromPlayers(List<Player> players, UserViewFactory userViewFactory) {
+        List<UserController> users = new ArrayList<>();
+        for (int i = 0; i < players.size(); i++) {
+            AbstractUserView userView = userViewFactory.createUserView(players.size(), i);
+            UserController userController = new UserController(this, userView, players.get(i), i);
+            users.add(userController);
+            userView.setUserController(userController);
+        }
+        return users;
     }
 
     private void setUpSpectatorView(List<Player> players, UserViewFactory userViewFactory) {
