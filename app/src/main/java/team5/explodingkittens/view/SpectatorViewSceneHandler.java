@@ -37,7 +37,6 @@ public class SpectatorViewSceneHandler implements Observer {
     }
 
     public void updateHands() {
-        System.out.println("called to update hands");
         for (SpectatorViewSinglePlayerUI singlePlayerUI : singlePlayerUIs) {
             singlePlayerUI.updateHand();
         }
