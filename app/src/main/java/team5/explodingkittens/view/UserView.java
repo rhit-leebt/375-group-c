@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
@@ -48,8 +49,8 @@ public class UserView extends Stage implements AbstractUserView {
     /**
      * Creates a PlayerWindow object with the provided details.
      *
-     * @param numPlayers     The number of players who are playing the game.
-     * @param playerId       The ID of the player whose window this is.
+     * @param numPlayers The number of players who are playing the game.
+     * @param playerId   The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
         UserViewSceneBuilder builder = new UserViewSceneBuilder(
@@ -74,6 +75,7 @@ public class UserView extends Stage implements AbstractUserView {
     public void changeUiOnTurnChange(boolean currentTurnIsNow) {
         if (currentTurnIsNow) {
             setTitle("It is your turn!");
+            toFront();
         } else {
             setTitle("Waiting for your turn...");
         }
@@ -291,9 +293,15 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public ArrayList<Card> alterTheFuture(Card card0, Card card1, Card card2) {
-       FutureAlteringDialog futureDialog = new FutureAlteringDialog(card0, card1, card2);
-       futureDialog.showAndWait();
-       return futureDialog.chooseNewOrder();
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(card0);
+        cards.add(card1);
+        cards.add(card2);
+        FutureAlteringDialog futureDialog = new FutureAlteringDialog(cards);
+        futureDialog.showAndWait();
+        LanguageFriendlyChoiceDialog<Card> langDialog = new LanguageFriendlyChoiceDialog<>(cards.get(0), cards);
+        langDialog.setTitle(ResourceController.getString("chooseFirstCard"));
+        return futureDialog.chooseNewOrder((ArrayList<Card>) cards.clone(), langDialog);
     }
 
     private void setCommonDialogFields(Dialog dialog, String dialogType) {
