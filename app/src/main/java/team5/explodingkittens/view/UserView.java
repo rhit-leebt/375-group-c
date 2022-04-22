@@ -84,7 +84,7 @@ public class UserView extends Stage implements AbstractUserView {
     private LanguageFriendlyTextInputDialog generateNameInputDialog() {
         LanguageFriendlyTextInputDialog nameDialog = new LanguageFriendlyTextInputDialog();
         setCommonDialogFields(nameDialog, NAME_DIALOG);
-        nameDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(nameDialog);
         nameDialog.setOnCloseRequest(event -> {
             if (nameDialog.getResult() == null || nameDialog.getResult().isEmpty()) {
                 userController.trySetName(ResourceController.getString(PLAYER_NO_NAME));
@@ -121,7 +121,7 @@ public class UserView extends Stage implements AbstractUserView {
                 new LanguageFriendlyChoiceDialog<>(
                         cardNames.get(0), cardNames);
         setCommonDialogFields(favorDialog, FAVOR_SELECT_DIALOG);
-        favorDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(favorDialog);
         String response = favorDialog.showAndWaitDefault();
         return player.getCard(cardNames.indexOf(response));
     }
@@ -168,8 +168,8 @@ public class UserView extends Stage implements AbstractUserView {
     public boolean showExplodeDialog() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
         setCommonDialogFields(dialog, EXPLODE_DIALOG);
-        dialog.addConfirmButton();
-        dialog.addCancelButton();
+        DialogBuilder.addConfirmButton(dialog);
+        DialogBuilder.addCancelButton(dialog);
         return dialog.showAndWaitDefault();
     }
 
@@ -177,7 +177,7 @@ public class UserView extends Stage implements AbstractUserView {
     public void showCantDefuseDialog() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
         setCommonDialogFields(dialog, CANT_DEFUSE_DIALOG);
-        dialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(dialog);
         dialog.showAndWait();
     }
 
@@ -185,7 +185,7 @@ public class UserView extends Stage implements AbstractUserView {
     public int showPutExplodingKittenBackDialog() {
         LanguageFriendlyTextInputDialog dialog = new LanguageFriendlyTextInputDialog();
         setCommonDialogFields(dialog, RETURN_EXPLODING_KITTEN_DIALOG);
-        dialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(dialog);
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             return Integer.parseInt(result.get());
@@ -200,7 +200,7 @@ public class UserView extends Stage implements AbstractUserView {
         dialog.setHeaderText(ResourceController.getString(WIN_DIALOG + HEADER_SUFFIX));
         dialog.setContentText(ResourceController.getFormatString(
                 WIN_DIALOG + CONTENT_SUFFIX, sceneHandler.playerHandUi.getName()));
-        dialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(dialog);
         dialog.showAndWait();
         userController.tryCloseGame();
     }
@@ -230,7 +230,7 @@ public class UserView extends Stage implements AbstractUserView {
                 new LanguageFriendlyChoiceDialog<>(
                         cardTypes.get(0), cardTypes);
         setCommonDialogFields(pickPairDialog, PICK_PAIR_DIALOG);
-        pickPairDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(pickPairDialog);
         String result = pickPairDialog.showAndWaitDefault();
         return typesList.get(cardTypes.indexOf(result));
     }
@@ -251,7 +251,7 @@ public class UserView extends Stage implements AbstractUserView {
                 new LanguageFriendlyChoiceDialog<>(
                         playerNames.get(0), playerNames);
         setCommonDialogFields(pickPlayerDialog, PICK_PLAYER_DIALOG);
-        pickPlayerDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(pickPlayerDialog);
         String result = pickPlayerDialog.showAndWaitDefault();
         return namesToId.get(result);
     }
@@ -260,7 +260,7 @@ public class UserView extends Stage implements AbstractUserView {
     public void showCantPlayCat() {
         LanguageFriendlyEmptyDialog dialog = new LanguageFriendlyEmptyDialog();
         setCommonDialogFields(dialog, CANT_CAT_DIALOG);
-        dialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(dialog);
         dialog.showAndWait();
     }
 
@@ -272,8 +272,8 @@ public class UserView extends Stage implements AbstractUserView {
                 sceneHandler.playerUis.get(playerId).getName()));
         nopeDialog.setContentText(String.format(ResourceController.getString(NOPE_DIALOG + CONTENT_SUFFIX),
                 card.getName()));
-        nopeDialog.addConfirmButton();
-        nopeDialog.addCancelButton();
+        DialogBuilder.addConfirmButton(nopeDialog);
+        DialogBuilder.addCancelButton(nopeDialog);
         return nopeDialog.showAndWaitDefault();
     }
 

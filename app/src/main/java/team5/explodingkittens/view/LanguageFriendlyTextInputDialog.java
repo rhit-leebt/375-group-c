@@ -19,22 +19,4 @@ public class LanguageFriendlyTextInputDialog extends TextInputDialog {
         super();
         getDialogPane().getButtonTypes().clear();
     }
-
-    /**
-     * Adds a confirm button to the dialog.
-     */
-    public void addConfirmButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
-        Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
-        confirmButton.setText(ResourceController.getString("confirm"));
-    }
-
-    /**
-     * Adds a cancel button to the dialog.
-     */
-    public void addCancelButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Button cancelButton = (Button) this.getDialogPane().lookupButton(ButtonType.CANCEL);
-        cancelButton.setText(ResourceController.getString("cancel"));
-    }
 }

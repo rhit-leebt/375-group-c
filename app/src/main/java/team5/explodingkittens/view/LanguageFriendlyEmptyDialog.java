@@ -14,24 +14,6 @@ import team5.explodingkittens.controller.ResourceController;
 public class LanguageFriendlyEmptyDialog extends Dialog<ButtonType> {
 
     /**
-     * Adds a confirm button to the dialog.
-     */
-    public void addConfirmButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
-        Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
-        confirmButton.setText(ResourceController.getString("confirm"));
-    }
-
-    /**
-     * Adds a cancel button to the dialog.
-     */
-    public void addCancelButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.CANCEL);
-        confirmButton.setText(ResourceController.getString("cancel"));
-    }
-
-    /**
      * Shows the dialog and waits until it has been closed.
      *
      * @return If the user pressed OK or not
