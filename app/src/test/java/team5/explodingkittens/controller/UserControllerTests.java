@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,6 +32,43 @@ import team5.explodingkittens.view.NullUserView;
  * @author Duncan McKee, Andrew Orians
  */
 public class UserControllerTests {
+
+    private GameController controllerMock;
+    private AbstractUserView viewMock;
+    private Player playerMock;
+    private UserController userController;
+
+    public void setupMocks(boolean mockMethod, String mockedMethod, boolean realPlayer) {
+        if (mockMethod) {
+            controllerMock = EasyMock.partialMockBuilder(GameController.class)
+                    .addMockedMethod(mockedMethod).createMock();
+        } else {
+            controllerMock = EasyMock.partialMockBuilder(GameController.class).createMock();
+        }
+        controllerMock.observers = new ArrayList<>();
+        viewMock = EasyMock.mock(AbstractUserView.class);
+        if (realPlayer) {
+            playerMock = new Player();
+        } else {
+            playerMock = EasyMock.mock(Player.class);
+        }
+        userController = new UserController(controllerMock, viewMock, playerMock, 0);
+    }
+
+    public void replayMocks(boolean realPlayer) {
+        EasyMock.replay(controllerMock);
+        EasyMock.replay(viewMock);
+        if (!realPlayer)
+            EasyMock.replay(playerMock);
+    }
+
+    public void verifyMocks(boolean realPlayer) {
+        EasyMock.verify(controllerMock);
+        EasyMock.verify(viewMock);
+        if (!realPlayer)
+            EasyMock.verify(playerMock);
+    }
+
     @Test
     public void testDrawCards() {
         Card card = new Card(CardType.TACOCAT);
@@ -181,7 +219,7 @@ public class UserControllerTests {
         userController.tryPlayCard(handCard1);
 
         Assert.assertEquals(0, playerIds[0]);
-        Assert.assertEquals(null, cards[0]);
+        Assert.assertNull(cards[0]);
         Assert.assertTrue(dialogShown[0]);
     }
 
@@ -222,11 +260,11 @@ public class UserControllerTests {
 
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(viewMock.showExplodeDialog()).andReturn(true);
         EasyMock.expect(viewMock.showPutExplodingKittenBackDialog()).andReturn(3);
         deck.insertCard(explodingKitten, 3);
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(state.getTurnPlayerId()).andReturn(0);
         discardPile.discardCard(defuseCard);
         viewMock.discardCard(0, defuseCard);
@@ -261,7 +299,7 @@ public class UserControllerTests {
         player.addCard(defuseCard);
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(viewMock.showExplodeDialog()).andReturn(false);
         viewMock.discardAllCards(0);
         state.invalidatePlayer(0);
@@ -294,7 +332,7 @@ public class UserControllerTests {
         Player player = EasyMock.mock(Player.class);
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(player.hasDefuse()).andReturn(false);
+        EasyMock.expect(player.hasCardType(CardType.DEFUSE)).andReturn(false);
         viewMock.showCantDefuseDialog();
         player.removeAllCards();
         viewMock.discardAllCards(0);
@@ -318,163 +356,85 @@ public class UserControllerTests {
 
     @Test
     public void testTrySetName() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        feature/oriansaj/m3-refactorings
+        setupMocks(true, "setName", false);
+        playerMock.setName("testname");
+        EasyMock.expectLastCall();
         controllerMock.setName(0, "testname");
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
-
+        replayMocks(false);
         UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.trySetName("testname");
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testSetName() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "setName", false);
         viewMock.setName(0, "testname");
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         userController.update(new SetNameNotification(0, "testname"));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testTryDrawCard() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("drawCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "drawCard", false);
         controllerMock.drawCard(0);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        replayMocks(false);
         userController.tryDrawCard();
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testTryCloseGame() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("closeGame").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "closeGame", false);
         controllerMock.closeGame();
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        replayMocks(false);
         userController.tryCloseGame();
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testFavorGiveFrom() {
-        // GameController partially mocked to avoid additional unnecessary mocks and dependencies
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("closeGame").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "closeGame", false);
         Card cardMock = EasyMock.mock(Card.class);
         playerMock.removeCard(cardMock);
-        viewMock.giveCard(0, 1, cardMock);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
+        viewMock.giveCard(1, 0, cardMock);
+        replayMocks(false);
         EasyMock.replay(cardMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 1);
-        userController.update(new GiveCardNotification(0, 1, cardMock));
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        userController.update(new GiveCardNotification(1, 0, cardMock));
+        verifyMocks(false);
         EasyMock.verify(cardMock);
     }
 
     @Test
     public void testFavorGiveTo() {
-        // GameController partially mocked to avoid additional unnecessary mocks and dependencies
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("closeGame").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "closeGame", false);
         Card cardMock = EasyMock.mock(Card.class);
         playerMock.addCard(cardMock);
         viewMock.giveCard(0, 1, cardMock);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         EasyMock.replay(cardMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.update(new GiveCardNotification(0, 1, cardMock));
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
         EasyMock.verify(cardMock);
     }
 
     @Test
     public void testFavorGiveUninvolved() {
-        // GameController partially mocked to avoid additional unnecessary mocks and dependencies
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("closeGame").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "closeGame", false);
         Card cardMock = EasyMock.mock(Card.class);
-        viewMock.giveCard(0, 1, cardMock);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
+        viewMock.giveCard(2, 1, cardMock);
+        replayMocks(false);
         EasyMock.replay(cardMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 2);
-        userController.update(new GiveCardNotification(0, 1, cardMock));
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        userController.update(new GiveCardNotification(2, 1, cardMock));
+        verifyMocks(false);
         EasyMock.verify(cardMock);
     }
 
     @Test
     public void testCatPickPairThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("discardCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "discardCard", false);
         Card card1 = new Card(CardType.TACOCAT);
         Card card2 = new Card(CardType.CATTERMELON);
 
@@ -486,360 +446,190 @@ public class UserControllerTests {
                 CardType.TACOCAT, card1)).andReturn(card2);
         controllerMock.discardCard(card2);
 
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
 
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.catPickPair(card1);
 
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testCatStealCardThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("stealCardFrom").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-
+        setupMocks(true, "stealCardFrom", false);
         EasyMock.expect(viewMock.showPickOtherPlayer()).andReturn(1);
         controllerMock.stealCardFrom(0, 1);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        replayMocks(false);
         userController.catStealCard(0);
-
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testCatStealCardOtherPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("stealCardFrom").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(playerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "stealCardFrom", false);
+        replayMocks(false);
         userController.catStealCard(1);
-
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateFavorPickPlayerThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("favorSelect").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "favorSelect", false);
         EasyMock.expect(viewMock.showPickOtherPlayer()).andReturn(1);
         controllerMock.favorSelect(0, 1);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         userController.update(new FavorPickPlayerNotification(0));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateFavorPickPlayerDifferentPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        setupMocks(true, "setName", false);
+        replayMocks(false);
         userController.update(new FavorPickPlayerNotification(1));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateFavorSelectCardThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("giveCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
+        setupMocks(true, "giveCard", false);
         Card cardMock = EasyMock.createMock(Card.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
-
         EasyMock.expect(viewMock.showFavorDialog(1, playerMock)).andReturn(cardMock);
         controllerMock.giveCard(1, 0, cardMock);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         userController.update(new FavorSelectCardNotification(1, 0));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateFavorSelectCardDifferentPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        setupMocks(true, "setName", false);
+        replayMocks(false);
         userController.update(new FavorSelectCardNotification(1, 2));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateCloseGame() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "setName", false);
         viewMock.close();
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         userController.update(new CloseGameNotification());
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testUpdateWinGameSamePlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("setName").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.mock(Player.class);
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "setName", false);
         viewMock.winGame();
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
+        replayMocks(false);
         userController.update(new WinGameNotification(0));
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testStealCardThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("giveCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
+        setupMocks(true, "giveCard", true);
         Card card = new Card(CardType.TACOCAT);
-        Player playerMock = new Player() {
+        playerMock = new Player() {
             @Override
             public Card getRandomCard(Random random) {
                 return card;
             }
         };
         controllerMock.giveCard(0, 1, card);
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
+        replayMocks(true);
         UserController userController = new UserController(controllerMock, viewMock, playerMock, 1);
         userController.stealCard(0, 1);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testStealCardOtherPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("giveCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        setupMocks(true, "giveCard", true);
+        replayMocks(true);
         userController.stealCard(0, 1);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testCloseNope() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .createMock();
+        setupMocks(true, "giveCard", true);
+        controllerMock = EasyMock.partialMockBuilder(GameController.class).createMock();
         controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
-
         viewMock.closeNope();
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
+        replayMocks(true);
         UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.closeNope();
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testDiscardCardOtherPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
+        setupMocks(false, "", true);
         Card card = new Card(CardType.TACOCAT);
-
         viewMock.discardCard(1, card);
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        replayMocks(true);
         userController.discardCard(1, card);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testDiscardCardThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = EasyMock.createMock(Player.class);
+        setupMocks(false, "", false);
         Card card = new Card(CardType.TACOCAT);
 
         viewMock.discardCard(0, card);
         playerMock.removeCard(card);
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-        EasyMock.replay(playerMock);
-
+        replayMocks(false);
         UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.discardCard(0, card);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
-        EasyMock.verify(playerMock);
+        verifyMocks(false);
     }
 
     @Test
     public void testPlayCardNopeHasNopePlay() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("playCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player player = new Player();
+        setupMocks(true, "playCard", true);
         Card card = new Card(CardType.TACOCAT);
         Card nopeCard = new Card(CardType.NOPE);
-        player.addCard(nopeCard);
-
+        playerMock.addCard(nopeCard);
         viewMock.discardCard(1, card);
         EasyMock.expect(viewMock.showNopePlay(1, card)).andReturn(true);
         controllerMock.playCard(0, nopeCard);
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, player, 0);
+        replayMocks(true);
         userController.playCard(1, card);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testPlayCardNopeHasNopeNotPlay() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("acknowledgePlayCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player player = new Player();
+        setupMocks(true, "acknowledgePlayCard", true);
         Card card = new Card(CardType.TACOCAT);
         Card nopeCard = new Card(CardType.NOPE);
-        player.addCard(nopeCard);
-
+        playerMock.addCard(nopeCard);
         viewMock.discardCard(1, card);
         EasyMock.expect(viewMock.showNopePlay(1, card)).andReturn(false);
         controllerMock.acknowledgePlayCard();
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, player, 0);
+        replayMocks(true);
         userController.playCard(1, card);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testPlayCardNopeNoNope() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("acknowledgePlayCard").createMock();
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player player = new Player();
+        setupMocks(true, "acknowledgePlayCard", true);
         Card card = new Card(CardType.TACOCAT);
-
         viewMock.discardCard(1, card);
         controllerMock.acknowledgePlayCard();
-
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, player, 0);
+        replayMocks(true);
         userController.playCard(1, card);
-
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testSeeTheFutureThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("giveCard").createMock();
         Deck deck = EasyMock.createMock(Deck.class);
+        setupMocks(true, "giveCard", true);
         controllerMock.deck = deck;
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
         Card card1 = new Card(CardType.TACOCAT);
         Card card2 = new Card(CardType.BEARD_CAT);
         Card card3 = new Card(CardType.RAINBOW_RALPHING_CAT);
@@ -850,15 +640,12 @@ public class UserControllerTests {
         viewMock.seeTheFuture(card1, card2, card3);
 
         EasyMock.replay(deck);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
+        replayMocks(true);
 
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.seeTheFuture(0);
 
         EasyMock.verify(deck);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
@@ -885,13 +672,9 @@ public class UserControllerTests {
 
     @Test
     public void testAlterTheFutureThisPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("rearrangeTopThree").createMock();
+        setupMocks(true, "rearrangeTopThree", true);
         Deck deck = EasyMock.createMock(Deck.class);
         controllerMock.deck = deck;
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
         Card card1 = new Card(CardType.TACOCAT);
         Card card2 = new Card(CardType.BEARD_CAT);
         Card card3 = new Card(CardType.RAINBOW_RALPHING_CAT);
@@ -904,36 +687,23 @@ public class UserControllerTests {
         controllerMock.rearrangeTopThree(cards);
 
         EasyMock.replay(deck);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
+        replayMocks(true);
 
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
         userController.alterTheFuture(0);
 
         EasyMock.verify(deck);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 
     @Test
     public void testAlterTheFutureOtherPlayer() {
-        GameController controllerMock = EasyMock.partialMockBuilder(GameController.class)
-                .addMockedMethod("giveCard").createMock();
+        setupMocks(true, "giveCard", true);
         Deck deck = EasyMock.createMock(Deck.class);
         controllerMock.deck = deck;
-        controllerMock.observers = new ArrayList<>();
-        AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
-        Player playerMock = new Player();
-
         EasyMock.replay(deck);
-        EasyMock.replay(viewMock);
-        EasyMock.replay(controllerMock);
-
-        UserController userController = new UserController(controllerMock, viewMock, playerMock, 0);
+        replayMocks(true);
         userController.alterTheFuture(1);
-
         EasyMock.verify(deck);
-        EasyMock.verify(viewMock);
-        EasyMock.verify(controllerMock);
+        verifyMocks(true);
     }
 }

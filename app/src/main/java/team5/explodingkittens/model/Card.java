@@ -23,12 +23,8 @@ public class Card implements Comparable<Card> {
         this.type = type;
     }
 
-    public boolean checkForExplodingKitten() {
-        return type == CardType.EXPLODING_KITTEN;
-    }
-
-    public boolean checkForDefuse() {
-        return type == CardType.DEFUSE;
+    public boolean checkForCardType(CardType type) {
+        return this.type == type;
     }
 
     /**
@@ -72,6 +68,11 @@ public class Card implements Comparable<Card> {
 
     public void playCard(GameController controller) {
         type.playCard(controller);
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 
     @Override
