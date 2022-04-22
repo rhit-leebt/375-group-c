@@ -88,8 +88,8 @@ public class DeckTests {
         EasyMock.replay(deck);
         deck.dealCards(users);
         Assert.assertEquals(29, deck.getSize());
-        Assert.assertTrue(u1.cards.get(0).checkForDefuse());
-        Assert.assertTrue(u2.cards.get(0).checkForDefuse());
+        Assert.assertTrue(u1.cards.get(0).checkForCardType(CardType.DEFUSE));
+        Assert.assertTrue(u2.cards.get(0).checkForCardType(CardType.DEFUSE));
         Assert.assertEquals(Player.HAND_SIZE, u1.cards.size());
         Assert.assertEquals(Player.HAND_SIZE, u2.cards.size());
         EasyMock.verify(deck);

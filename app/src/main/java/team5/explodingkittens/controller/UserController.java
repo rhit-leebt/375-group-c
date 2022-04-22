@@ -2,6 +2,7 @@ package team5.explodingkittens.controller;
 
 import team5.explodingkittens.controller.notification.Notification;
 import team5.explodingkittens.model.Card;
+import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.view.AbstractUserView;
 
@@ -82,9 +83,9 @@ public class UserController implements Observer {
         if (playerId == this.playerId) {
             player.removeCard(card);
         } else {
-            if (player.hasNope()) {
+            if (player.hasCardType(CardType.NOPE)) {
                 if (view.showNopePlay(playerId, card)) {
-                    gameController.playCard(this.playerId, player.getNope());
+                    gameController.playCard(this.playerId, player.getCardType(CardType.NOPE));
                 } else {
                     gameController.acknowledgePlayCard();
                 }

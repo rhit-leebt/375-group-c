@@ -23,7 +23,7 @@ import team5.explodingkittens.view.UserViewFactory;
 public class GameControllerTests {
 
     private static class TestObserver implements Observer {
-        public ArrayList<Notification> notifications = new ArrayList<Notification>();
+        public ArrayList<Notification> notifications = new ArrayList<>();
 
         @Override
         public void update(Notification notification) {
@@ -152,7 +152,7 @@ public class GameControllerTests {
 
         EasyMock.expect(stateMock.getTurnPlayerId()).andReturn(0);
         EasyMock.expect(deckMock.draw()).andReturn(cardMock);
-        EasyMock.expect(cardMock.checkForExplodingKitten()).andReturn(false);
+        EasyMock.expect(cardMock.checkForCardType(CardType.EXPLODING_KITTEN)).andReturn(false);
         stateMock.drawCard();
         userMock.drawCard(0, cardMock);
 
@@ -187,7 +187,7 @@ public class GameControllerTests {
 
         EasyMock.expect(stateMock.getTurnPlayerId()).andReturn(0);
         EasyMock.expect(deckMock.drawAtBottom()).andReturn(cardMock);
-        EasyMock.expect(cardMock.checkForExplodingKitten()).andReturn(false);
+        EasyMock.expect(cardMock.checkForCardType(CardType.EXPLODING_KITTEN)).andReturn(false);
         stateMock.drawCard();
         userMock.drawCard(0, cardMock);
 
@@ -222,7 +222,7 @@ public class GameControllerTests {
 
         EasyMock.expect(stateMock.getTurnPlayerId()).andReturn(0);
         EasyMock.expect(deckMock.draw()).andReturn(cardMock);
-        EasyMock.expect(cardMock.checkForExplodingKitten()).andReturn(true);
+        EasyMock.expect(cardMock.checkForCardType(CardType.EXPLODING_KITTEN)).andReturn(true);
         stateMock.drawCard();
         userMock.tryExplode(0, cardMock);
 
@@ -290,7 +290,7 @@ public class GameControllerTests {
     public void testViewDiscard() {
         TurnState state = EasyMock.mock(TurnState.class);
         DiscardPile discardPile = EasyMock.mock(DiscardPile.class);
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         GameController controller = new GameController(state, discardPile);
         EasyMock.expect(discardPile.viewCards()).andReturn(cards);
 
@@ -308,7 +308,7 @@ public class GameControllerTests {
         TurnState state = EasyMock.mock(TurnState.class);
         DiscardPile discardPile = EasyMock.mock(DiscardPile.class);
         Card card = EasyMock.mock(Card.class);
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         cards.add(card);
         GameController controller = new GameController(state, discardPile);
         EasyMock.expect(discardPile.viewCards()).andReturn(cards);

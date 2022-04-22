@@ -219,7 +219,7 @@ public class UserControllerTests {
         userController.tryPlayCard(handCard1);
 
         Assert.assertEquals(0, playerIds[0]);
-        Assert.assertEquals(null, cards[0]);
+        Assert.assertNull(cards[0]);
         Assert.assertTrue(dialogShown[0]);
     }
 
@@ -260,11 +260,11 @@ public class UserControllerTests {
 
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(viewMock.showExplodeDialog()).andReturn(true);
         EasyMock.expect(viewMock.showPutExplodingKittenBackDialog()).andReturn(3);
         deck.insertCard(explodingKitten, 3);
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(state.getTurnPlayerId()).andReturn(0);
         discardPile.discardCard(defuseCard);
         viewMock.discardCard(0, defuseCard);
@@ -299,7 +299,7 @@ public class UserControllerTests {
         player.addCard(defuseCard);
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(defuseCard.checkForDefuse()).andReturn(true);
+        EasyMock.expect(defuseCard.checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.expect(viewMock.showExplodeDialog()).andReturn(false);
         viewMock.discardAllCards(0);
         state.invalidatePlayer(0);
@@ -332,7 +332,7 @@ public class UserControllerTests {
         Player player = EasyMock.mock(Player.class);
         UserController user = new UserController(gameController, viewMock, player, 0);
 
-        EasyMock.expect(player.hasDefuse()).andReturn(false);
+        EasyMock.expect(player.hasCardType(CardType.DEFUSE)).andReturn(false);
         viewMock.showCantDefuseDialog();
         player.removeAllCards();
         viewMock.discardAllCards(0);
