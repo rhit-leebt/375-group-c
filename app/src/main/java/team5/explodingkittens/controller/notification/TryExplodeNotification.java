@@ -2,6 +2,7 @@ package team5.explodingkittens.controller.notification;
 
 import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.model.Card;
+import team5.explodingkittens.view.SpectatorViewSceneHandler;
 
 /**
  * A notification for trying to exploding a specific player.
@@ -18,5 +19,10 @@ public class TryExplodeNotification implements Notification {
     @Override
     public void applyNotification(UserController userController) {
         userController.tryExplode(playerId, card);
+    }
+
+    @Override
+    public void applyNotification(SpectatorViewSceneHandler sceneHandler) {
+        // TODO: behavior?
     }
 }

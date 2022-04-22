@@ -4,16 +4,19 @@ import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.view.SpectatorViewSceneHandler;
 
 /**
- * A notification to close the game.
+ * Notification when an Alter The Future card is played.
+ *
+ * @author Maura Coriale
  */
-public class CloseGameNotification implements Notification {
+public class NameChangeNotification implements Notification {
+
     @Override
     public void applyNotification(UserController userController) {
-        userController.closeGame();
+        // TODO: behavior?
     }
 
     @Override
     public void applyNotification(SpectatorViewSceneHandler sceneHandler) {
-        // TODO: behavior?
+        sceneHandler.updateNames();
     }
 }
