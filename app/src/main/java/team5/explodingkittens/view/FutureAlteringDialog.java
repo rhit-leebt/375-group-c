@@ -86,7 +86,7 @@ public class FutureAlteringDialog extends Dialog<Card> {
         firstChoice.addConfirmButton();
         firstChoice.showAndWaitDefault();
         workingSet.remove(firstChoice.getSelectedItem());
-        getSecondChoice(workingSet);
+        getSecondChoice(workingSet, new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet));
         Card firstCard = firstChoice.getSelectedItem();
         ArrayList<Card> returnCards = new ArrayList<>();
         returnCards.add(0, firstCard);
@@ -95,8 +95,7 @@ public class FutureAlteringDialog extends Dialog<Card> {
         return returnCards;
     }
 
-    public void getSecondChoice(ArrayList<Card> workingSet){
-        LanguageFriendlyChoiceDialog<Card> secondChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
+    public void getSecondChoice(ArrayList<Card> workingSet, LanguageFriendlyChoiceDialog<Card> secondChoice){
         secondChoice.addConfirmButton();
         secondChoice.showAndWaitDefault();
         Card secondCard = secondChoice.getSelectedItem();
