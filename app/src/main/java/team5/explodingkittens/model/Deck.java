@@ -123,7 +123,5 @@ public class Deck {
         drawPile.add(drawPile.size() - depth, card);
     }
 
-    public void shuffle() {
-        Collections.shuffle(drawPile, random);
-    }
+    public void shuffle() { Collections.shuffle(drawPile, random); }
 }

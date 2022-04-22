@@ -50,7 +50,7 @@ public class UserViewSceneHandler {
             public void handle(KeyEvent event) {
                 if (event.getCode().isDigitKey()) {
                     handleDigitKey(event);
-                } else if (event.getCode() == KeyCode.SPACE) {
+                } else if (event.getCode() == KeyCode.SHIFT) {
                     spaceEvent.handle(event);
                 }
             }
