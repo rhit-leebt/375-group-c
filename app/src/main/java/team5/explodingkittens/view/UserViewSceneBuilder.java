@@ -5,8 +5,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,13 +23,11 @@ public class UserViewSceneBuilder {
     private List<UiPlayer> playerUis;
     private final EventHandler<ActionEvent> playHandler;
     private final EventHandler<MouseEvent> drawHandler;
-    private final EventHandler<KeyEvent> keyDrawHandler;
     private final UserViewSceneHandler sceneHandler;
 
-    public UserViewSceneBuilder(EventHandler<ActionEvent> playHandler, EventHandler<MouseEvent> drawHandler, EventHandler<KeyEvent> keyDrawHandler) {
+    public UserViewSceneBuilder(EventHandler<ActionEvent> playHandler, EventHandler<MouseEvent> drawHandler) {
         this.playHandler = playHandler;
         this.drawHandler = drawHandler;
-        this.keyDrawHandler = keyDrawHandler;
         this.sceneHandler = new UserViewSceneHandler();
     }
 
@@ -47,9 +43,6 @@ public class UserViewSceneBuilder {
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
         sceneHandler.replaceScene(scene);
-
-        sceneHandler.setSpaceBarEvent(keyDrawHandler);
-
         return sceneHandler;
     }
 
