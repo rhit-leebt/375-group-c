@@ -6,13 +6,10 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import team5.explodingkittens.controller.notification.Notification;
-import team5.explodingkittens.model.Card;
-import team5.explodingkittens.model.CardType;
-import team5.explodingkittens.model.Deck;
-import team5.explodingkittens.model.DiscardPile;
-import team5.explodingkittens.model.TurnState;
+import team5.explodingkittens.model.*;
 import team5.explodingkittens.view.AbstractUserView;
 import team5.explodingkittens.view.NullUserView;
+import team5.explodingkittens.view.SpectatorView;
 import team5.explodingkittens.view.UserViewFactory;
 
 /**
@@ -712,23 +709,22 @@ public class GameControllerTests {
     public void testStartGame() {
         for (int numPlayers = 2; numPlayers < 11; numPlayers++) {
             UserViewFactory factoryMock = EasyMock.createMock(UserViewFactory.class);
-            boolean[] hasBeenSet = new boolean[numPlayers];
-            boolean[] hasBeenDealt = new boolean[numPlayers];
+            boolean[] userControlHasBeenSetForView = new boolean[numPlayers];
+            boolean[] viewHasBeenDealtCards = new boolean[numPlayers];
 
-            AbstractUserView[] userViews = new AbstractUserView[numPlayers];
             for (int i = 0; i < numPlayers; i++) {
                 int index = i;
-                userViews[i] = new NullUserView() {
+                AbstractUserView testView = new NullUserView() {
                     @Override
                     public void setUserController(UserController userController) {
                         super.setUserController(userController);
-                        hasBeenSet[index] = true;
+                        userControlHasBeenSetForView[index] = true;
                     }
 
                     @Override
                     public void drawCard(int playerId, Card card) {
                         super.drawCard(playerId, card);
-                        hasBeenDealt[index] = true;
+                        viewHasBeenDealtCards[index] = true;
                     }
 
                     @Override
@@ -737,12 +733,8 @@ public class GameControllerTests {
 
                     }
                 };
+                EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(testView);
             }
-
-            for (int i = 0; i < numPlayers; i++) {
-                EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(userViews[i]);
-            }
-
             EasyMock.replay(factoryMock);
 
             GameController gameController = new GameController();
@@ -750,8 +742,8 @@ public class GameControllerTests {
 
             EasyMock.verify(factoryMock);
             for (int i = 0; i < numPlayers; i++) {
-                Assert.assertTrue(hasBeenSet[i]);
-                Assert.assertTrue(hasBeenDealt[i]);
+                Assert.assertTrue(userControlHasBeenSetForView[i]);
+                Assert.assertTrue(viewHasBeenDealtCards[i]);
             }
         }
     }
