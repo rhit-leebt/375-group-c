@@ -33,7 +33,7 @@ public class GameControllerTests {
         GameController gameController = new GameController();
         int numPlayers = -1;
         try {
-            gameController.startGame(numPlayers, new UserViewFactory(false));
+            gameController.startGame(numPlayers, new UserViewFactory());
             Assert.fail();
         } catch (IllegalArgumentException e) {
             Assert.assertEquals("Must have more than two players to start game", e.getMessage());
@@ -45,7 +45,7 @@ public class GameControllerTests {
         GameController gameController = new GameController();
         int numPlayers = 11;
         try {
-            gameController.startGame(numPlayers, new UserViewFactory(false));
+            gameController.startGame(numPlayers, new UserViewFactory());
             Assert.fail();
         } catch (IllegalArgumentException e) {
             Assert.assertEquals("Must have less than ten players to start game", e.getMessage());

@@ -27,7 +27,7 @@ public class GameApplication extends Application {
             ResourceController.setLocale(locale);
             int numberPlayers = startScreen.showNumberPlayersDialog();
             startScreen.close();
-            gameController.startGame(numberPlayers, new UserViewFactory(true));
+            gameController.startGame(numberPlayers, new UserViewFactory());
         });
     }
 }
