@@ -13,8 +13,8 @@ public class FutureAlteringDialogTests extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        testChooseNewOrder();
-        testGetSecondChoice();
+//        testChooseNewOrder();
+//        testGetSecondChoice();
     }
 
     public void testChooseNewOrder() {

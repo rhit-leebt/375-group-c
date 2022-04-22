@@ -25,9 +25,9 @@ public class UserViewTests extends ApplicationTest {
     }
     @Override
     public void start(Stage stage) throws Exception {
-        testConstructor();
-        testMoveToFront();
-        testStayBack();
+//        testConstructor();
+//        testMoveToFront();
+//        testStayBack();
     }
 
     public void testConstructor() {
