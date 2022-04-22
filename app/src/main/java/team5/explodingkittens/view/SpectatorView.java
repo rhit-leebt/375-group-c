@@ -17,6 +17,13 @@ public class SpectatorView extends Stage {
         show();
     }
 
+    // Testing constructor for dependency injection
+    public SpectatorView(SpectatorViewSceneBuilder builder) {
+        sceneHandler = builder.generateSceneFromPlayerInfo();
+        setScene(sceneHandler.getScene());
+        show();
+    }
+
     public Observer getObservableHandler() {
         return (Observer) sceneHandler;
     }

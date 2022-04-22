@@ -708,43 +708,74 @@ public class GameControllerTests {
     @Test
     public void testStartGame() {
         for (int numPlayers = 2; numPlayers < 11; numPlayers++) {
-            UserViewFactory factoryMock = EasyMock.createMock(UserViewFactory.class);
-            boolean[] userControlHasBeenSetForView = new boolean[numPlayers];
-            boolean[] viewHasBeenDealtCards = new boolean[numPlayers];
+            testStartGameDealsCards(numPlayers);
+            testStartGameSetsViews(numPlayers);
+        }
+    }
 
-            for (int i = 0; i < numPlayers; i++) {
-                int index = i;
-                AbstractUserView testView = new NullUserView() {
-                    @Override
-                    public void setUserController(UserController userController) {
-                        super.setUserController(userController);
-                        userControlHasBeenSetForView[index] = true;
-                    }
+    private void testStartGameDealsCards(int numPlayers) {
+        UserViewFactory factoryMock = EasyMock.createMock(UserViewFactory.class);
+        GameControllerInitUtility utilityPartialMock =
+                EasyMock.partialMockBuilder(GameControllerInitUtility.class)
+                        .addMockedMethod("setUpSpectatorView")
+                        .createMock();
+        utilityPartialMock.setUpSpectatorView(EasyMock.anyObject(), EasyMock.anyObject());
+        EasyMock.expectLastCall();
 
-                    @Override
-                    public void drawCard(int playerId, Card card) {
-                        super.drawCard(playerId, card);
-                        viewHasBeenDealtCards[index] = true;
-                    }
+        boolean[] viewHasBeenDealtCards = new boolean[numPlayers];
+        for (int i = 0; i < numPlayers; i++) {
+            int index = i;
+            AbstractUserView testView = new NullUserView() {
+                @Override
+                public void drawCard(int playerId, Card card) {
+                    super.drawCard(playerId, card);
+                    viewHasBeenDealtCards[index] = true;
+                }
+            };
+            EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(testView);
+        }
+        EasyMock.replay(factoryMock, utilityPartialMock);
 
-                    @Override
-                    public void discardCard(int playerId, Card card) {
-                        super.discardCard(playerId, card);
+        GameController gameController = new GameController();
+        utilityPartialMock.gameController = gameController;
+        gameController.startGame(numPlayers, factoryMock, utilityPartialMock);
 
-                    }
-                };
-                EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(testView);
-            }
-            EasyMock.replay(factoryMock);
+        EasyMock.verify(factoryMock);
+        for (int i = 0; i < numPlayers; i++) {
+            Assert.assertTrue(viewHasBeenDealtCards[i]);
+        }
+    }
 
-            GameController gameController = new GameController();
-            gameController.startGame(numPlayers, factoryMock);
+    private void testStartGameSetsViews(int numPlayers) {
+        UserViewFactory factoryMock = EasyMock.createMock(UserViewFactory.class);
+        GameControllerInitUtility utilityPartialMock =
+                EasyMock.partialMockBuilder(GameControllerInitUtility.class)
+                        .addMockedMethod("setUpSpectatorView")
+                        .createMock();
+        utilityPartialMock.setUpSpectatorView(EasyMock.anyObject(), EasyMock.anyObject());
+        EasyMock.expectLastCall();
 
-            EasyMock.verify(factoryMock);
-            for (int i = 0; i < numPlayers; i++) {
-                Assert.assertTrue(userControlHasBeenSetForView[i]);
-                Assert.assertTrue(viewHasBeenDealtCards[i]);
-            }
+        boolean[] userControlHasBeenSetForView = new boolean[numPlayers];
+        for (int i = 0; i < numPlayers; i++) {
+            int index = i;
+            AbstractUserView testView = new NullUserView() {
+                @Override
+                public void setUserController(UserController userController) {
+                    super.setUserController(userController);
+                    userControlHasBeenSetForView[index] = true;
+                }
+            };
+            EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(testView);
+        }
+        EasyMock.replay(factoryMock, utilityPartialMock);
+
+        GameController gameController = new GameController();
+        utilityPartialMock.gameController = gameController;
+        gameController.startGame(numPlayers, factoryMock, utilityPartialMock);
+
+        EasyMock.verify(factoryMock);
+        for (int i = 0; i < numPlayers; i++) {
+            Assert.assertTrue(userControlHasBeenSetForView[i]);
         }
     }
 
