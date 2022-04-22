@@ -88,6 +88,7 @@ public enum CardType {
             return noPawCount + pawCount;
         }
     }
+    public static String getBasePath() { return BASE_PATH; }
 
     public String getPath() {
         return BASE_PATH + genericName + ".png";
