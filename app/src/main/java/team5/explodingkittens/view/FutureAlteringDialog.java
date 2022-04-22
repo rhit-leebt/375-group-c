@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 public class FutureAlteringDialog extends Dialog<Card> {
     private final ArrayList<Card> cards;
-    private Card secondCard;
-    private Card thirdCard;
+    protected Card secondCard;
+    protected Card thirdCard;
     private static final String DIALOG_TITLE = "alterTheFutureTitle";
     HashMap<String, Card> map;
 
@@ -64,9 +64,6 @@ public class FutureAlteringDialog extends Dialog<Card> {
     private Button createConfirmButton() {
         Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
         confirmButton.setText(ResourceController.getString("confirm"));
-/*        confirmButton.setOnAction(e -> {
-            this.chooseNewOrder();
-        });*/
         return confirmButton;
     }
 
@@ -90,10 +87,10 @@ public class FutureAlteringDialog extends Dialog<Card> {
         return null;
     }
 
-    public ArrayList<Card> chooseNewOrder(){
+    public ArrayList<Card> chooseNewOrder(LanguageFriendlyChoiceDialog<Card> firstChoice){
         ArrayList<Card> workingSet = (ArrayList<Card>) this.cards.clone();
         System.out.println(workingSet.size());
-        LanguageFriendlyChoiceDialog<Card> firstChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
+        // LanguageFriendlyChoiceDialog<Card> firstChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
         firstChoice.setTitle(ResourceController.getString("chooseFirstCard"));
         firstChoice.addConfirmButton();
         firstChoice.showAndWaitDefault();
