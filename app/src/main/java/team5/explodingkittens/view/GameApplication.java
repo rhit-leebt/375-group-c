@@ -29,5 +29,10 @@ public class GameApplication extends Application {
             startScreen.close();
             gameController.startGame(numberPlayers, new UserViewFactory());
         });
+        startScreen.setImageHandler(e -> {
+            startScreen.showChangeImageDialog();
+        });
+        //FutureAlteringDialog dialog = new FutureAlteringDialog(new Card(CardType.SKIP), new Card(CardType.CATTERMELON), new Card(CardType.BEARD_CAT));
+        //dialog.show();
     }
 }

@@ -1,5 +1,11 @@
 package team5.explodingkittens.view;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,10 +19,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.model.Card;
+import team5.explodingkittens.model.CardType;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * A UI object that contains all UI elements related to Starting the game.
@@ -26,6 +37,7 @@ import team5.explodingkittens.model.Card;
 public class StartView extends Stage {
     private static final String START_SCREEN_TITLE = "gameTitle";
     private static final String START_BUTTON_KEY = "startGameButton";
+    private static final String CHANGE_BUTTON_KEY = "changeImagesButton";
     private static final String START_SCREEN_BACKGROUND_FILE = "start_screen_background.png";
     private static final WrapperClasses.SelectInfo LOCALE_INFO =
             new WrapperClasses.SelectInfo("localeTitle", "localeHeader", "localeContent");
@@ -35,6 +47,7 @@ public class StartView extends Stage {
 
 
     private final Button startButton;
+    private final Button imagesButton;
 
     /**
      * Creates an empty StartScreen, and finds the default screen size.
@@ -43,7 +56,9 @@ public class StartView extends Stage {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         HBox horizontalLayout = createHBox(screenBounds);
         startButton = createStartButton();
+        imagesButton = createImagesButton();
         horizontalLayout.getChildren().add(startButton);
+        horizontalLayout.getChildren().add(imagesButton);
         setTitle(ResourceController.getString(START_SCREEN_TITLE));
         Scene scene = new Scene(horizontalLayout,
                 screenBounds.getWidth(), screenBounds.getHeight());
@@ -71,6 +86,13 @@ public class StartView extends Stage {
         return startButton;
     }
 
+    private Button createImagesButton() {
+        Button imagesButton = new Button("Change Card Images");
+        imagesButton.setPrefHeight(75);
+        imagesButton.setPrefWidth(215);
+        return imagesButton;
+    }
+
     /**
      * Creates a popup dialog that prompts the user for the language to play in.
      *
@@ -90,6 +112,20 @@ public class StartView extends Stage {
         localeDialog.addConfirmButton();
         String result = localeDialog.showAndWaitDefault();
         return ResourceController.getLocale(localeOptions.indexOf(result));
+    }
+
+    public void showChangeImageDialog() {
+        List<CardType> cardTypes = List.of(CardType.values());
+        ChangeImageDialog<CardType> imageDialog = new ChangeImageDialog<>(cardTypes.get(0), cardTypes);
+        imageDialog.setTitle("Change Card Image");
+        imageDialog.setHeaderText("Change the png image of a card");
+        imageDialog.setContentText("Please select a card");
+        imageDialog.addConfirmButton();
+        imageDialog.addCancelButton();
+        CardType result = imageDialog.showAndWaitDefault();
+        if (result != null) {
+            changeImage(result);
+        }
     }
 
     /**
@@ -119,4 +155,27 @@ public class StartView extends Stage {
     public void setStartHandler(EventHandler<ActionEvent> handler) {
         startButton.setOnAction(handler);
     }
+
+    public void setImageHandler(EventHandler<ActionEvent> handler) {
+        imagesButton.setOnAction(handler);
+    }
+
+    public void changeImage(CardType toChange) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select new card picture");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+        File newImage = fileChooser.showOpenDialog(this);
+        if (newImage != null) {
+            Path toChangePath = Paths.get(toChange.getPath());
+            Path newImagePath = Paths.get(newImage.getPath());
+            try {
+                Files.copy(newImagePath, toChangePath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
