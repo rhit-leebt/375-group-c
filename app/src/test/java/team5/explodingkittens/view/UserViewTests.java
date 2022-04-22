@@ -27,6 +27,7 @@ public class UserViewTests extends ApplicationTest {
     public void start(Stage stage) throws Exception {
         testConstructor();
         testMoveToFront();
+        testStayBack();
     }
 
     public void testConstructor() {
@@ -57,6 +58,23 @@ public class UserViewTests extends ApplicationTest {
         view.changeUiOnTurnChange(true);
 
         Assert.assertTrue(view.front);
+        EasyMock.verify(sceneBuilderMock);
+        EasyMock.verify(handlerMock);
+    }
+
+    public void testStayBack() {
+        UserViewSceneBuilder sceneBuilderMock = EasyMock.mock(UserViewSceneBuilder.class);
+        UserViewSceneHandler handlerMock = EasyMock.mock(UserViewSceneHandler.class);
+        EasyMock.expect(sceneBuilderMock.generateSceneFromPlayerInfo(2, 0))
+                .andReturn(handlerMock);
+        EasyMock.expect(handlerMock.getScene()).andReturn(new Scene(new HBox()));
+        EasyMock.replay(sceneBuilderMock);
+        EasyMock.replay(handlerMock);
+
+        DummyView view = new DummyView(2, 0, sceneBuilderMock);
+        view.changeUiOnTurnChange(false);
+
+        Assert.assertFalse(view.front);
         EasyMock.verify(sceneBuilderMock);
         EasyMock.verify(handlerMock);
     }
