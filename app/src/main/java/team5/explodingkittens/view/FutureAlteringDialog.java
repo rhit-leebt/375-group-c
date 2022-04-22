@@ -28,25 +28,20 @@ public class FutureAlteringDialog extends Dialog<Card> {
     /**
      * Dialog that allows player to see the top three cards and choose a reordering
      *
-     * @param card0 the first card in the deck
-     * @param card1 the second card in the deck
-     * @param card2 the third card in the deck
+     * @param cards a list of the top three cards in the deck
      */
-    public FutureAlteringDialog(Card card0, Card card1, Card card2) {
+    public FutureAlteringDialog(ArrayList<Card> cards) {
         this.map = new HashMap<>();
-        this.cards = new ArrayList<>();
-        this.cards.add(card0);
-        this.cards.add(card1);
-        this.cards.add(card2);
+        this.cards = cards;
         for(Card card : cards){
-            this.map.put(card0.getName(), card0);
-            this.map.put(card1.getName(), card1);
-            this.map.put(card2.getName(), card2);
+            this.map.put(cards.get(0).getName(), cards.get(0));
+            this.map.put(cards.get(1).getName(), cards.get(1));
+            this.map.put(cards.get(2).getName(), cards.get(2));
         }
         this.setTitle(ResourceController.getString(DIALOG_TITLE));
         VBox verticalBox = new VBox();
         verticalBox.setAlignment(Pos.CENTER);
-        createHBox(card0, card1, card2, verticalBox);
+        createHBox(cards.get(0), cards.get(1), cards.get(2), verticalBox);
         getDialogPane().getButtonTypes().add(ButtonType.OK);
         Button confirmButton = createConfirmButton();
         verticalBox.getChildren().add(confirmButton);
@@ -87,11 +82,7 @@ public class FutureAlteringDialog extends Dialog<Card> {
         return null;
     }
 
-    public ArrayList<Card> chooseNewOrder(LanguageFriendlyChoiceDialog<Card> firstChoice){
-        ArrayList<Card> workingSet = (ArrayList<Card>) this.cards.clone();
-        System.out.println(workingSet.size());
-        // LanguageFriendlyChoiceDialog<Card> firstChoice = new LanguageFriendlyChoiceDialog<>(workingSet.get(0), workingSet);
-        firstChoice.setTitle(ResourceController.getString("chooseFirstCard"));
+    public ArrayList<Card> chooseNewOrder(ArrayList<Card> workingSet, LanguageFriendlyChoiceDialog<Card> firstChoice){
         firstChoice.addConfirmButton();
         firstChoice.showAndWaitDefault();
         workingSet.remove(firstChoice.getSelectedItem());
@@ -101,7 +92,6 @@ public class FutureAlteringDialog extends Dialog<Card> {
         returnCards.add(0, firstCard);
         returnCards.add(1, secondCard);
         returnCards.add(2, thirdCard);
-        System.out.println("New top three: " + returnCards);
         return returnCards;
     }
 
