@@ -109,7 +109,7 @@ public class StartView extends Stage {
         localeDialog.setTitle(ResourceController.getString(LOCALE_INFO.title));
         localeDialog.setHeaderText(ResourceController.getString(LOCALE_INFO.header));
         localeDialog.setContentText(ResourceController.getString(LOCALE_INFO.content));
-        localeDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(localeDialog);
         String result = localeDialog.showAndWaitDefault();
         return ResourceController.getLocale(localeOptions.indexOf(result));
     }
@@ -120,8 +120,8 @@ public class StartView extends Stage {
         imageDialog.setTitle("Change Card Image");
         imageDialog.setHeaderText("Change the png image of a card");
         imageDialog.setContentText("Please select a card");
-        imageDialog.addConfirmButton();
-        imageDialog.addCancelButton();
+        DialogBuilder.addConfirmButton(imageDialog);
+        DialogBuilder.addCancelButton(imageDialog);
         CardType result = imageDialog.showAndWaitDefault();
         if (result != null) {
             changeImage(result);
@@ -147,7 +147,7 @@ public class StartView extends Stage {
                 ResourceController.getString(PLAYER_INFO.header));
         numberPlayersDialog.setContentText(
                 ResourceController.getString(PLAYER_INFO.content));
-        numberPlayersDialog.addConfirmButton();
+        DialogBuilder.addConfirmButton(numberPlayersDialog);
         String result = numberPlayersDialog.showAndWaitDefault();
         return numberPlayersOptions.indexOf(result) + 2;
     }

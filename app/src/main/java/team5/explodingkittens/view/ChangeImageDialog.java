@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ChangeImageDialog<T> extends ChoiceDialog<T> {
-    private final T defaultChoice;
+    private T defaultChoice;
 
     public ChangeImageDialog(T defaultChoice, List<T> choices) {
         super(defaultChoice, choices);
@@ -18,17 +18,7 @@ public class ChangeImageDialog<T> extends ChoiceDialog<T> {
         getDialogPane().getButtonTypes().clear();
     }
 
-    public void addConfirmButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
-        Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.OK);
-        confirmButton.setText(ResourceController.getString("confirm"));
-    }
-
-    public void addCancelButton() {
-        getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Button confirmButton = (Button) this.getDialogPane().lookupButton(ButtonType.CANCEL);
-        confirmButton.setText(ResourceController.getString("cancel"));
-    }
+    public ChangeImageDialog() {}
 
     public T showAndWaitDefault() {
         Optional<T> result = super.showAndWait();
