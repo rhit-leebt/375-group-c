@@ -82,11 +82,7 @@ public class GameController {
     public void startGame(int numPlayers, UserViewFactory userViewFactory) {
         validatePlayerCount(numPlayers);
 
-        List<Player> players = new ArrayList<>(numPlayers);
-        for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player();
-            players.add(player);
-        }
+        List<Player> players = initializePlayerList(numPlayers);
         List<UserController> users = createUsersWithViewsFromPlayers(players, userViewFactory);
 
         setUpSpectatorView(players, userViewFactory);
@@ -103,6 +99,15 @@ public class GameController {
         if (numPlayers > 10) {
             throw new IllegalArgumentException("Must have less than ten players to start game");
         }
+    }
+
+    private List<Player> initializePlayerList(int numPlayers) {
+        List<Player> players = new ArrayList<>(numPlayers);
+        for (int i = 0; i < numPlayers; i++) {
+            Player player = new Player();
+            players.add(player);
+        }
+        return players;
     }
 
     private List<UserController> createUsersWithViewsFromPlayers(List<Player> players, UserViewFactory userViewFactory) {
