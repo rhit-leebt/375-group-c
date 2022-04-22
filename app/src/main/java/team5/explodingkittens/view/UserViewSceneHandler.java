@@ -1,10 +1,11 @@
 package team5.explodingkittens.view;
-
 import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import team5.explodingkittens.model.Card;
 
 public class UserViewSceneHandler {
@@ -15,6 +16,7 @@ public class UserViewSceneHandler {
     public UiPlayerHand playerHandUi;
     private Scene scene;
     private final TranslateAnimator animator;
+    private EventHandler<KeyEvent> spaceEvent;
 
     public UserViewSceneHandler() {
         animator = new TranslateAnimator(1);
@@ -34,10 +36,39 @@ public class UserViewSceneHandler {
 
     public void setUiPlayerHand(UiPlayerHand playerHandUi) {
         this.playerHandUi = playerHandUi;
+        this.playerHandUi.alignCards();
     }
 
     public void replaceScene(Scene scene) {
         this.scene = scene;
+        assignKeyActions();
+    }
+
+    private void assignKeyActions() {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().isDigitKey()) {
+                    handleDigitKey(event);
+                } else if (event.getCode() == KeyCode.SHIFT) {
+                    spaceEvent.handle(event);
+                }
+            }
+        });
+    }
+
+    private void handleDigitKey(KeyEvent event) {
+        int index = Integer.parseInt(event.getText());
+        if (index == 0) {
+            index = 10;
+        }
+        index--;
+        playerHandUi.selectCardByIndex(index);
+        playerHandUi.hoverCard(index);
+    }
+
+    public void setSpaceBarEvent(EventHandler<KeyEvent> spaceEvent) {
+        this.spaceEvent = spaceEvent;
     }
 
     public void setNameOfPlayerUi(int playerId, String name) {

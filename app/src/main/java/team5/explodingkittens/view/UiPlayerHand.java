@@ -59,7 +59,10 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
         infoPanel.setTranslateX((cards.size() - centerIndex) * CARD_OVERLAP_WIDTH + 200);
     }
 
-    private void hoverCard(int index) {
+    public void hoverCard(int index) {
+        if (index > cards.size() || index < 0) {
+            return;
+        }
         this.resort();
         for (int i = 0; i < index; i++) {
             cards.get(i).toFront();
@@ -82,6 +85,24 @@ public class UiPlayerHand extends StackPane implements UiPlayer {
         card.select();
         selectedCard = card;
         infoPanel.displayCard(selectedCard.getCard());
+    }
+
+    public void selectCardByIndex(int index) {
+        if (cards.size() > index && index >= 0) {
+            UiHandCard card = cards.get(index);
+            if (selectedCard != null) {
+                selectedCard.deselect();
+                if (selectedCard == card) {
+                    selectedCard = null;
+                    infoPanel.clearCard();
+                    return;
+                }
+            }
+
+            card.select();
+            selectedCard = card;
+            infoPanel.displayCard(selectedCard.getCard());
+        }
     }
 
     @Override
