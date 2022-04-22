@@ -3,6 +3,8 @@ package team5.explodingkittens.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
 import team5.explodingkittens.controller.UserController;
 
 /**
@@ -13,6 +15,7 @@ import team5.explodingkittens.controller.UserController;
  */
 public class Deck {
     private final List<Card> drawPile;
+    public Random random = new Random();
 
     /**
      * Given a number of players the deck will be created
@@ -120,7 +123,5 @@ public class Deck {
         drawPile.add(drawPile.size() - depth, card);
     }
 
-    public void shuffle() {
-        Collections.shuffle(drawPile);
-    }
+    public void shuffle() { Collections.shuffle(drawPile, random); }
 }

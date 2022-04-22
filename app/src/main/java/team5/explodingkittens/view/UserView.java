@@ -1,5 +1,7 @@
 package team5.explodingkittens.view;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,6 +57,7 @@ public class UserView extends Stage implements AbstractUserView {
     public UserView(int numPlayers, int playerId) {
         UserViewSceneBuilder builder = new UserViewSceneBuilder(
                 e -> this.tryPlayCard(),
+                e -> this.tryDrawCard(),
                 e -> this.tryDrawCard());
         sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
         setScene(sceneHandler.getScene());
