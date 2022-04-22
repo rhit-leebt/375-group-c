@@ -108,7 +108,9 @@ public class CardTests {
 
         for (CardType cardType : CardType.values()) {
             Card card = new Card(cardType);
-            Assert.assertEquals(cardsToImagePaths.get(cardType), card.getImagePath());
+            Assert.assertEquals("Expected " + cardsToImagePaths.get(cardType) +
+                            " mismatches with actual " + card.getImagePath()
+                    , cardsToImagePaths.get(cardType), card.getImagePath());
         }
     }
 
