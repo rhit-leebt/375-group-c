@@ -1,8 +1,10 @@
 package team5.explodingkittens.controller;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.A;
 import team5.explodingkittens.controller.notification.*;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
@@ -11,6 +13,7 @@ import team5.explodingkittens.model.DiscardPile;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.model.TurnState;
 import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.SpectatorView;
 import team5.explodingkittens.view.UserViewFactory;
 
 /**
@@ -77,24 +80,59 @@ public class GameController {
      * @param numPlayers The number of players who will be playing in the game.
      */
     public void startGame(int numPlayers, UserViewFactory userViewFactory) {
+        validatePlayerCount(numPlayers);
+
+        List<Player> players = initializePlayerList(numPlayers);
+        List<UserController> users = createUsersWithViewsFromPlayers(players, userViewFactory);
+
+        setUpSpectatorView(players, userViewFactory);
+        setUpPiles(users);
+
+        state = new TurnState(numPlayers);
+        notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
+    }
+
+    private void validatePlayerCount(int numPlayers) {
         if (numPlayers < 2) {
             throw new IllegalArgumentException("Must have more than two players to start game");
         }
         if (numPlayers > 10) {
             throw new IllegalArgumentException("Must have less than ten players to start game");
         }
-        state = new TurnState(numPlayers);
-        List<UserController> users = new ArrayList<>(numPlayers);
+    }
+
+    private List<Player> initializePlayerList(int numPlayers) {
+        List<Player> players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
-            AbstractUserView userView = userViewFactory.createUserView(numPlayers, i);
             Player player = new Player();
-            users.add(new UserController(this, userView, player, i));
-            userView.setUserController(users.get(i));
+            players.add(player);
         }
-        this.deck = new Deck(numPlayers);
+        return players;
+    }
+
+    private List<UserController> createUsersWithViewsFromPlayers(List<Player> players, UserViewFactory userViewFactory) {
+        List<UserController> users = new ArrayList<>();
+        for (int i = 0; i < players.size(); i++) {
+            AbstractUserView userView = userViewFactory.createUserView(players.size(), i);
+            UserController userController = new UserController(this, userView, players.get(i), i);
+            users.add(userController);
+            userView.setUserController(userController);
+        }
+        return users;
+    }
+
+    private void setUpSpectatorView(List<Player> players, UserViewFactory userViewFactory) {
+        SpectatorView spectatorView = userViewFactory.createSpectatorView(players);
+        for (Player player : players) {
+            player.registerObserver(spectatorView.getObservableHandler());
+        }
+        registerObserver(spectatorView.getObservableHandler());
+    }
+
+    private void setUpPiles(List<UserController> users) {
+        this.deck = new Deck(users.size());
         deck.dealCards(users);
         this.discardPile = new DiscardPile();
-        notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
     }
 
     /**

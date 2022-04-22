@@ -1,6 +1,5 @@
 package team5.explodingkittens.view;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
@@ -23,13 +23,6 @@ import javafx.scene.control.Dialog;
  * @author Duncan McKee, Maura Coriale, Andrew Orians
  */
 public class UserView extends Stage implements AbstractUserView {
-    private static final double DEFAULT_SCREEN_WIDTH = 1000;
-    private static final double DEFAULT_SCREEN_HEIGHT = 1000;
-    private static final double OUTSIDE_PADDING = 25;
-    private static final double VERTICAL_SPACING = 10;
-    private static final double DECK_DISCARD_SPACING = 20;
-    private static final String PLAYER_WINDOW_TITLE = "gameTitle";
-
     private static final String NAME_DIALOG = "nameDialog";
     private static final String FAVOR_SELECT_DIALOG = "favorSelectDialog";
     private static final String EXPLODE_DIALOG = "explodeDialog";
@@ -49,20 +42,15 @@ public class UserView extends Stage implements AbstractUserView {
     private static final String PLAYER_NO_NAME = "noNameEntered";
     private static final String SEE_THE_FUTURE_DIALOG_TITLE = "TODO";
 
-//    private final UiDeck deck;
-//    private final UiDiscard discard;
-//    private final List<UiPlayer> players;
-//    private final UiPlayerHand playerHand;
-    private final UserViewSceneHandler sceneHandler;
-
     private UserController userController;
     private LanguageFriendlyEmptyDialog nopeDialog;
+    private final UserViewSceneHandler sceneHandler;
 
     /**
      * Creates a PlayerWindow object with the provided details.
      *
-     * @param numPlayers     The number of players who are playing the game.
-     * @param playerId       The ID of the player whose window this is.
+     * @param numPlayers The number of players who are playing the game.
+     * @param playerId   The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
         UserViewSceneBuilder builder = new UserViewSceneBuilder(
@@ -87,6 +75,7 @@ public class UserView extends Stage implements AbstractUserView {
     public void changeUiOnTurnChange(boolean currentTurnIsNow) {
         if (currentTurnIsNow) {
             setTitle("It is your turn!");
+            toFront();
         } else {
             setTitle("Waiting for your turn...");
         }
@@ -304,16 +293,16 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public ArrayList<Card> alterTheFuture(Card card0, Card card1, Card card2) {
-       FutureAlteringDialog futureDialog = new FutureAlteringDialog(card0, card1, card2);
-       futureDialog.showAndWait();
-       return futureDialog.chooseNewOrder();
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(card0);
+        cards.add(card1);
+        cards.add(card2);
+        FutureAlteringDialog futureDialog = new FutureAlteringDialog(cards);
+        futureDialog.showAndWait();
+        LanguageFriendlyChoiceDialog<Card> langDialog = new LanguageFriendlyChoiceDialog<>(cards.get(0), cards);
+        langDialog.setTitle(ResourceController.getString("chooseFirstCard"));
+        return futureDialog.chooseNewOrder((ArrayList<Card>) cards.clone(), langDialog);
     }
-
-//    private void setCommonParamDialogFields(Dialog<Object> dialog, String dialogType) {
-//        dialog.setTitle(ResourceController.getString(dialogType + TITLE_SUFFIX));
-//        dialog.setHeaderText(ResourceController.getString(dialogType + HEADER_SUFFIX));
-//        dialog.setContentText(ResourceController.getString(dialogType + CONTENT_SUFFIX));
-//    }
 
     private void setCommonDialogFields(Dialog dialog, String dialogType) {
         dialog.setTitle(ResourceController.getString(dialogType + TITLE_SUFFIX));
