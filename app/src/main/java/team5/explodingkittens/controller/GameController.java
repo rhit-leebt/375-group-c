@@ -174,7 +174,7 @@ public class GameController {
             } else {
                 card = deck.drawAtBottom();
             }
-            if (card.checkForExplodingKitten()) {
+            if (card.checkForCardType(CardType.EXPLODING_KITTEN)) {
                 notifyObservers(new TryExplodeNotification(playerId, card));
             } else {
                 notifyObservers(new DrawNotification(playerId, card));
