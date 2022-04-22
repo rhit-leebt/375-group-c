@@ -11,7 +11,7 @@ import team5.explodingkittens.model.cardaction.*;
  */
 public enum CardType {
     ALTER_THE_FUTURE("alterthefuture",
-            2, 4, true, new NullCardAction()),
+            2, 4, true, new AlterTheFutureAction()),
     ATTACK("attack",
             4, 7, true, new AttackCardAction()),
     TACOCAT("tacocat",

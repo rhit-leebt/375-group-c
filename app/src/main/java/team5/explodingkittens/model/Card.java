@@ -75,6 +75,11 @@ public class Card implements Comparable<Card> {
     }
 
     @Override
+    public String toString() {
+        return this.getName();
+    }
+
+    @Override
     public int compareTo(Card card) {
         return this.type.getGenericName().compareTo(card.type.getGenericName());
     }
