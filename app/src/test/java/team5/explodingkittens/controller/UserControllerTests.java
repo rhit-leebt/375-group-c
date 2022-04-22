@@ -356,7 +356,6 @@ public class UserControllerTests {
 
     @Test
     public void testTrySetName() {
-        feature/oriansaj/m3-refactorings
         setupMocks(true, "setName", false);
         playerMock.setName("testname");
         EasyMock.expectLastCall();
