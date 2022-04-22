@@ -24,13 +24,13 @@ public class FutureAlteringDialogTests extends ApplicationTest {
         }
         FutureAlteringDialog dialog = EasyMock.partialMockBuilder(FutureAlteringDialog.class)
                 .addMockedMethod("getSecondChoice").createMock();
+        EasyMock.resetToNice(dialog);
         LanguageFriendlyChoiceDialog<Card> langDialog = EasyMock.partialMockBuilder(LanguageFriendlyChoiceDialog.class)
                 .withConstructor(cards.get(1), cards)
                 .addMockedMethod("addConfirmButton")
                 .addMockedMethod("showAndWaitDefault")
                 .createMock();
         LanguageFriendlyChoiceDialog<Card> secondChoice = EasyMock.mock(LanguageFriendlyChoiceDialog.class);
-        EasyMock.resetToNice(secondChoice);
         langDialog.addConfirmButton();
         EasyMock.expect(langDialog.showAndWaitDefault()).andReturn(null);
         dialog.getSecondChoice(cards, secondChoice);
