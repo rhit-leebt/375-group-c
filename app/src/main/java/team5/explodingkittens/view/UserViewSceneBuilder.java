@@ -47,7 +47,8 @@ public class UserViewSceneBuilder {
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
         sceneHandler.replaceScene(scene);
-        sceneHandler.setSpaceBar(keyDrawHandler);
+
+        sceneHandler.setSpaceBarEvent(keyDrawHandler);
 
         return sceneHandler;
     }

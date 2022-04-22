@@ -14,9 +14,9 @@ public class UserViewSceneHandler {
     public UiDiscard discardUi;
     public List<UiPlayer> playerUis;
     public UiPlayerHand playerHandUi;
-    public Scene scene;
+    private Scene scene;
     private final TranslateAnimator animator;
-    private EventHandler<KeyEvent> spaceEvent = null;
+    private EventHandler<KeyEvent> spaceEvent;
 
     public UserViewSceneHandler() {
         animator = new TranslateAnimator(1);
@@ -49,13 +49,7 @@ public class UserViewSceneHandler {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode().isDigitKey()) {
-                    int index = Integer.parseInt(event.getText());
-                    if (index == 0) {
-                        index = 10;
-                    }
-                    index--;
-                    playerHandUi.selectCardByIndex(index);
-                    playerHandUi.hoverCard(index);
+                    handleDigitKey(event);
                 } else if (event.getCode() == KeyCode.SPACE) {
                     spaceEvent.handle(event);
                 }
@@ -63,7 +57,17 @@ public class UserViewSceneHandler {
         });
     }
 
-    public void setSpaceBar(EventHandler<KeyEvent> spaceEvent) {
+    private void handleDigitKey(KeyEvent event) {
+        int index = Integer.parseInt(event.getText());
+        if (index == 0) {
+            index = 10;
+        }
+        index--;
+        playerHandUi.selectCardByIndex(index);
+        playerHandUi.hoverCard(index);
+    }
+
+    public void setSpaceBarEvent(EventHandler<KeyEvent> spaceEvent) {
         this.spaceEvent = spaceEvent;
     }
 
