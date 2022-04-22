@@ -323,6 +323,8 @@ public class UserControllerTests {
         controllerMock.observers = new ArrayList<>();
         AbstractUserView viewMock = EasyMock.mock(AbstractUserView.class);
         Player playerMock = EasyMock.mock(Player.class);
+        playerMock.setName("testname");
+        EasyMock.expectLastCall();
         controllerMock.setName(0, "testname");
 
         EasyMock.replay(controllerMock);

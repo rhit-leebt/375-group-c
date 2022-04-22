@@ -709,6 +709,7 @@ public class GameControllerTests {
     public void testStartGame() {
         for (int numPlayers = 2; numPlayers < 11; numPlayers++) {
             UserViewFactory factoryMock = EasyMock.createMock(UserViewFactory.class);
+            SpectatorView spectatorViewMock = EasyMock.createMock(SpectatorView.class);
             boolean[] userControlHasBeenSetForView = new boolean[numPlayers];
             boolean[] viewHasBeenDealtCards = new boolean[numPlayers];
 
@@ -735,7 +736,13 @@ public class GameControllerTests {
                 };
                 EasyMock.expect(factoryMock.createUserView(numPlayers, i)).andReturn(testView);
             }
-            EasyMock.replay(factoryMock);
+            EasyMock.expect(factoryMock.createSpectatorView(EasyMock.anyObject())).andReturn(spectatorViewMock);
+            EasyMock.expect(spectatorViewMock.getObservableHandler()).andReturn(new Observer() {
+                @Override
+                public void update(Notification notification) {
+                }
+            }).anyTimes();
+            EasyMock.replay(factoryMock, spectatorViewMock);
 
             GameController gameController = new GameController();
             gameController.startGame(numPlayers, factoryMock);
