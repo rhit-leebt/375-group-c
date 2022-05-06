@@ -54,10 +54,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @param playerId   The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
-        UserViewSceneBuilder builder = new UserViewSceneBuilder(
-                e -> this.tryPlayCard(),
-                e -> this.tryDrawCard(),
-                e -> this.tryDrawCard());
+        UserViewSceneBuilder builder = new UserViewSceneBuilder(generateUserViewEvents());
         sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
         setScene(sceneHandler.getScene());
         show();
@@ -72,6 +69,14 @@ public class UserView extends Stage implements AbstractUserView {
         show();
 
         generateNameInputDialog().show();
+    }
+
+    private UserViewEvents generateUserViewEvents() {
+        UserViewEvents userViewEvents = new UserViewEvents();
+        userViewEvents.playActionHandler = e -> this.tryPlayCard();
+        userViewEvents.drawMouseHandler = e -> this.tryDrawCard();
+        userViewEvents.drawKeyHandler = e -> this.tryDrawCard();
+        return userViewEvents;
     }
 
     public void changeUiOnTurnChange(boolean currentTurnIsNow) {
