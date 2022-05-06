@@ -70,23 +70,6 @@ public class UserViewSceneBuilder {
         sceneHandler.setUiPlayerHand(playerHandUi);
     }
 
-    // Testing method for dependency injection
-    public UserViewSceneHandler populatePlayerUiList(int numPlayers, int playerId, UiPlayerHand playerHandUi, UiOtherPlayer otherPlayerUi) {
-        playerUis = new ArrayList<>(numPlayers);
-        this.playerHandUi = new UiPlayerHand(playHandler);
-        for (int i = 0; i < numPlayers; i++) {
-            if (i == playerId) {
-                playerUis.add(playerHandUi);
-            } else {
-                playerUis.add(otherPlayerUi);
-            }
-        }
-
-        sceneHandler.setPlayerUiList(playerUis);
-        sceneHandler.setUiPlayerHand(playerHandUi);
-        return sceneHandler;
-    }
-
     private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
         otherPlayerUiArea.setAlignment(Pos.CENTER);
         for (int i = 0; i < numPlayers; i++) {
