@@ -1,4 +1,4 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import team5.explodingkittens.model.Card;
+import team5.explodingkittens.view.*;
 
 public class UserViewSceneHandler {
 

@@ -1,10 +1,8 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.spectatorview;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import team5.explodingkittens.controller.Observer;
 import team5.explodingkittens.controller.notification.Notification;
-import team5.explodingkittens.model.Player;
 
 import java.util.List;
 

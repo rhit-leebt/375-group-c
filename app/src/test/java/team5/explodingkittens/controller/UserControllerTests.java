@@ -23,8 +23,8 @@ import team5.explodingkittens.model.Deck;
 import team5.explodingkittens.model.DiscardPile;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.model.TurnState;
-import team5.explodingkittens.view.AbstractUserView;
-import team5.explodingkittens.view.NullUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
+import team5.explodingkittens.view.userview.NullUserView;
 
 /**
  * A testing script created to test {@link UserController}.

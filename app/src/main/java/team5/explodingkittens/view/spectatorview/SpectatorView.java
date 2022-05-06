@@ -1,4 +1,4 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.spectatorview;
 
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.Observer;

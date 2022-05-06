@@ -1,7 +1,7 @@
 package team5.explodingkittens.controller.notification;
 
 import team5.explodingkittens.controller.UserController;
-import team5.explodingkittens.view.SpectatorViewSceneHandler;
+import team5.explodingkittens.view.spectatorview.SpectatorViewSceneHandler;
 
 /**
  * A notification for alerting a player to pick a player to take from.

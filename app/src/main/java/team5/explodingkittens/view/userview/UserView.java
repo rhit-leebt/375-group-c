@@ -1,7 +1,5 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +15,7 @@ import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
 import javafx.scene.control.Dialog;
+import team5.explodingkittens.view.*;
 
 /**
  * A PlayerWindow displays all information relevant to a

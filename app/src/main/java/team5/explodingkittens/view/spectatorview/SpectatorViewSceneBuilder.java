@@ -1,14 +1,11 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.spectatorview;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import team5.explodingkittens.model.Player;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 

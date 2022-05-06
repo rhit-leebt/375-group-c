@@ -11,7 +11,7 @@ import org.junit.Test;
 import team5.explodingkittens.controller.GameController;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 /**
  * A testing script created to test {@link Deck}.

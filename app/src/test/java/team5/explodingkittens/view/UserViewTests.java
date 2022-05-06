@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.testfx.framework.junit.ApplicationTest;
 import org.easymock.EasyMock;
 import org.junit.Test;
+import team5.explodingkittens.view.userview.UserView;
+import team5.explodingkittens.view.userview.UserViewSceneBuilder;
+import team5.explodingkittens.view.userview.UserViewSceneHandler;
 
 public class UserViewTests extends ApplicationTest {
 

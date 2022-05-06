@@ -1,15 +1,16 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import team5.explodingkittens.view.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.spectatorview;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
