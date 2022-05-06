@@ -15,7 +15,7 @@ public class UserViewSceneHandler {
     private final UserViewUIParts uiParts;
     private Scene scene;
     private final TranslateAnimator animator;
-    private EventHandler<KeyEvent> spaceEvent;
+    private EventHandler<KeyEvent> drawKeyHandler;
 
     public UserViewSceneHandler(UserViewUIParts uiParts) {
         this.uiParts = uiParts;
@@ -28,14 +28,11 @@ public class UserViewSceneHandler {
     }
 
     private void assignKeyActions() {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().isDigitKey()) {
-                    handleDigitKey(event);
-                } else if (event.getCode() == KeyCode.SHIFT) {
-                    spaceEvent.handle(event);
-                }
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode().isDigitKey()) {
+                handleDigitKey(e);
+            } else if (e.getCode() == KeyCode.SHIFT) {
+                drawKeyHandler.handle(e);
             }
         });
     }
@@ -50,8 +47,8 @@ public class UserViewSceneHandler {
         uiParts.playerHandUi.hoverCard(index);
     }
 
-    public void setSpaceBarEvent(EventHandler<KeyEvent> spaceEvent) {
-        this.spaceEvent = spaceEvent;
+    public void setDrawKeyHandler(EventHandler<KeyEvent> keyHandler) {
+        this.drawKeyHandler = keyHandler;
     }
 
     public void setNameOfPlayerUi(int playerId, String name) {
@@ -90,7 +87,7 @@ public class UserViewSceneHandler {
         return uiParts.playerHandUi.getSelectedCard();
     }
 
-    public Map<String, Integer> getPlayerNamesFromUi() {
+    public Map<String, Integer> getPlayerInfoMapFromUi() {
         Map<String, Integer> namesToId = new HashMap<>();
         for (int i = 0; i < uiParts.playerUiList.size(); i++) {
             if (getPlayerUIWithId(i) != uiParts.playerHandUi) {

@@ -1,7 +1,6 @@
 package team5.explodingkittens.view.userview;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -244,7 +243,7 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public int showPickOtherPlayer() {
-        Map<String, Integer> namesToId = sceneHandler.getPlayerNamesFromUi();
+        Map<String, Integer> namesToId = sceneHandler.getPlayerInfoMapFromUi();
         List<String> playerNames = new ArrayList<>();
         for (String name : namesToId.keySet()) {
             playerNames.add(name);

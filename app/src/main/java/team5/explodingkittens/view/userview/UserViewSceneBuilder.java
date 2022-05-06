@@ -42,7 +42,7 @@ public class UserViewSceneBuilder {
         UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts);
         sceneHandler.replaceScene(scene);
 
-        sceneHandler.setSpaceBarEvent(userViewEvents.drawKeyHandler);
+        sceneHandler.setDrawKeyHandler(userViewEvents.drawKeyHandler);
 
         return sceneHandler;
     }
