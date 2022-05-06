@@ -19,12 +19,12 @@ public class UserViewSceneBuilder {
 
     private UiPlayerHand playerHandUi;
     private List<UiPlayer> playerUis;
-    private final UserViewSceneHandler sceneHandler;
+    private final UserViewUIParts userViewUIParts;
     private UserViewEvents userViewEvents;
 
     public UserViewSceneBuilder(UserViewEvents userViewEvents) {
         this.userViewEvents = userViewEvents;
-        this.sceneHandler = new UserViewSceneHandler();
+        this.userViewUIParts = new UserViewUIParts();
     }
 
     public UserViewSceneHandler generateSceneFromPlayerInfo(int numPlayers, int playerId) {
@@ -38,6 +38,8 @@ public class UserViewSceneBuilder {
 
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
+
+        UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts);
         sceneHandler.replaceScene(scene);
 
         sceneHandler.setSpaceBarEvent(userViewEvents.drawKeyHandler);
@@ -57,8 +59,8 @@ public class UserViewSceneBuilder {
             }
         }
 
-        sceneHandler.setPlayerUiList(playerUis);
-        sceneHandler.setUiPlayerHand(playerHandUi);
+        userViewUIParts.playerUiList = playerUis;
+        userViewUIParts.playerHandUi = playerHandUi;
     }
 
     private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
@@ -78,8 +80,8 @@ public class UserViewSceneBuilder {
         UiDiscard discardUi = new UiDiscard();
         pileUiArea.getChildren().addAll(deckUi, discardUi);
 
-        sceneHandler.setDeckUi(deckUi);
-        sceneHandler.setDiscardUi(discardUi);
+        userViewUIParts.deckUi = deckUi;
+        userViewUIParts.discardUi = discardUi;
     }
 
     private HBox getAlignedUiGroup(List<HBox> areas) {

@@ -213,6 +213,10 @@ public class UserController implements Observer {
         this.gameController.setName(playerId, name);
     }
 
+    public String getName() {
+        return this.player.getName();
+    }
+
     /**
      * Try to play a card. If it is a cat card make sure
      * there is a second matching card to play.
