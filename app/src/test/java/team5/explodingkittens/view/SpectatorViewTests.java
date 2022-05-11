@@ -58,8 +58,9 @@ public class SpectatorViewTests extends ApplicationTest {
 
         List<SpectatorViewSinglePlayerUI> singlePlayerUIs = new ArrayList<>();
         singlePlayerUIs.add(singlePlayerUIMock);
+        Scene scene = EasyMock.createMock(Scene.class);
 
-        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(singlePlayerUIs);
+        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(singlePlayerUIs, scene);
         sceneHandler.update(new Notification() {
             @Override
             public void applyNotification(UserController userController) {

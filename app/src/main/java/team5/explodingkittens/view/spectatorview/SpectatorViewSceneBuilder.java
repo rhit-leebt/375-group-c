@@ -22,9 +22,8 @@ public class SpectatorViewSceneBuilder {
 
     public SpectatorViewSceneHandler generateSceneFromPlayerInfo() {
         GridPane playerInfoGrid = generatePlayerInfoUIGrid();
-        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(playerInfoUIs);
         Scene scene = new Scene(playerInfoGrid, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-        sceneHandler.replaceScene(scene);
+        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(playerInfoUIs, scene);
         return sceneHandler;
     }
 

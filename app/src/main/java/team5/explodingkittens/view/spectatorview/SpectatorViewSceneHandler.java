@@ -8,15 +8,12 @@ import java.util.List;
 
 public class SpectatorViewSceneHandler implements Observer {
 
-    private Scene scene;
-    private List<SpectatorViewSinglePlayerUI> singlePlayerUIs;
+    private final Scene scene;
+    private final List<SpectatorViewSinglePlayerUI> singlePlayerUIs;
 
-    public SpectatorViewSceneHandler(List<SpectatorViewSinglePlayerUI> singlePlayerUIs) {
-        this.singlePlayerUIs = singlePlayerUIs;
-    }
-
-    public void replaceScene(Scene scene) {
+    public SpectatorViewSceneHandler(List<SpectatorViewSinglePlayerUI> singlePlayerUIs, Scene scene) {
         this.scene = scene;
+        this.singlePlayerUIs = singlePlayerUIs;
     }
 
     public Scene getScene() {
