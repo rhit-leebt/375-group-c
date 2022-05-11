@@ -17,12 +17,9 @@ public class UserViewSceneHandler {
     private final TranslateAnimator animator;
     private EventHandler<KeyEvent> drawKeyHandler;
 
-    public UserViewSceneHandler(UserViewUIParts uiParts) {
+    public UserViewSceneHandler(UserViewUIParts uiParts, Scene scene) {
         this.uiParts = uiParts;
-        animator = new TranslateAnimator(1);
-    }
-
-    public void replaceScene(Scene scene) {
+        this.animator = new TranslateAnimator(1);
         this.scene = scene;
         assignKeyActions();
     }

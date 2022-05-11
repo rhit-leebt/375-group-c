@@ -20,7 +20,7 @@ public class UserViewSceneBuilder {
     private UiPlayerHand playerHandUi;
     private List<UiPlayer> playerUis;
     private final UserViewUIParts userViewUIParts;
-    private UserViewEvents userViewEvents;
+    private final UserViewEvents userViewEvents;
 
     public UserViewSceneBuilder(UserViewEvents userViewEvents) {
         this.userViewEvents = userViewEvents;
@@ -39,8 +39,7 @@ public class UserViewSceneBuilder {
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
 
-        UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts);
-        sceneHandler.replaceScene(scene);
+        UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts, scene);
 
         sceneHandler.setDrawKeyHandler(userViewEvents.drawKeyHandler);
 

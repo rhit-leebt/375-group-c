@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
