@@ -7,9 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import team5.explodingkittens.controller.notification.Notification;
 import team5.explodingkittens.model.*;
-import team5.explodingkittens.view.AbstractUserView;
-import team5.explodingkittens.view.NullUserView;
-import team5.explodingkittens.view.SpectatorView;
+import team5.explodingkittens.view.userview.AbstractUserView;
+import team5.explodingkittens.view.userview.NullUserView;
 import team5.explodingkittens.view.UserViewFactory;
 
 /**

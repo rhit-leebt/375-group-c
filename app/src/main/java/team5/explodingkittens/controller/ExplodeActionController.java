@@ -4,7 +4,7 @@ import team5.explodingkittens.controller.notification.ExplodeNotification;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 public class ExplodeActionController extends ActionController {
 

@@ -1,15 +1,11 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import javafx.stage.Stage;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
@@ -17,6 +13,7 @@ import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
 import javafx.scene.control.Dialog;
+import team5.explodingkittens.view.*;
 
 /**
  * A PlayerWindow displays all information relevant to a
@@ -55,10 +52,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @param playerId   The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
-        UserViewSceneBuilder builder = new UserViewSceneBuilder(
-                e -> this.tryPlayCard(),
-                e -> this.tryDrawCard(),
-                e -> this.tryDrawCard());
+        UserViewSceneBuilder builder = new UserViewSceneBuilder(generateUserViewEvents());
         sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
         setScene(sceneHandler.getScene());
         show();
@@ -73,6 +67,14 @@ public class UserView extends Stage implements AbstractUserView {
         show();
 
         generateNameInputDialog().show();
+    }
+
+    private UserViewEvents generateUserViewEvents() {
+        UserViewEvents userViewEvents = new UserViewEvents();
+        userViewEvents.playActionHandler = e -> this.tryPlayCard();
+        userViewEvents.drawMouseHandler = e -> this.tryDrawCard();
+        userViewEvents.drawKeyHandler = e -> this.tryDrawCard();
+        return userViewEvents;
     }
 
     public void changeUiOnTurnChange(boolean currentTurnIsNow) {
@@ -141,7 +143,7 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public void discardAllCards(int playerId) {
-        sceneHandler.playerUis.get(playerId).discardAllCards();
+        sceneHandler.getPlayerUIWithId(playerId).discardAllCards();
     }
 
     /**
@@ -150,7 +152,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @return The card that was selected.
      */
     public Card getSelectedCard() {
-        Card cardToPlay = sceneHandler.playerHandUi.getSelectedCard();
+        Card cardToPlay = sceneHandler.getSelectedCard();
         if (cardToPlay == null) {
             throw new IllegalArgumentException(
                     "Must choose a card to play or choose to only draw card");
@@ -202,7 +204,7 @@ public class UserView extends Stage implements AbstractUserView {
         dialog.setTitle(ResourceController.getString(WIN_DIALOG + TITLE_SUFFIX));
         dialog.setHeaderText(ResourceController.getString(WIN_DIALOG + HEADER_SUFFIX));
         dialog.setContentText(ResourceController.getFormatString(
-                WIN_DIALOG + CONTENT_SUFFIX, sceneHandler.playerHandUi.getName()));
+                WIN_DIALOG + CONTENT_SUFFIX, userController.getName()));
         DialogBuilder.addConfirmButton(dialog);
         dialog.showAndWait();
         userController.tryCloseGame();
@@ -240,14 +242,10 @@ public class UserView extends Stage implements AbstractUserView {
 
     @Override
     public int showPickOtherPlayer() {
-        Map<String, Integer> namesToId = new HashMap<>();
+        Map<String, Integer> namesToId = sceneHandler.getPlayerInfoMapFromUi();
         List<String> playerNames = new ArrayList<>();
-        for (int i = 0; i < sceneHandler.playerUis.size(); i++) {
-            if (sceneHandler.playerUis.get(i) != sceneHandler.playerHandUi) {
-                String name = sceneHandler.playerUis.get(i).getName();
-                playerNames.add(name);
-                namesToId.put(name, i);
-            }
+        for (String name : namesToId.keySet()) {
+            playerNames.add(name);
         }
 
         LanguageFriendlyChoiceDialog<String> pickPlayerDialog =
@@ -272,7 +270,7 @@ public class UserView extends Stage implements AbstractUserView {
         nopeDialog = new LanguageFriendlyEmptyDialog();
         nopeDialog.setTitle(ResourceController.getString(NOPE_DIALOG + TITLE_SUFFIX));
         nopeDialog.setHeaderText(String.format(ResourceController.getString(NOPE_DIALOG + HEADER_SUFFIX),
-                sceneHandler.playerUis.get(playerId).getName()));
+                sceneHandler.getPlayerUIWithId(playerId).getName()));
         nopeDialog.setContentText(String.format(ResourceController.getString(NOPE_DIALOG + CONTENT_SUFFIX),
                 card.getName()));
         DialogBuilder.addConfirmButton(nopeDialog);

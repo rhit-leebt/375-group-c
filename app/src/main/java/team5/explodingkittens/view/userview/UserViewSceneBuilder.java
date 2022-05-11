@@ -1,15 +1,11 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import team5.explodingkittens.view.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +19,12 @@ public class UserViewSceneBuilder {
 
     private UiPlayerHand playerHandUi;
     private List<UiPlayer> playerUis;
-    private final EventHandler<ActionEvent> playHandler;
-    private final EventHandler<MouseEvent> drawHandler;
-    private final EventHandler<KeyEvent> keyDrawHandler;
-    private final UserViewSceneHandler sceneHandler;
+    private final UserViewUIParts userViewUIParts;
+    private final UserViewEvents userViewEvents;
 
-    public UserViewSceneBuilder(EventHandler<ActionEvent> playHandler, EventHandler<MouseEvent> drawHandler, EventHandler<KeyEvent> keyDrawHandler) {
-        this.playHandler = playHandler;
-        this.drawHandler = drawHandler;
-        this.keyDrawHandler = keyDrawHandler;
-        this.sceneHandler = new UserViewSceneHandler();
+    public UserViewSceneBuilder(UserViewEvents userViewEvents) {
+        this.userViewEvents = userViewEvents;
+        this.userViewUIParts = new UserViewUIParts();
     }
 
     public UserViewSceneHandler generateSceneFromPlayerInfo(int numPlayers, int playerId) {
@@ -46,16 +38,17 @@ public class UserViewSceneBuilder {
 
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
-        sceneHandler.replaceScene(scene);
 
-        sceneHandler.setSpaceBarEvent(keyDrawHandler);
+        UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts, scene);
+
+        sceneHandler.setDrawKeyHandler(userViewEvents.drawKeyHandler);
 
         return sceneHandler;
     }
 
     private void populatePlayerUiList(int numPlayers, int playerId) {
         playerUis = new ArrayList<>(numPlayers);
-        playerHandUi = new UiPlayerHand(playHandler);
+        playerHandUi = new UiPlayerHand(userViewEvents.playActionHandler);
         for (int i = 0; i < numPlayers; i++) {
             if (i == playerId) {
                 playerUis.add(playerHandUi);
@@ -65,25 +58,8 @@ public class UserViewSceneBuilder {
             }
         }
 
-        sceneHandler.setPlayerUiList(playerUis);
-        sceneHandler.setUiPlayerHand(playerHandUi);
-    }
-
-    // Testing method for dependency injection
-    public UserViewSceneHandler populatePlayerUiList(int numPlayers, int playerId, UiPlayerHand playerHandUi, UiOtherPlayer otherPlayerUi) {
-        playerUis = new ArrayList<>(numPlayers);
-        this.playerHandUi = new UiPlayerHand(playHandler);
-        for (int i = 0; i < numPlayers; i++) {
-            if (i == playerId) {
-                playerUis.add(playerHandUi);
-            } else {
-                playerUis.add(otherPlayerUi);
-            }
-        }
-
-        sceneHandler.setPlayerUiList(playerUis);
-        sceneHandler.setUiPlayerHand(playerHandUi);
-        return sceneHandler;
+        userViewUIParts.playerUiList = playerUis;
+        userViewUIParts.playerHandUi = playerHandUi;
     }
 
     private void buildOtherPlayerUiArea(HBox otherPlayerUiArea, int numPlayers, int playerId) {
@@ -99,12 +75,12 @@ public class UserViewSceneBuilder {
     private void buildPileUiArea(HBox pileUiArea) {
         pileUiArea.setSpacing(DECK_DISCARD_SPACING);
         UiDeck deckUi = new UiDeck();
-        deckUi.setOnMouseClicked(drawHandler);
+        deckUi.setOnMouseClicked(userViewEvents.drawMouseHandler);
         UiDiscard discardUi = new UiDiscard();
         pileUiArea.getChildren().addAll(deckUi, discardUi);
 
-        sceneHandler.setDeckUi(deckUi);
-        sceneHandler.setDiscardUi(discardUi);
+        userViewUIParts.deckUi = deckUi;
+        userViewUIParts.discardUi = discardUi;
     }
 
     private HBox getAlignedUiGroup(List<HBox> areas) {

@@ -4,7 +4,7 @@ import team5.explodingkittens.controller.notification.Notification;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 import java.util.Random;
 
@@ -211,6 +211,10 @@ public class UserController implements Observer {
     public void trySetName(String name) {
         this.player.setName(name);
         this.gameController.setName(playerId, name);
+    }
+
+    public String getName() {
+        return this.player.getName();
     }
 
     /**
