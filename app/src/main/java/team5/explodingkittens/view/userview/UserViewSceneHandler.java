@@ -13,7 +13,7 @@ import java.util.Map;
 public class UserViewSceneHandler {
 
     private final UserViewUIParts uiParts;
-    private Scene scene;
+    private final Scene scene;
     private final TranslateAnimator animator;
     private EventHandler<KeyEvent> drawKeyHandler;
 
@@ -44,6 +44,29 @@ public class UserViewSceneHandler {
         uiParts.playerHandUi.hoverCard(index);
     }
 
+    public Scene getScene() {
+        return scene;
+    }
+
+    public UiPlayer getPlayerUIWithId(int id) {
+        return uiParts.playerUiList.get(id);
+    }
+
+    public Card getSelectedCard() {
+        return uiParts.playerHandUi.getSelectedCard();
+    }
+
+    public Map<String, Integer> getPlayerInfoMapFromUi() {
+        Map<String, Integer> namesToId = new HashMap<>();
+        for (int i = 0; i < uiParts.playerUiList.size(); i++) {
+            if (getPlayerUIWithId(i) != uiParts.playerHandUi) {
+                String name = getPlayerUIWithId(i).getName();
+                namesToId.put(name, i);
+            }
+        }
+        return namesToId;
+    }
+
     public void setDrawKeyHandler(EventHandler<KeyEvent> keyHandler) {
         this.drawKeyHandler = keyHandler;
     }
@@ -72,26 +95,4 @@ public class UserViewSceneHandler {
         animator.animate(uiCard, getPlayerUIWithId(fromPlayerId).getNode(), handler);
     }
 
-    public Scene getScene() {
-        return scene;
-    }
-
-    public UiPlayer getPlayerUIWithId(int id) {
-        return uiParts.playerUiList.get(id);
-    }
-
-    public Card getSelectedCard() {
-        return uiParts.playerHandUi.getSelectedCard();
-    }
-
-    public Map<String, Integer> getPlayerInfoMapFromUi() {
-        Map<String, Integer> namesToId = new HashMap<>();
-        for (int i = 0; i < uiParts.playerUiList.size(); i++) {
-            if (getPlayerUIWithId(i) != uiParts.playerHandUi) {
-                String name = getPlayerUIWithId(i).getName();
-                namesToId.put(name, i);
-            }
-        }
-        return namesToId;
-    }
 }
