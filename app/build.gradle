@@ -77,3 +77,15 @@ pitest {
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
 }
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+                'Main-Class': 'team5.explodingkittens.controller.GameRunner',
+                'Class-Path': configurations.compileClasspath.files.collect { "lib/$it.name" },
+                'Implementation-Version': project.version
+        )
+    }
+    from(configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }) {}
+}

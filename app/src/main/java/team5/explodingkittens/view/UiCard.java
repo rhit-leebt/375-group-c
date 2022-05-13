@@ -58,6 +58,8 @@ public class UiCard extends StackPane {
             } catch (FileNotFoundException e) {
                 // TODO: Do something
             }
+            // For use with jar-compatible I/O
+            // overlayImage.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(card.getImagePath())));
             overlayImage.setPreserveRatio(true);
             overlayImage.setFitWidth(200);
         }
