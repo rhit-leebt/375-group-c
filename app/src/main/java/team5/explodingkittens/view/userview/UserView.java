@@ -1,9 +1,5 @@
 package team5.explodingkittens.view.userview;
 
-//<<<<<<< HEAD:app/src/main/java/team5/explodingkittens/view/userview/UserView.java
-//=======
-//import java.awt.*;
-//>>>>>>> main:app/src/main/java/team5/explodingkittens/view/UserView.java
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -56,13 +52,7 @@ public class UserView extends Stage implements AbstractUserView {
      * @param playerId   The ID of the player whose window this is.
      */
     public UserView(int numPlayers, int playerId) {
-//<<<<<<< HEAD:app/src/main/java/team5/explodingkittens/view/userview/UserView.java
         UserViewSceneBuilder builder = new UserViewSceneBuilder(generateUserViewEvents());
-//=======
-//        UserViewSceneBuilder builder = new UserViewSceneBuilder(
-//                e -> this.tryPlayCard(),
-//                e -> this.tryDrawCard());
-//>>>>>>> main:app/src/main/java/team5/explodingkittens/view/UserView.java
         sceneHandler = builder.generateSceneFromPlayerInfo(numPlayers, playerId);
         setScene(sceneHandler.getScene());
         show();
