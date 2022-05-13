@@ -43,6 +43,8 @@ public enum CardType {
     SKIP("skip",
             4, 6, true, new SkipCardAction());
 
+    // For use with jar-compatible I/O
+    // private static final String BASE_PATH = "images/cards/";
     private static final String BASE_PATH = "." + File.separator
             + "app" + File.separator + "src" + File.separator + "main"
             + File.separator + "resources" + File.separator + "images"

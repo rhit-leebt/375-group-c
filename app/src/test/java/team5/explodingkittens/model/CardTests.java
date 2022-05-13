@@ -97,9 +97,10 @@ public class CardTests {
 
     @Test
     public void testGetImagePath() {
-        String basePath = "." + File.separator + "app" + File.separator
-                + "src" + File.separator + "main" + File.separator + "resources"
-                + File.separator + "images" + File.separator + "cards" + File.separator;
+        String basePath = "." + File.separator
+                + "app" + File.separator + "src" + File.separator + "main"
+                + File.separator + "resources" + File.separator + "images"
+                + File.separator + "cards" + File.separator;
 
         Card card1 = new Card(CardType.ALTER_THE_FUTURE);
         Assert.assertEquals(basePath + "alterthefuture.png", card1.getImagePath());

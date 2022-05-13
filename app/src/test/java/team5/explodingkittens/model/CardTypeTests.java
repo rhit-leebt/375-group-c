@@ -50,9 +50,10 @@ public class CardTypeTests {
 
     @Test
     public void testBaseFilePath() {
-        String basePath = "." + File.separator + "app" + File.separator
-                + "src" + File.separator + "main" + File.separator + "resources"
-                + File.separator + "images" + File.separator + "cards" + File.separator;
+        String basePath = "." + File.separator
+                + "app" + File.separator + "src" + File.separator + "main"
+                + File.separator + "resources" + File.separator + "images"
+                + File.separator + "cards" + File.separator;
         Assert.assertEquals(basePath, CardType.getBasePath());
     }
 
