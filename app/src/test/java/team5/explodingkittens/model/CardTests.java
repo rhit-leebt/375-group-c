@@ -1,7 +1,9 @@
 package team5.explodingkittens.model;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -98,22 +100,40 @@ public class CardTests {
         String basePath = "." + File.separator + "app" + File.separator
                 + "src" + File.separator + "main" + File.separator + "resources"
                 + File.separator + "images" + File.separator + "cards" + File.separator;
-        HashMap<CardType, String> cardsToImagePaths = new HashMap<CardType, String>();
 
-        for (CardType cardType : CardType.values()) {
-            String filename = ".png";
-            filename = cardType.toString().replace("_", "").toLowerCase() + filename;
-            cardsToImagePaths.put(cardType, basePath + filename);
-        }
-
-        for (CardType cardType : CardType.values()) {
-            Card card = new Card(cardType);
-            Assert.assertEquals("Expected " + cardsToImagePaths.get(cardType) +
-                            " mismatches with actual " + card.getImagePath()
-                    , cardsToImagePaths.get(cardType), card.getImagePath());
-        }
+        Card card1 = new Card(CardType.ALTER_THE_FUTURE);
+        Assert.assertEquals(basePath + "alterthefuture.png", card1.getImagePath());
+        Card card2 = new Card(CardType.ATTACK);
+        Assert.assertEquals(basePath + "attack.png", card2.getImagePath());
+        Card card3 = new Card(CardType.TACOCAT);
+        Assert.assertEquals(basePath + "tacocat.png", card3.getImagePath());
+        Card card4 = new Card(CardType.RAINBOW_RALPHING_CAT);
+        Assert.assertEquals(basePath + "rainbowralphingcat.png", card4.getImagePath());
+        Card card5 = new Card(CardType.BEARD_CAT);
+        Assert.assertEquals(basePath + "beardcat.png", card5.getImagePath());
+        Card card6 = new Card(CardType.CATTERMELON);
+        Assert.assertEquals(basePath + "cattermelon.png", card6.getImagePath());
+        Card card7 = new Card(CardType.HAIRY_POTATO_CAT);
+        Assert.assertEquals(basePath + "hairypotatocat.png", card7.getImagePath());
+        Card card8 = new Card(CardType.DEFUSE);
+        Assert.assertEquals(basePath + "defuse.png", card8.getImagePath());
+        Card card9 = new Card(CardType.DRAW_FROM_THE_BOTTOM);
+        Assert.assertEquals(basePath + "drawfromthebottom.png", card9.getImagePath());
+        Card card10 = new Card(CardType.EXPLODING_KITTEN);
+        Assert.assertEquals(basePath + "explodingkitten.png", card10.getImagePath());
+        Card card11 = new Card(CardType.FAVOR);
+        Assert.assertEquals(basePath + "favor.png", card11.getImagePath());
+        Card card12 = new Card(CardType.FERAL_CAT);
+        Assert.assertEquals(basePath + "feralcat.png", card12.getImagePath());
+        Card card13 = new Card(CardType.NOPE);
+        Assert.assertEquals(basePath + "nope.png", card13.getImagePath());
+        Card card14 = new Card(CardType.SEE_THE_FUTURE);
+        Assert.assertEquals(basePath + "seethefuture.png", card14.getImagePath());
+        Card card15 = new Card(CardType.SHUFFLE);
+        Assert.assertEquals(basePath + "shuffle.png", card15.getImagePath());
+        Card card16 = new Card(CardType.SKIP);
+        Assert.assertEquals(basePath + "skip.png", card16.getImagePath());
     }
-
 
     @Test
     public void testCardInfoWithMessageBundles() {
