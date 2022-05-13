@@ -25,7 +25,7 @@ public class ChangeImageDialog<T> extends ChoiceDialog<T> {
         if (result.isPresent()) {
             return result.get();
         } else {
-            return null;
+            return this.defaultChoice;
         }
     }
 }
