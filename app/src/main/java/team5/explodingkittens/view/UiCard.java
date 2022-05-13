@@ -53,11 +53,7 @@ public class UiCard extends StackPane {
                 // TODO: Do something
             }
         } else {
-            try {
-                overlayImage.setImage(new Image(new FileInputStream(card.getImagePath())));
-            } catch (FileNotFoundException e) {
-                // TODO: Do something
-            }
+            overlayImage.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(card.getImagePath())));
             overlayImage.setPreserveRatio(true);
             overlayImage.setFitWidth(200);
         }

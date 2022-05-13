@@ -43,10 +43,7 @@ public enum CardType {
     SKIP("skip",
             4, 6, true, new SkipCardAction());
 
-    private static final String BASE_PATH = "." + File.separator
-            + "app" + File.separator + "src" + File.separator + "main"
-            + File.separator + "resources" + File.separator + "images"
-            + File.separator + "cards" + File.separator;
+    private static final String BASE_PATH = "images/cards/";
 
     public final String genericName;
     public final boolean preload;
