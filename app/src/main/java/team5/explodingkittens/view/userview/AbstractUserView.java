@@ -1,4 +1,4 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
 import java.util.ArrayList;
 import java.util.Set;

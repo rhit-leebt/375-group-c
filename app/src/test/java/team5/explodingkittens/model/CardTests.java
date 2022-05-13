@@ -31,9 +31,9 @@ public class CardTests {
         for (CardType type : CardType.values()) {
             Card card = new Card(type);
             if (type == CardType.EXPLODING_KITTEN) {
-                Assert.assertTrue(card.checkForExplodingKitten());
+                Assert.assertTrue(card.checkForCardType(CardType.EXPLODING_KITTEN));
             } else {
-                Assert.assertFalse(card.checkForExplodingKitten());
+                Assert.assertFalse(card.checkForCardType(CardType.EXPLODING_KITTEN));
             }
         }
     }
@@ -43,9 +43,9 @@ public class CardTests {
         for (CardType type : CardType.values()) {
             Card card = new Card(type);
             if (type == CardType.DEFUSE) {
-                Assert.assertTrue(card.checkForDefuse());
+                Assert.assertTrue(card.checkForCardType(CardType.DEFUSE));
             } else {
-                Assert.assertFalse(card.checkForDefuse());
+                Assert.assertFalse(card.checkForCardType(CardType.DEFUSE));
             }
         }
     }
@@ -199,7 +199,7 @@ public class CardTests {
 
     @Test
     public void testSortCardsDupesAndReverse() {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         Card attack1 = new Card(CardType.ATTACK);
         Card attack2 = new Card(CardType.ATTACK);
         Card cattermelon = new Card(CardType.CATTERMELON);
@@ -222,7 +222,7 @@ public class CardTests {
 
     @Test
     public void testSortCardsPresorted() {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         Card attack = new Card(CardType.ATTACK);
         Card cattermelon = new Card(CardType.CATTERMELON);
         Card feral1 = new Card(CardType.FERAL_CAT);

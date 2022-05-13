@@ -39,6 +39,10 @@ public class Deck {
         }
     }
 
+    public Deck() {
+        drawPile = new ArrayList<>();
+    }
+
     /**
      * Given a list of users the deck will distribute the starting cards to all players.
      * During this process at least one {@link CardType#DEFUSE} card will be given to

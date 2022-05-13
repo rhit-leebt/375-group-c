@@ -1,9 +1,11 @@
 package team5.explodingkittens.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import team5.explodingkittens.controller.Observer;
+import team5.explodingkittens.controller.notification.NameChangeNotification;
+import team5.explodingkittens.controller.notification.Notification;
+
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * A structuring class between {@link Card} and
@@ -14,11 +16,14 @@ import java.util.Set;
  */
 public class Player {
     public static final int HAND_SIZE = 8;
+    protected List<Observer> observers;
 
     ArrayList<Card> hand;
+    private String name;
 
     public Player() {
         this.hand = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
     public void addCard(Card card) {
@@ -60,11 +65,11 @@ public class Player {
     }
 
     /**
-     * Determines whether the payer has a defuse card to play.
+     * Determines whether the payer has a specific card to play.
      */
-    public boolean hasDefuse() {
+    public boolean hasCardType(CardType type) {
         for (Card card : hand) {
-            if (card.checkForDefuse()) {
+            if (card.checkForCardType(type)) {
                 return true;
             }
         }
@@ -72,45 +77,17 @@ public class Player {
     }
 
     /**
-     * Returns a player's defuse card, if they have one.
+     * Returns a player's card of a specific type, if they have one.
      *
      * @return their defuse card
      */
-    public Card getDefuse() {
+    public Card getCardType(CardType type) {
         for (Card card : hand) {
-            if (card.checkForDefuse()) {
+            if (card.checkForCardType(type)) {
                 return card;
             }
         }
-        throw new IllegalStateException("This player does not have a defuse card");
-    }
-
-    /**
-     * Checks if the player has a nope card to use.
-     *
-     * @return If they had a nope card
-     */
-    public boolean hasNope() {
-        for (Card card : hand) {
-            if (card.type == CardType.NOPE) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns a player's nope card, if they have one.
-     *
-     * @return The players nope card
-     */
-    public Card getNope() {
-        for (Card card : hand) {
-            if (card.type == CardType.NOPE) {
-                return card;
-            }
-        }
-        throw new IllegalStateException("This player does not have a nope card");
+        throw new IllegalStateException("This player does not have that card");
     }
 
     /**
@@ -151,7 +128,7 @@ public class Player {
     /**
      * Finds a card that matches the specified type.
      *
-     * @param type The type to match
+     * @param type    The type to match
      * @param exclude A card to not match
      * @return The first matching card
      */
@@ -166,5 +143,41 @@ public class Player {
 
     public Card getRandomCard(Random random) {
         return hand.get(random.nextInt(hand.size()));
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        notifyObservers(new NameChangeNotification());
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void registerObserver(Observer observer) {
+        if (observer == null) {
+            throw new IllegalArgumentException("Cannot pass a null observer");
+        }
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        if (observers.size() < 1) {
+            throw new IllegalStateException("Can't remove an observer when none are registered");
+        }
+        if (!observers.contains(observer)) {
+            throw new IllegalArgumentException("This observer is not registered with this subject");
+        }
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(Notification notification) {
+        for (Observer observer : this.observers) {
+            observer.update(notification);
+        }
+    }
+
+    public List<Card> getHand() {
+        return this.hand;
     }
 }

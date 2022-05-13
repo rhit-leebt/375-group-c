@@ -142,7 +142,7 @@ public class PlayerTests {
     @Test
     public void testDiscardAll() {
         Player player = new Player();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             cards.add(EasyMock.mock(Card.class));
         }
@@ -169,16 +169,16 @@ public class PlayerTests {
     @Test
     public void testHasNoDefuse() {
         Player player = new Player();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             cards.add(EasyMock.mock(Card.class));
         }
         for (int i = 0; i < 5; i++) {
-            EasyMock.expect(cards.get(i).checkForDefuse()).andReturn(false);
+            EasyMock.expect(cards.get(i).checkForCardType(CardType.DEFUSE)).andReturn(false);
             EasyMock.replay(cards.get(i));
             player.addCard(cards.get(i));
         }
-        Assert.assertFalse(player.hasDefuse());
+        Assert.assertFalse(player.hasCardType(CardType.DEFUSE));
         for (int i = 0; i < 5; i++) {
             EasyMock.verify(cards.get(i));
         }
@@ -187,19 +187,19 @@ public class PlayerTests {
     @Test
     public void testHasDefuse() {
         Player player = new Player();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             cards.add(EasyMock.mock(Card.class));
         }
         for (int i = 0; i < 4; i++) {
-            EasyMock.expect(cards.get(i).checkForDefuse()).andReturn(false);
+            EasyMock.expect(cards.get(i).checkForCardType(CardType.DEFUSE)).andReturn(false);
             EasyMock.replay(cards.get(i));
             player.addCard(cards.get(i));
         }
-        EasyMock.expect(cards.get(4).checkForDefuse()).andReturn(true);
+        EasyMock.expect(cards.get(4).checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.replay(cards.get(4));
         player.addCard(cards.get(4));
-        Assert.assertTrue(player.hasDefuse());
+        Assert.assertTrue(player.hasCardType(CardType.DEFUSE));
         for (int i = 0; i < 5; i++) {
             EasyMock.verify(cards.get(i));
         }
@@ -208,40 +208,40 @@ public class PlayerTests {
     @Test
     public void testHasDefuseEmptyHand() {
         Player player = new Player();
-        Assert.assertFalse(player.hasDefuse());
+        Assert.assertFalse(player.hasCardType(CardType.DEFUSE));
     }
 
     @Test
     public void testGetDefuseEmptyHand() {
         Player player = new Player();
         try {
-            player.getDefuse();
+            player.getCardType(CardType.DEFUSE);
             Assert.fail("Trying to get a defuse card from an"
                     + " empty hand should throw an IllegalStateException");
         } catch (IllegalStateException e) {
             Assert.assertEquals(e.getMessage(), "This "
-                    + "player does not have a defuse card");
+                    + "player does not have that card");
         }
     }
 
     @Test
     public void testGetDefuseDoesntHave() {
         Player player = new Player();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             cards.add(EasyMock.mock(Card.class));
         }
         for (int i = 0; i < 5; i++) {
-            EasyMock.expect(cards.get(i).checkForDefuse()).andReturn(false);
+            EasyMock.expect(cards.get(i).checkForCardType(CardType.DEFUSE)).andReturn(false);
             EasyMock.replay(cards.get(i));
             player.addCard(cards.get(i));
         }
         try {
-            player.getDefuse();
+            player.getCardType(CardType.DEFUSE);
             Assert.fail("Trying to get a defuse card from an "
                     + "empty hand should throw an IllegalStateException");
         } catch (IllegalStateException e) {
-            Assert.assertEquals(e.getMessage(), "This player does not have a defuse card");
+            Assert.assertEquals(e.getMessage(), "This player does not have that card");
         } finally {
             for (int i = 0; i < 5; i++) {
                 EasyMock.verify(cards.get(i));
@@ -252,20 +252,20 @@ public class PlayerTests {
     @Test
     public void testGetDefuseAndHas() {
         Player player = new Player();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             cards.add(EasyMock.mock(Card.class));
         }
         for (int i = 0; i < 4; i++) {
-            EasyMock.expect(cards.get(i).checkForDefuse()).andReturn(false);
+            EasyMock.expect(cards.get(i).checkForCardType(CardType.DEFUSE)).andReturn(false);
             EasyMock.replay(cards.get(i));
             player.addCard(cards.get(i));
         }
-        EasyMock.expect(cards.get(4).checkForDefuse()).andReturn(true);
-        EasyMock.expect(cards.get(4).checkForDefuse()).andReturn(true);
+        EasyMock.expect(cards.get(4).checkForCardType(CardType.DEFUSE)).andReturn(true);
+        EasyMock.expect(cards.get(4).checkForCardType(CardType.DEFUSE)).andReturn(true);
         EasyMock.replay(cards.get(4));
         player.addCard(cards.get(4));
-        Assert.assertTrue(player.getDefuse().checkForDefuse());
+        Assert.assertTrue(player.getCardType(CardType.DEFUSE).checkForCardType(CardType.DEFUSE));
         for (int i = 0; i < 5; i++) {
             EasyMock.verify(cards.get(i));
         }
@@ -277,7 +277,7 @@ public class PlayerTests {
         for (int i = 0; i < 5; i++) {
             player.addCard(new Card(CardType.TACOCAT));
         }
-        Assert.assertFalse(player.hasNope());
+        Assert.assertFalse(player.hasCardType(CardType.NOPE));
     }
 
     @Test
@@ -287,25 +287,25 @@ public class PlayerTests {
             player.addCard(new Card(CardType.TACOCAT));
         }
         player.addCard(new Card(CardType.NOPE));
-        Assert.assertTrue(player.hasNope());
+        Assert.assertTrue(player.hasCardType(CardType.NOPE));
     }
 
     @Test
     public void testHasNopeEmptyHand() {
         Player player = new Player();
-        Assert.assertFalse(player.hasNope());
+        Assert.assertFalse(player.hasCardType(CardType.NOPE));
     }
 
     @Test
     public void testGetNopeEmptyHand() {
         Player player = new Player();
         try {
-            player.getNope();
+            player.getCardType(CardType.NOPE);
             Assert.fail("Trying to get a nope card from an"
                     + " empty hand should throw an IllegalStateException");
         } catch (IllegalStateException e) {
             Assert.assertEquals(e.getMessage(), "This "
-                    + "player does not have a nope card");
+                    + "player does not have that card");
         }
     }
 
@@ -316,11 +316,11 @@ public class PlayerTests {
             player.addCard(new Card(CardType.TACOCAT));
         }
         try {
-            player.getNope();
+            player.getCardType(CardType.NOPE);
             Assert.fail("Trying to get a nope card from an "
                     + "empty hand should throw an IllegalStateException");
         } catch (IllegalStateException e) {
-            Assert.assertEquals(e.getMessage(), "This player does not have a nope card");
+            Assert.assertEquals(e.getMessage(), "This player does not have that card");
         }
     }
 
@@ -332,7 +332,7 @@ public class PlayerTests {
         }
         Card nopeCard = new Card(CardType.NOPE);
         player.addCard(nopeCard);
-        Assert.assertEquals(nopeCard, player.getNope());
+        Assert.assertEquals(nopeCard, player.getCardType(CardType.NOPE));
     }
 
     @Test
@@ -425,7 +425,7 @@ public class PlayerTests {
     public void testFindCardOfTypeEmpty() {
         Player player = new Player();
         Card card = player.findCardOfTypeExcluding(CardType.TACOCAT, null);
-        Assert.assertEquals(null, card);
+        Assert.assertNull(card);
     }
 
     @Test

@@ -9,7 +9,7 @@ import org.junit.Test;
 import team5.explodingkittens.controller.GameController;
 import team5.explodingkittens.controller.ResourceController;
 import team5.explodingkittens.controller.UserController;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 /**
  * A testing script created to test {@link Deck}.
@@ -88,8 +88,8 @@ public class DeckTests {
         EasyMock.replay(deck);
         deck.dealCards(users);
         Assert.assertEquals(29, deck.getSize());
-        Assert.assertTrue(u1.cards.get(0).checkForDefuse());
-        Assert.assertTrue(u2.cards.get(0).checkForDefuse());
+        Assert.assertTrue(u1.cards.get(0).checkForCardType(CardType.DEFUSE));
+        Assert.assertTrue(u2.cards.get(0).checkForCardType(CardType.DEFUSE));
         Assert.assertEquals(Player.HAND_SIZE, u1.cards.size());
         Assert.assertEquals(Player.HAND_SIZE, u2.cards.size());
         EasyMock.verify(deck);
@@ -220,12 +220,18 @@ public class DeckTests {
     @Test
     public void testGetCard() {
         // This is before shuffling, so the order is not random
-        Deck deck = new Deck(10);
+        Deck deck = new Deck();
+        Card kitten1 = EasyMock.mock(Card.class);
+        Card kitten2 = EasyMock.mock(Card.class);
+        Card kitten3 = EasyMock.mock(Card.class);
         ResourceController.setLocale(Locale.US);
-        Assert.assertEquals("Skip", deck.getCard(0).getName());
-        Assert.assertEquals("Nope", deck.getCard(26).getName());
-        Assert.assertEquals("Hairy Potato Cat", deck.getCard(51).getName());
-        Assert.assertEquals("Rainbow Ralphing Cat", deck.getCard(77).getName());
-        Assert.assertEquals("Alter the Future", deck.getCard(102).getName());
+
+        deck.insertCard(kitten1, 0);
+        deck.insertCard(kitten2, 0);
+        deck.insertCard(kitten3, 0);
+
+        Assert.assertEquals(kitten3, deck.getCard(0));
+        Assert.assertEquals(kitten2, deck.getCard(1));
+        Assert.assertEquals(kitten1, deck.getCard(2));
     }
 }

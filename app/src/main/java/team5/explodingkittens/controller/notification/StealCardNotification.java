@@ -1,6 +1,7 @@
 package team5.explodingkittens.controller.notification;
 
 import team5.explodingkittens.controller.UserController;
+import team5.explodingkittens.view.spectatorview.SpectatorViewSceneHandler;
 
 /**
  * A notification for stealing a card from a specific player and
@@ -18,5 +19,10 @@ public class StealCardNotification implements Notification {
     @Override
     public void applyNotification(UserController userController) {
         userController.stealCard(toPlayerId, fromPlayerId);
+    }
+
+    @Override
+    public void applyNotification(SpectatorViewSceneHandler sceneHandler) {
+        // TODO: behavior?
     }
 }

@@ -2,8 +2,9 @@ package team5.explodingkittens.controller;
 
 import team5.explodingkittens.controller.notification.ExplodeNotification;
 import team5.explodingkittens.model.Card;
+import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 public class ExplodeActionController extends ActionController {
 
@@ -21,7 +22,7 @@ public class ExplodeActionController extends ActionController {
 
     public void tryExplode(int playerId, Card explodingKitten) {
         if (playerId == this.playerId) {
-            if (player.hasDefuse()) {
+            if (player.hasCardType(CardType.DEFUSE)) {
                 if (view.showExplodeDialog()) {
                     int depth = view.showPutExplodingKittenBackDialog();
                     this.gameController.addCard(explodingKitten, depth);
@@ -39,6 +40,6 @@ public class ExplodeActionController extends ActionController {
     }
 
     private void tryPlayDefuseCard() {
-        gameController.discardCard(player.getDefuse());
+        gameController.discardCard(player.getCardType(CardType.DEFUSE));
     }
 }

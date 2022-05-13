@@ -10,7 +10,6 @@ import team5.explodingkittens.model.Deck;
 import team5.explodingkittens.model.DiscardPile;
 import team5.explodingkittens.model.Player;
 import team5.explodingkittens.model.TurnState;
-import team5.explodingkittens.view.AbstractUserView;
 import team5.explodingkittens.view.UserViewFactory;
 
 /**
@@ -77,23 +76,18 @@ public class GameController {
      * @param numPlayers The number of players who will be playing in the game.
      */
     public void startGame(int numPlayers, UserViewFactory userViewFactory) {
-        if (numPlayers < 2) {
-            throw new IllegalArgumentException("Must have more than two players to start game");
-        }
-        if (numPlayers > 10) {
-            throw new IllegalArgumentException("Must have less than ten players to start game");
-        }
+        GameControllerInitUtility initializer = new GameControllerInitUtility(this);
+        startGame(numPlayers, userViewFactory, initializer);
+    }
+
+    public void startGame(int numPlayers, UserViewFactory userViewFactory, GameControllerInitUtility initializer) {
+        initializer.validatePlayerCount(numPlayers);
+        List<Player> players = initializer.initializePlayerList(numPlayers);
+        List<UserController> users = initializer.createUsersWithViewsFromPlayers(players, userViewFactory);
+        initializer.setUpSpectatorView(players, userViewFactory);
+        initializer.setUpPiles(users);
+
         state = new TurnState(numPlayers);
-        List<UserController> users = new ArrayList<>(numPlayers);
-        for (int i = 0; i < numPlayers; i++) {
-            AbstractUserView userView = userViewFactory.createUserView(numPlayers, i);
-            Player player = new Player();
-            users.add(new UserController(this, userView, player, i));
-            userView.setUserController(users.get(i));
-        }
-        this.deck = new Deck(numPlayers);
-        deck.dealCards(users);
-        this.discardPile = new DiscardPile();
         notifyObservers(new TurnChangeNotification(state.getTurnPlayerId()));
     }
 
@@ -176,7 +170,7 @@ public class GameController {
             } else {
                 card = deck.drawAtBottom();
             }
-            if (card.checkForExplodingKitten()) {
+            if (card.checkForCardType(CardType.EXPLODING_KITTEN)) {
                 notifyObservers(new TryExplodeNotification(playerId, card));
             } else {
                 notifyObservers(new DrawNotification(playerId, card));

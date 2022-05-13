@@ -1,6 +1,8 @@
 package team5.explodingkittens.model.cardaction;
 
 import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import team5.explodingkittens.controller.GameController;
 import team5.explodingkittens.model.CardType;
@@ -8,96 +10,75 @@ import team5.explodingkittens.model.CardType;
 /**
  * A testing script created to test {@link CardAction}.
  *
- * @author Duncan McKee
+ * @author Duncan McKee, Andrew Orians
  */
 public class CardActionTests {
 
-    @Test
-    public void testNullCardAction() {
-        NullCardAction cardAction = new NullCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+    CardAction cardAction;
+    GameController controllerMock;
+
+    @Before
+    public void initController() {
+        controllerMock = EasyMock.strictMock(GameController.class);
+    }
+
+    @After
+    public void confirm() {
         EasyMock.replay(controllerMock);
         cardAction.applyAction(controllerMock);
         EasyMock.verify(controllerMock);
+    }
+
+    @Test
+    public void testNullCardAction() {
+        cardAction = new NullCardAction();
     }
 
     @Test
     public void testShuffleCardAction() {
-        ShuffleCardAction cardAction = new ShuffleCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new ShuffleCardAction();
         controllerMock.shuffleDeck();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testDrawFromTheBottomCardAction() {
-        DrawFromTheBottomCardAction cardAction = new DrawFromTheBottomCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new DrawFromTheBottomCardAction();
         controllerMock.drawFromTheBottom();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testSkipCardAction() {
-        SkipCardAction cardAction = new SkipCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new SkipCardAction();
         controllerMock.skipAction();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testAttackCardAction() {
-        AttackCardAction cardAction = new AttackCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new AttackCardAction();
         controllerMock.attackAction();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testFavorCardAction() {
-        FavorCardAction cardAction = new FavorCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new FavorCardAction();
         controllerMock.startFavor();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testBeardCatCardAction() {
-        CatCardAction cardAction = new CatCardAction();
-        GameController controllerMock = EasyMock.strictMock(GameController.class);
+        cardAction = new CatCardAction();
         controllerMock.startCatCard();
-        EasyMock.replay(controllerMock);
-        cardAction.applyAction(controllerMock);
-        EasyMock.verify(controllerMock);
     }
 
     @Test
     public void testSeeTheFutureCardAction() {
-        SeeTheFutureAction cardAction = new SeeTheFutureAction();
-        GameController controller = EasyMock.strictMock(GameController.class);
-        controller.seeTheFuture();
-        EasyMock.replay(controller);
-        cardAction.applyAction(controller);
-        EasyMock.verify(controller);
+        cardAction = new SeeTheFutureAction();
+        controllerMock.seeTheFuture();
     }
 
     @Test
     public void testAlterTheFutureCardAction() {
-        AlterTheFutureAction cardAction = new AlterTheFutureAction();
-        GameController controller = EasyMock.strictMock(GameController.class);
-        controller.alterTheFuture();
-        EasyMock.replay(controller);
-        cardAction.applyAction(controller);
-        EasyMock.verify(controller);
+        cardAction = new AlterTheFutureAction();
+        controllerMock.alterTheFuture();
     }
 }
