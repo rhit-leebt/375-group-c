@@ -22,8 +22,6 @@ public class SpectatorViewTests extends ApplicationTest {
 
     private static class DummyView extends SpectatorView {
 
-        boolean front = false;
-
         public DummyView(List<Player> players) {
             super(players);
         }
