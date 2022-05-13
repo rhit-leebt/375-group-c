@@ -95,7 +95,10 @@ public class CardTests {
 
     @Test
     public void testGetImagePath() {
-        String basePath = "images/cards/";
+        String basePath = "." + File.separator
+                + "app" + File.separator + "src" + File.separator + "main"
+                + File.separator + "resources" + File.separator + "images"
+                + File.separator + "cards" + File.separator;
         HashMap<CardType, String> cardsToImagePaths = new HashMap<CardType, String>();
 
         for (CardType cardType : CardType.values()) {
