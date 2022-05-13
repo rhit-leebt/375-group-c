@@ -38,11 +38,9 @@ public class UserViewSceneBuilder {
 
         HBox alignedUiGroup = getAlignedUiGroup(List.of(otherPlayerUiArea, pileUiArea));
         Scene scene = generateSceneFromUiArea(alignedUiGroup);
-
         UserViewSceneHandler sceneHandler = new UserViewSceneHandler(userViewUIParts, scene);
 
         sceneHandler.setDrawKeyHandler(userViewEvents.drawKeyHandler);
-
         return sceneHandler;
     }
 
