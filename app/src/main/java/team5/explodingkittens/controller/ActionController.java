@@ -1,7 +1,7 @@
 package team5.explodingkittens.controller;
 
 import team5.explodingkittens.model.Player;
-import team5.explodingkittens.view.AbstractUserView;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 public abstract class ActionController {
     protected GameController gameController;

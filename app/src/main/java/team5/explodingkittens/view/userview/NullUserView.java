@@ -1,4 +1,4 @@
-package team5.explodingkittens.view;
+package team5.explodingkittens.view.userview;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -6,6 +6,7 @@ import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.model.Card;
 import team5.explodingkittens.model.CardType;
 import team5.explodingkittens.model.Player;
+import team5.explodingkittens.view.userview.AbstractUserView;
 
 /**
  * An empty shell of the UserView that does not perform any actions.

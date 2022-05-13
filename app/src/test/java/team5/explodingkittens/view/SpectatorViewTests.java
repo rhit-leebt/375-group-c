@@ -10,6 +10,10 @@ import org.junit.Test;
 import team5.explodingkittens.controller.UserController;
 import team5.explodingkittens.controller.notification.Notification;
 import team5.explodingkittens.model.Player;
+import team5.explodingkittens.view.spectatorview.SpectatorView;
+import team5.explodingkittens.view.spectatorview.SpectatorViewSceneBuilder;
+import team5.explodingkittens.view.spectatorview.SpectatorViewSceneHandler;
+import team5.explodingkittens.view.spectatorview.SpectatorViewSinglePlayerUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +21,6 @@ import java.util.List;
 public class SpectatorViewTests extends ApplicationTest {
 
     private static class DummyView extends SpectatorView {
-
-        boolean front = false;
 
         public DummyView(List<Player> players) {
             super(players);
@@ -54,8 +56,9 @@ public class SpectatorViewTests extends ApplicationTest {
 
         List<SpectatorViewSinglePlayerUI> singlePlayerUIs = new ArrayList<>();
         singlePlayerUIs.add(singlePlayerUIMock);
+        Scene scene = EasyMock.createMock(Scene.class);
 
-        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(singlePlayerUIs);
+        SpectatorViewSceneHandler sceneHandler = new SpectatorViewSceneHandler(singlePlayerUIs, scene);
         sceneHandler.update(new Notification() {
             @Override
             public void applyNotification(UserController userController) {

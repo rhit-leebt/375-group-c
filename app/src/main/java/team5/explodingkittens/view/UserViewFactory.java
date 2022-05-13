@@ -1,6 +1,9 @@
 package team5.explodingkittens.view;
 
 import team5.explodingkittens.model.Player;
+import team5.explodingkittens.view.spectatorview.SpectatorView;
+import team5.explodingkittens.view.userview.AbstractUserView;
+import team5.explodingkittens.view.userview.UserView;
 
 import java.util.List;
 

@@ -3,9 +3,8 @@ package team5.explodingkittens.controller;
 import team5.explodingkittens.model.Deck;
 import team5.explodingkittens.model.DiscardPile;
 import team5.explodingkittens.model.Player;
-import team5.explodingkittens.model.TurnState;
-import team5.explodingkittens.view.AbstractUserView;
-import team5.explodingkittens.view.SpectatorView;
+import team5.explodingkittens.view.userview.AbstractUserView;
+import team5.explodingkittens.view.spectatorview.SpectatorView;
 import team5.explodingkittens.view.UserViewFactory;
 
 import java.util.ArrayList;
