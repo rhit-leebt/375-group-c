@@ -3,6 +3,8 @@ package team5.explodingkittens.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -98,6 +100,7 @@ public class DeckTests {
     @Test
     public void testShuffle() {
         Deck deckShuffled = new Deck(2);
+        deckShuffled.random = new Random(0);
         deckShuffled.shuffle();
         Deck deckNotShuffled = new Deck(2);
         boolean foundMismatch = false;
@@ -110,7 +113,9 @@ public class DeckTests {
             }
         }
         Assert.assertTrue(
-                "Decks should not match, could be possible but is a 1 in 41! chance",
+                "Decks should should never match, as " +
+                        "the seeded random is known not to shuffle " +
+                        "into a default unshuffled deck",
                 foundMismatch);
     }
 
