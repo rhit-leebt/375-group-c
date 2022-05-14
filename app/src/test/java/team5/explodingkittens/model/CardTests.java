@@ -3,6 +3,7 @@ package team5.explodingkittens.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -101,7 +102,7 @@ public class CardTests {
                 + "app" + File.separator + "src" + File.separator + "main"
                 + File.separator + "resources" + File.separator + "images"
                 + File.separator + "cards" + File.separator;
-        HashMap<CardType, String> cardsToImagePaths = new HashMap<CardType, String>();
+//        HashMap<CardType, String> cardsToImagePaths = new HashMap<CardType, String>();
 
         Card card1 = new Card(CardType.ALTER_THE_FUTURE);
         Assert.assertEquals(basePath + "alterthefuture.png", card1.getImagePath());
